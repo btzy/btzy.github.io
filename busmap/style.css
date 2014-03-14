@@ -1,0 +1,20 @@
+@charset "utf-8";
+/* CSS Document */
+.fixedparts{
+	position:absolute;
+}
+#svgbox{
+	width:100%;
+}
+#infobox{
+	width:100%;
+	top:0;
+	height:40px;
+	background-color:#9FF;
+}
+#toolbox{
+	width:100%;
+	bottom:0;
+	height:100px;
+	background-color:#FF9;
+}
