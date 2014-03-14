@@ -6,9 +6,9 @@ $(document).ready(function() {
 		$("#mapwidth").val(2970);
 		$("#mapheight").val(2100);
 		$("#anglestep").val(20);
-		updateanglecalculator();
+		updateanglecalculation();
     });
-	$("#anglestep").on("input propertychange",updateanglecalculator);
+	$("#anglestep").on("input propertychange",updateanglecalculation);
 	function updateanglecalculation(){
 		$("#anglestep").parent().find("span").html(parseFloat((90/$("#anglestep").val()).toFixed(10)));
 	}
