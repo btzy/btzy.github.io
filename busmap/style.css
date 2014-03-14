@@ -4,6 +4,7 @@ body{
 	margin:0;
 	padding:0;
 	font-family:'Noto Sans',sans-serif;
+	font-size:14px;
 }
 .fixedparts{
 	position:absolute;
@@ -40,4 +41,30 @@ body{
 #infobox .button:hover{
 	background-color:#00F;
 	color:#FFF;
+}
+#faderbox{
+	width:100%;
+	position:absolute;
+	top:0;
+	bottom:0;
+	background-color:#FFF;
+	display:none;
+}
+#newbox{
+	width:300px;
+	margin-left:auto;
+	margin-right:auto;
+	background-color:#9F9;
+	position:relative;
+	height:200px;
+	top:100px;
+	padding:20px;
+	border-radius:20px;
+}
+#newbox input[type=text]{
+	width:50px;
+}
+.notefont{
+	font-size:12px;
+	color:#555;
 }
