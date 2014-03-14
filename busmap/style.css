@@ -13,6 +13,7 @@ body{
 	width:100%;
 	top:30px;
 	bottom:150px;
+	overflow:hidden;
 }
 #infobox{
 	width:100%;
@@ -90,4 +91,12 @@ body{
 #newbox .buttoncontainer .button:hover{
 	background-color:#080;
 	color:#FFF;
+}
+#svgbox #svgmover{
+	position:absolute;
+	left:0;
+	top:0;
+	height:0;
+	width:0;
+	transition: transform 0.5s;
 }
