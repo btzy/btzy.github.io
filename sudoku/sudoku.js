@@ -107,11 +107,49 @@ $(document).ready(function(e) {
 		if(tmpstr=="")tmpnum=0;
 		if((tmpnum==0&&tmpstr=="")||(tmpstr==tmpnum&&tmpnum>=1&&tmpnum<=9)){
 			grid[x][y]=tmpnum;
+			if(tmpnum!=0){
+				if(y>=8&&x<8){
+					$("#textbox"+(x+1)+0).focus();
+				}
+				else if(y<8){
+					$("#textbox"+x+(y+1)).focus();
+				}
+			}
 		}
 		else{
 			$(this).val((grid[x][y]==0)?"":grid[x][y]);
 		}
 	});
+	$("#edittable input:text").keydown(function(e) {
+        var x=parseInt($(this).attr("id").substr(7,1));
+		var y=parseInt($(this).attr("id").substr(8,1));
+		switch(e.which){
+			case 37: //left
+			if(y>0){
+				$("#textbox"+x+(y-1)).focus();
+			}
+			e.preventDefault();
+			break;
+			case 38: //up
+			if(x>0){
+				$("#textbox"+(x-1)+y).focus();
+			}
+			e.preventDefault();
+			break;
+			case 39: //right
+			if(y<8){
+				$("#textbox"+x+(y+1)).focus();
+			}
+			e.preventDefault();
+			break;
+			case 40: //down
+			if(x<8){
+				$("#textbox"+(x+1)+y).focus();
+			}
+			e.preventDefault();
+			break;
+		}
+    });
 	$("#onesolution").click(function(e) {
         SolveSudoku(1);
     });
