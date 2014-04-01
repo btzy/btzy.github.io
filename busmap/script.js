@@ -74,6 +74,6 @@ $(document).ready(function() {
 		$("#svgmover").css({transform:"scale("+data_zoom+","+data_zoom+")","-webkit-transform":"scale("+data_zoom+","+data_zoom+")","-moz-transform":"scale("+data_zoom+","+data_zoom+")","-o-transform":"scale("+data_zoom+","+data_zoom+")","-ms-transform":"scale("+data_zoom+","+data_zoom+")"});
 	}
 	function translatesvgmovertocenter(){
-		//$("#svgmover").
+		$("#svgmover").css({left:($("#svgbox").width()-$("#svgmover").width())/2+"px",top:($("#svgbox").height()-$("#svgmover").height())/2+"px"});
 	}
 });

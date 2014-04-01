@@ -11,14 +11,14 @@ body{
 }
 #svgbox{
 	width:100%;
-	top:30px;
+	top:40px;
 	bottom:150px;
 	overflow:hidden;
 }
 #infobox{
 	width:100%;
 	top:0;
-	height:30px;
+	height:40px;
 	background-color:#9FF;
 }
 #toolbox{
@@ -29,19 +29,28 @@ body{
 }
 #infobox .button{
 	width:100px;
-	height:20px;
+	height:27px;
 	float:left;
 	background-color:#6CF;
 	margin:5px;
-	border-radius:10px;
+	border-radius:15px;
 	text-align:center;
 	font-weight:bold;
-	font-size:15px;
+	font-size:16px;
 	cursor:pointer;
+	padding-top:3px;
 }
 #infobox .button:hover{
 	background-color:#00F;
 	color:#FFF;
+}
+.buttonicon{
+	width:24px;
+	height:24px;
+}
+.buttontext{
+	position:relative;
+	top:-6px;
 }
 #faderbox{
 	width:100%;
@@ -57,7 +66,6 @@ body{
 	margin-right:auto;
 	background-color:#9F9;
 	position:relative;
-	/*height:200px;*/
 	top:100px;
 	padding:20px;
 	border-radius:20px;
@@ -78,21 +86,22 @@ body{
 }
 #newbox .buttoncontainer .button{
 	width:100px;
-	height:20px;
-	background-color:#0D0;
+	height:27px;
+	background-color:#6CF;
 	margin:5px;
-	border-radius:10px;
+	border-radius:15px;
 	text-align:center;
 	font-weight:bold;
-	font-size:15px;
+	font-size:16px;
 	cursor:pointer;
 	display:inline-block;
+	padding-top:3px;
 }
 #newbox .buttoncontainer .button:hover{
-	background-color:#080;
+	background-color:#00F;
 	color:#FFF;
 }
-#svgbox #svgmover{
+#svgmover{
 	position:absolute;
 	left:0;
 	top:0;
