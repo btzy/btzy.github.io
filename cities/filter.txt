@@ -1,0 +1,6 @@
+hyphen with spaces left and right: delete all after and including the hyphen with spaces.
+number in name: delete number.
+Empty row: delete row.
+Row starts with text without population: new country name.
+Row starts with digit: delete row.
+Capital letters: capital city.
