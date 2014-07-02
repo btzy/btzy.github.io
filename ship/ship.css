@@ -80,6 +80,10 @@ body{
 	text-align:center;
 	margin:4px;
 	cursor:pointer;
+	-webkit-user-select:none;
+  	-moz-user-select:none;
+  	-ms-user-select:none;
+  	user-select:none;
 }
 #playtitlebutton{
 	background-color:#F90;
