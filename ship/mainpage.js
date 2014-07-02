@@ -4,6 +4,9 @@ $(document).ready(function(e) {
 		e.preventDefault();
 	});
 	$("#playtitlebutton").click(function(e) {
-        
+        alert("H");
+		$("#titlebuttonbox").fadeOut(300,"linear",function(){
+			$("#settingbuttonbox").fadeIn(300,"linear");
+		});
     });
 });
