@@ -4,8 +4,11 @@ $(document).ready(function(e) {
 		e.preventDefault();
 	});
 	$("#playtitlebutton").click(function(e) {
-		$("#titlebuttonbox").fadeOut(300,"linear",function(){
-			$("#settingbuttonbox").fadeIn(300,"linear");
+		$("#titlebuttonflex").animate({opacity:0},300,"linear",function(){
+			$("#titlebuttonflex").addClass("displaynone");
+			$("#settingbuttonflex").css({opacity:0});
+			$("#settingbuttonflex").removeClass("displaynone");
+			$("#settingbuttonflex").animate({opacity:1},300,"linear");
 		});
     });
 });
