@@ -49,8 +49,16 @@ body{
 	-ms-flex-direction:column;
     flex-direction:column;
 }
+#settingbuttonflex{
+	width:650px;
+}
 @media all and (max-width:400px){
 	#titlebuttonflex{
+		width:100%;
+	}
+}
+@media all and (max-width:650px){
+	#settingbuttonflex{
 		width:100%;
 	}
 }
