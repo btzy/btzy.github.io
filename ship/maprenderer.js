@@ -14,7 +14,7 @@ MapRenderer.Init=function(){
 				landpattern.setAttributeNS("http://www.w3.org/2000/svg","height","100");
 				landpattern.setAttributeNS("http://www.w3.org/2000/svg","patternUnits","userSpaceOnUse");
 				for(dataelement in dataelements){
-					landpattern.appendChild(dataelement.cloneNode(true));
+					landpattern.appendChild(dataelements[dataelement].cloneNode(true));
 				}
 				div=null;
 				MapRenderer._LandPattern=landpattern;
