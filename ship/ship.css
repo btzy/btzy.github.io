@@ -151,6 +151,50 @@ body{
 #instructiontitlebutton:hover{
 	background-color:#AA9F00;
 }
+.titlecategorylabel{
+	-moz-border-radius:0;
+	border-radius:0;
+	cursor:default;
+}
+#optioncategorylabel{
+	-webkit-box-flex:3;
+    -moz-box-flex:3;
+	-webkit-flex:3 3 150px;
+	-moz-flex:3 3 150px;
+	-ms-flex:3 3 150px;
+	flex:3 3 150px;
+	display:block;
+	cursor:default;
+	line-height:40px;
+}
+#optioncategoryafterdiv{
+	-webkit-box-flex:7;
+    -moz-box-flex:7;
+	-webkit-flex:0 7 400px;
+	-moz-flex:0 7 400px;
+	-ms-flex:0 7 400px;
+	flex:0 7 400px;
+	display:block;
+}
+@media all and (max-width:400px){
+	#optionlabelflex{
+		-webkit-box-orient:vertical;
+		-moz-box-orient:vertical;
+		-webkit-flex-direction:column;
+		-moz-flex-direction:column;
+		-ms-flex-direction:column;
+		flex-direction:column;
+	}
+	#optioncategoryafterdiv{
+		min-height:40px;
+		max-height:40px;
+	}
+	#optioncategorylabel{
+		min-height:30px;
+		max-height:30px;
+		line-height:30px;
+	}
+}
 .settingbutton{
 	line-height:40px;
 	font-size:18px;
@@ -161,21 +205,40 @@ body{
 .settingbutton:not(:first-child){
 	margin-left:2px;
 }
+#mapcategorylabel{
+	line-height:30px;
+	font-size:24px;
+	cursor:default;
+}
+.sizelabel{
+	line-height:25px;
+	cursor:default;
+	text-align:left;
+}
+.hr{
+	background:linear-gradient(90deg,transparent,#00F 10%,#00F 90%,transparent);
+	height:2px;
+	width:100%;
+}
 /* Additional classes (for overriding properties) */
 .displaynone{
 	display:none;
+}
+.settingbuttonon{
+	background-color:#0C0;
 }
 .settingbuttonoff{
 	background-color:#999;
 }
 .settingbuttondisabled{
 	position:relative;
+	cursor:default;
 }
 .settingbuttondisabled::before{
 	content:"";
 	position:absolute;
 	width:100%;
 	height:100%;
-	background: repeating-linear-gradient(45deg,rgba(68,68,68,0.6),rgba(68,68,68,0.6) 4px,transparent 4px,transparent 8px);
+	background:repeating-linear-gradient(45deg,rgba(68,68,68,0.6),rgba(68,68,68,0.6) 4px,transparent 4px,transparent 8px);
 	display:block;
 }

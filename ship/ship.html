@@ -5,7 +5,9 @@
 	<link rel="stylesheet" type="text/css" href="ship.css">
     <link href='http://fonts.googleapis.com/css?family=Gloria+Hallelujah' rel='stylesheet' type='text/css'>
     <script type="text/javascript" src="jquery-1.11.1.min.js"></script>
-    <script type="text/javascript" src="mainpage.js"></script>
+    <script type="text/javascript" src="maprenderer.js"></script>
+    <script type="text/javascript" src="defaultmaps.js"></script>
+	<script type="text/javascript" src="mainpage.js"></script>
 </head>
 <body>
     <div id="titlescreen">
@@ -18,11 +20,28 @@
         </div>
         <div id="settingbuttonflex" class="buttonflex displaynone">
             <div id="settingbuttonbox" class="buttonbox">
-                <div class="horizontalholderflex">
-                	<div class="titlebutton settingbutton settingbuttonoff settingbuttondisabled" id="fullscreensettingbutton">Fullscreen</div>
-                    <div class="titlebutton settingbutton settingbuttonoff" id="pointerlocksettingbutton">Lock mouse</div>
+                <div class="horizontalholderflex" id="optionlabelflex">
+                    <div class="titlebutton" id="optioncategorylabel">Options</div>
+                    <div id="optioncategoryafterdiv">
+                        <div class="horizontalholderflex">
+                            <div class="titlebutton settingbutton settingbuttonoff" id="fullscreensettingbutton">Fullscreen</div>
+                            <div class="titlebutton settingbutton settingbuttonoff" id="pointerlocksettingbutton">Lock mouse</div>
+                        </div>
+                    </div>
                 </div>
-                <div class="titlebutton">Instructions</div>
+                <div class="hr"></div>
+                <div class="titlebutton" id="mapcategorylabel">Choose Map</div>
+                <div id="mapchoosingarea">
+                    <div class="w1366h768">
+                        <div class="titlebutton sizelabel">1366&times;768</div>
+                        <div class="mappreviewbox">
+                            <div class="svgpreviewwrapper">
+                                
+                            </div>
+                        </div>
+                    </div>
+                    <div class="titlebutton sizelabel">1920&times;1080</div>
+                </div>
             </div>
         </div>
     </div>
