@@ -13,7 +13,9 @@ MapRenderer.Init=function(){
 				landpattern.setAttributeNS("http://www.w3.org/2000/svg","width","100");
 				landpattern.setAttributeNS("http://www.w3.org/2000/svg","height","100");
 				landpattern.setAttributeNS("http://www.w3.org/2000/svg","patternUnits","userSpaceOnUse");
-				landpattern.appendChild(dataelements);
+				for(dataelement in dataelements){
+					landpattern.appendChild(dataelement.cloneNode(true));
+				}
 				div=null;
 				MapRenderer._LandPattern=landpattern;
 				if(MapRenderer._SeaPattern!==null){
