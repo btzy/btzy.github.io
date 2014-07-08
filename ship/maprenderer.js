@@ -3,11 +3,11 @@ MapRenderer={};
 MapRenderer.Init=function(){
 	if(!MapRenderer.Ready){
 		var DownloadPatterns=function(){
-			$.ajax("grassland.svg").done(function(reply){
+			$.ajax("grassland.svg",{dataType:"text"}).done(function(reply){
 				var div=document.createElement("div");
-				//div.innerHTML=reply;
-				//var dataelements=div.firstChild.childNodes;
-				var dataelements=reply.getElementsByTagNameNS("http://www.w3.org/2000/svg","svg").childNodes;
+				div.innerHTML=reply;
+				var dataelements=div.firstChild.childNodes;
+				//var dataelements=reply.getElementsByTagNameNS("http://www.w3.org/2000/svg","svg").childNodes;
 				var landpattern=document.createElementNS("http://www.w3.org/2000/svg","pattern");
 				landpattern.setAttributeNS("http://www.w3.org/2000/svg","id","landpattern");
 				landpattern.setAttributeNS("http://www.w3.org/2000/svg","width","100");
