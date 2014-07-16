@@ -12,7 +12,7 @@ var LoadMap=function(urlstring,width,height){
 	jqpreviewbox.append('<div class="svgpreviewwrapper" id="mapindex'+mapindex+'"><svg></svg></div>');
 	var svg=jqpreviewbox.children("#mapindex"+mapindex).get(0).firstChild;
 	var DownloadMap=function(){
-		$.ajax(urlstring,{dataType:"text").done(function(reply){
+		$.ajax(urlstring,{dataType:"text"}).done(function(reply){
 			var div=document.createElement("div");
 			div.innerHTML=reply;
 			MapRenderer.RenderStaticMap(div.firstChild,svg);

@@ -1,6 +1,6 @@
 // JavaScript Document
 MapRenderer={};
-MapRenderer.Init=function(){
+MapRenderer.Init=function(donecallback){
 	if(!MapRenderer.Ready){
 		var DownloadPatterns=function(){
 			$.ajax("grassland.svg",{dataType:"text"}).done(function(reply){
@@ -20,6 +20,7 @@ MapRenderer.Init=function(){
 				MapRenderer._LandPattern=landpattern;
 				if(MapRenderer._SeaPattern!==null){
 					MapRenderer.Ready=true;
+					donecallback();
 				}
 			}).fail(function(){
 				setTimeout(DownloadPatterns,1000);
@@ -31,8 +32,8 @@ MapRenderer.Init=function(){
 MapRenderer.Ready=false;
 MapRenderer._LandPattern=null;
 MapRenderer._SeaPattern=null;
+// returns [landdata,portdata];
 MapRenderer.RenderStaticMap=function(map,svg){
-	if(!MapRenderer.Ready){setTimeout(function(){MapRenderer.RenderStaticMap(map,svg)},100);return;}
 	while(svg.firstChild){svg.removeChild(svg.firstChild);}
 	var defs=document.createElementNS("http://www.w3.org/2000/svg","defs");
 	defs.appendChild(MapRenderer._LandPattern.cloneNode(true));
@@ -50,5 +51,5 @@ MapRenderer.RenderStaticMap=function(map,svg){
 		mapclone.removeChild(mapclone.firstChild);
 	}
 }
-MapRenderer.StartGame=function(map,svg,fullscreen,pointerlock){
-}
+/*MapRenderer.StartGame=function(map,svg,fullscreen,pointerlock){
+}*/
