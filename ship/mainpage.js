@@ -3,8 +3,11 @@ $(document).ready(function(e) {
 	$(document).on("touchmove", function(e) {
 		e.preventDefault();
 	});
-	MapRenderer.Init();
-	LoadDefaultMaps();
+	maprenderer_loaded=false;
+	MapRenderer.Init(function(){
+		maprenderer_loaded=true;
+		LoadDefaultMaps();
+	});
 	var requestfullscreen=(function(){
 		if(document.documentElement.requestFullscreen){
 		    return function(elem){elem.requestFullscreen();};
