@@ -1,6 +1,7 @@
 // JavaScript Document
 MapRenderer={};
 MapRenderer.Init=function(donecallback){
+	MapRenderer._SeaPattern=new Object(); // delete this
 	if(!MapRenderer.Ready){
 		var DownloadPatterns=function(){
 			$.ajax("grassland.svg",{dataType:"text"}).done(function(reply){
