@@ -1,0 +1,425 @@
+@charset "utf-8";
+/* CSS Document */
+html{
+	margin:0;
+	height:100%;
+	min-height:100%;
+	max-height:100%;
+	padding:0;
+	overflow:hidden;
+}
+body{
+	margin:0;
+	height:100%;
+	min-height:100%;
+	max-height:100%;
+	padding:0;
+	overflow:hidden;
+	-ms-touch-action:none;
+	touch-action:none;
+	
+	display: -webkit-box;   /* OLD: Safari,  iOS, Android browser, older WebKit browsers.  */
+	display: -moz-box;      /* OLD: Firefox (buggy) */
+	display: -ms-flexbox;   /* MID: IE 10 */
+	display: -webkit-flex;  /* NEW, Chrome 21–28, Safari 6.1+ */
+	display: flex;          /* NEW: IE11, Chrome 29+, Opera 12.1+, Firefox 22+ */
+	
+	-webkit-box-align: center; -moz-box-align: center; /* OLD… */
+	-ms-flex-align: center; /* You know the drill now… */
+	-webkit-align-items: center;
+	align-items: center;
+	
+	-webkit-box-pack: center; -moz-box-pack: center;
+	-ms-flex-pack: center;
+	-webkit-justify-content: center;
+	justify-content: center;
+}
+
+#maincontent{
+    display:-webkit-box;
+	display:-moz-box;
+	display:-ms-flexbox;
+	display:-webkit-flex;
+	display:flex;
+	
+	-webkit-box-orient:vertical;
+    -moz-box-orient:vertical;
+	-webkit-flex-direction:column;
+	-moz-flex-direction:column;
+	-ms-flex-direction:column;
+    flex-direction:column;
+	
+	margin:0;
+	height:100%;
+	width:100%;
+}
+@media all and (min-width:800px){
+	#maincontent{
+		width:800px;
+	}
+}
+@media all and (min-height:450px){
+	#maincontent{
+		height:450px;
+	}
+}
+#maincontent>#screen{
+	background-color:#0FF;
+	-webkit-box-flex:3;
+    -moz-box-flex:3;
+	-webkit-flex:3 3 auto;
+	-moz-flex:3 3 auto;
+	-ms-flex:3 3 auto;
+	flex:3 3 auto;
+	display:-webkit-box;
+	display:-moz-box;
+	display:-ms-flexbox;
+	display:-webkit-flex;
+	display:flex;
+}
+#maincontent>#control{
+	background-color:#0FF;
+	-webkit-box-flex:1;
+    -moz-box-flex:1;
+	-webkit-flex:1 1 auto;
+	-moz-flex:1 1 auto;
+	-ms-flex:1 1 auto;
+	flex:1 1 auto;
+	display:block;
+}
+#screencontent{
+	display:-webkit-box;
+	display:-moz-box;
+	display:-ms-flexbox;
+	display:-webkit-flex;
+	display:flex;
+	
+	-webkit-box-orient:horizontal;
+    -moz-box-orient:horizontal;
+	-webkit-flex-direction:row;
+	-moz-flex-direction:row;
+	-ms-flex-direction:row;
+    flex-direction:row;
+	
+	width:100%;
+	margin:0;
+}
+#screencontent>#playarea{
+	background-color:#0F0;
+	-webkit-box-flex:4;
+    -moz-box-flex:4;
+	-webkit-flex:4 4 auto;
+	-moz-flex:4 4 auto;
+	-ms-flex:4 4 auto;
+	flex:4 4 auto;
+	display:-webkit-box;
+	display:-moz-box;
+	display:-ms-flexbox;
+	display:-webkit-flex;
+	display:flex;
+}
+#screencontent>#playerhand{
+	background-color:#FF0;
+	-webkit-box-flex:1;
+    -moz-box-flex:1;
+	-webkit-flex:1 1 auto;
+	-moz-flex:1 1 auto;
+	-ms-flex:1 1 auto;
+	flex:1 1 auto;
+	display:block;
+}
+.cardcolumn{
+	position:relative;
+	margin:10px;
+	-webkit-box-flex:1;
+    -moz-box-flex:1;
+	-webkit-flex:1 1 auto;
+	-moz-flex:1 1 auto;
+	-ms-flex:1 1 auto;
+	flex:1 1 auto;
+	display:block;
+}
+
+/* Game Selector */
+#gameselector{
+	position:absolute;
+	width:100%;
+	height:100%;
+	top:0;
+	left:0;
+}
+.translucentbackground{
+	position:absolute;
+	width:100%;
+	height:100%;
+	background-color:#000;
+	opacity:0.5;
+	top:0;
+	left:0;
+}
+#modeselectorwrapper{
+	position:absolute;
+	top:0;
+	left:0;
+	width:100%;
+	height:100%;
+	
+	display: -webkit-box;   /* OLD: Safari,  iOS, Android browser, older WebKit browsers.  */
+	display: -moz-box;      /* OLD: Firefox (buggy) */
+	display: -ms-flexbox;   /* MID: IE 10 */
+	display: -webkit-flex;  /* NEW, Chrome 21–28, Safari 6.1+ */
+	display: flex;          /* NEW: IE11, Chrome 29+, Opera 12.1+, Firefox 22+ */
+	
+	-webkit-box-align: center; -moz-box-align: center; /* OLD… */
+	-ms-flex-align: center; /* You know the drill now… */
+	-webkit-align-items: center;
+	align-items: center;
+	
+	-webkit-box-pack: center; -moz-box-pack: center;
+	-ms-flex-pack: center;
+	-webkit-justify-content: center;
+	justify-content: center;
+}
+#modeselector{
+	box-sizing:border-box;
+	width:250px;
+	height:93px;
+	border-radius:8px;
+	background-color:#00F;
+	font-size:12px;
+}
+.mode-type{
+	height:27px;
+	box-sizing:border-box;
+	margin:3px;
+	border-radius:5px;
+	background-color:#0FF;
+	text-align:center;
+	font-family:'Gloria Hallelujah',cursive;
+	font-size:14px;
+	cursor:pointer;
+}
+/*#titlescreen{
+	height:100%;
+	width:100%;
+	overflow:hidden;
+	background-image:url('background.svg');
+}
+#gamescreen{
+	width:100%;
+	height:100%;
+	display:none;
+}
+
+.buttonflex{
+	width:400px;
+	margin-left:auto;
+	margin-right:auto;
+	height:100%;
+	overflow:auto;
+	display:-webkit-box;
+	display:-webkit-flex;
+	display:-moz-box;
+	display:-moz-flex;
+	display:-ms-flexbox;
+	display:flex;
+	-webkit-box-orient:vertical;
+    -moz-box-orient:vertical;
+	-webkit-flex-direction:column;
+	-moz-flex-direction:column;
+	-ms-flex-direction:column;
+    flex-direction:column;
+}
+#settingbuttonflex{
+	width:650px;
+}
+@media all and (max-width:400px){
+	#titlebuttonflex{
+		width:100%;
+	}
+}
+@media all and (max-width:650px){
+	#settingbuttonflex{
+		width:100%;
+	}
+}
+.buttonflex>div{
+	background-color:#0FF;
+	-webkit-box-flex:0;
+    -moz-box-flex:0;
+	-webkit-flex:0 0 auto;
+	-moz-flex:0 0 auto;
+	-ms-flex:0 0 auto;
+	flex:0 0 auto;
+	display:block;
+}
+.buttonflex::before{
+	content:"";
+	-webkit-box-flex:0;
+    -moz-box-flex:0;
+	-webkit-flex:1 1 0px;
+	-moz-flex:1 1 0px;
+	-ms-flex:1 1 0px;
+	flex:1 1 0px;
+	display:block;
+}
+.buttonflex::after{
+	content:"";
+	-webkit-box-flex:0;
+    -moz-box-flex:0;
+	-webkit-flex:2 2 0px;
+	-moz-flex:2 2 0px;
+	-ms-flex:2 2 0px;
+	flex:2 2 0px;
+	display:block;
+}
+
+.horizontalholderflex{
+	display:-webkit-box;
+	display:-webkit-flex;
+	display:-moz-box;
+	display:-moz-flex;
+	display:-ms-flexbox;
+	display:flex;
+	-webkit-box-orient:horizontal;
+    -moz-box-orient:horizontal;
+	-webkit-flex-direction:row;
+	-moz-flex-direction:row;
+	-ms-flex-direction:row;
+    flex-direction:row;
+}
+.horizontalholderflex>div{
+	-webkit-box-flex:1;
+    -moz-box-flex:1;
+	-webkit-flex:1 1 200px;
+	-moz-flex:1 1 200px;
+	-ms-flex:1 1 200px;
+	flex:1 1 200px;
+	display:block;
+}
+.titlebutton{
+	box-sizing:border-box;
+	-moz-border-radius:7px;
+	border-radius:7px;
+	font-family:'Gloria Hallelujah',cursive;
+	text-align:center;
+	margin:4px;
+	cursor:pointer;
+	-webkit-user-select:none;
+  	-moz-user-select:none;
+  	-ms-user-select:none;
+  	user-select:none;
+	overflow:hidden;
+}
+#nametitle{
+	-moz-border-radius:0;
+	border-radius:0;
+	cursor:default;
+}
+#playtitlebutton{
+	background-color:#F90;
+	line-height:60px;
+	font-size:24px;
+}
+#playtitlebutton:hover{
+	background-color:#A60;
+}
+#instructiontitlebutton{
+	background-color:#FE0;
+	line-height:40px;
+	font-size:18px;
+}
+#instructiontitlebutton:hover{
+	background-color:#AA9F00;
+}
+.titlecategorylabel{
+	-moz-border-radius:0;
+	border-radius:0;
+	cursor:default;
+}
+#optioncategorylabel{
+	-webkit-box-flex:3;
+    -moz-box-flex:3;
+	-webkit-flex:3 3 150px;
+	-moz-flex:3 3 150px;
+	-ms-flex:3 3 150px;
+	flex:3 3 150px;
+	display:block;
+	cursor:default;
+	line-height:40px;
+}
+#optioncategoryafterdiv{
+	-webkit-box-flex:7;
+    -moz-box-flex:7;
+	-webkit-flex:0 7 400px;
+	-moz-flex:0 7 400px;
+	-ms-flex:0 7 400px;
+	flex:0 7 400px;
+	display:block;
+}
+@media all and (max-width:400px){
+	#optionlabelflex{
+		-webkit-box-orient:vertical;
+		-moz-box-orient:vertical;
+		-webkit-flex-direction:column;
+		-moz-flex-direction:column;
+		-ms-flex-direction:column;
+		flex-direction:column;
+	}
+	#optioncategoryafterdiv{
+		min-height:40px;
+		max-height:40px;
+	}
+	#optioncategorylabel{
+		min-height:30px;
+		max-height:30px;
+		line-height:30px;
+	}
+}
+.settingbutton{
+	line-height:40px;
+	font-size:18px;
+}
+.settingbutton:not(:last-child){
+	margin-right:2px;
+}
+.settingbutton:not(:first-child){
+	margin-left:2px;
+}
+#mapcategorylabel{
+	line-height:30px;
+	font-size:24px;
+	cursor:default;
+}
+.sizelabel{
+	line-height:25px;
+	cursor:default;
+	text-align:left;
+}
+.hr{
+	background:linear-gradient(90deg,transparent,#00F 10%,#00F 90%,transparent);
+	height:2px;
+	width:100%;
+}
+
+.displaynone{
+	display:none;
+}
+.settingbuttonon{
+	background-color:#0C0;
+}
+.settingbuttonoff{
+	background-color:#999;
+}
+.settingbuttondisabled{
+	position:relative;
+	cursor:default;
+}
+.settingbuttondisabled::before{
+	content:"";
+	position:absolute;
+	width:100%;
+	height:100%;
+	background:repeating-linear-gradient(45deg,rgba(68,68,68,0.6),rgba(68,68,68,0.6) 4px,transparent 4px,transparent 8px);
+	display:block;
+}*/
