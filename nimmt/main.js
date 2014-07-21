@@ -28,7 +28,7 @@ $(document).ready(function(e) {
 	$("#mode-multi-host").click(function(e) {
         var gameid=null;
 		do{
-			gameid=prompt("Please enter a unique game name (alphabet only, no spaces):",RandomString(10));
+			gameid=prompt("Please enter a unique game name (alphabet only, no spaces):\n(Please record the game name and pass it to all other players connecting to your game)",RandomString(10));
 		}while(!(/^[a-zA-Z]+$/).test(gameid));
 		international_manager=new InternationalManager(true,new NimmtManager(),true,"ws://sockets.mbed.org/ws/"+gameid+"/rw:443");
 		DoCommonSetUp();
