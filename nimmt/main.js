@@ -17,8 +17,9 @@ $(document).ready(function(e) {
 		international_manager.OnInitialised=function(){
 			// Allow user to select AIs?
 			alert("connected to mbed!");
+			$("#gameselector").css("display","none");
 		}
-		$("#gameselector").css("display","none");
+		$("#modeselector").html("Connecting...");
 	}
 	$("#mode-single").click(function(e) {
         international_manager=new InternationalManager(false,new NimmtManager());
@@ -35,7 +36,7 @@ $(document).ready(function(e) {
 	$("#mode-multi-join").click(function(e) {
         var gameid=null;
 		do{
-			gameid=prompt("Please enter the game name:",RandomString(10));
+			gameid=prompt("Please enter the game name:","");
 		}while(!(/^[a-zA-Z]+$/).test(gameid));
 		international_manager=new InternationalManager(true,null,false,"ws://sockets.mbed.org/ws/"+gameid+"/rw:443");
 		DoCommonSetUp();

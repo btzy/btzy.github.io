@@ -23,6 +23,12 @@ function InternationalManager(is_online,game_manager,is_host,websocket_url){
 			LocalMessageReceived("move"); // triggers a resend of the game state
 			that.OnInitialised();
 		}
+		Gateway.onerror=function(error){
+			alert("WebSocket error: "+error);
+		}
+		Gateway.onmessage=function(e){
+			ForeignMessageReceived(e.data);
+		}
 	}
 	else{
 		setTimeout(function(){
@@ -55,7 +61,4 @@ function InternationalManager(is_online,game_manager,is_host,websocket_url){
 		}
 	}
 	this.MessageReceived=LocalMessageReceived;
-	if(Gateway!==null)Gateway.onmessage=function(event){
-		ForeignMessageReceived(event.data);
-	}
 }
