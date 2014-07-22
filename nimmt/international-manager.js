@@ -1,7 +1,7 @@
 function InternationalManager(is_online,game_manager,is_host,websocket_url){
 	this.OnSendLocalMessage=null;
 	this.OnInitialised=null;
-	that=this;
+	var that=this;
 	var GameManager=null;
 	var Gateway=null;
 	if(!is_online||is_host){
@@ -10,7 +10,7 @@ function InternationalManager(is_online,game_manager,is_host,websocket_url){
 			if(message==="")return;
 			if(message.split(" ")[0]==="send"){
 				if(Gateway!==null)Gateway.send(message);
-				this.OnSendLocalMessage(message);
+				that.OnSendLocalMessage(message);
 			}
 		}
 	}
@@ -18,13 +18,15 @@ function InternationalManager(is_online,game_manager,is_host,websocket_url){
 		Gateway=new WebSocket(websocket_url);
 		Gateway.onopen=function(){
 			setInterval(function(){
-				GateWay.send("ping");
+				Gateway.send("ping");
 			},30000);
-			LocalMessageReceived("move"); // triggers a resend of the game state
 			that.OnInitialised();
+			LocalMessageReceived("move"); // triggers a resend of the game state
 		}
 		Gateway.onerror=function(error){
-			alert("WebSocket error: "+error);
+			if(confirm("WebSocket error: "+error+"\nPress \"OK\" to refresh the page.")){
+				location.reload();
+			}
 		}
 		Gateway.onmessage=function(e){
 			ForeignMessageReceived(e.data);
@@ -32,8 +34,8 @@ function InternationalManager(is_online,game_manager,is_host,websocket_url){
 	}
 	else{
 		setTimeout(function(){
-			LocalMessageReceived("move"); // triggers a resend of the game state
 			that.OnInitialised();
+			LocalMessageReceived("move"); // triggers a resend of the game state
 		},10);
 	}
 	var LocalMessageReceived=function(message){
@@ -56,7 +58,7 @@ function InternationalManager(is_online,game_manager,is_host,websocket_url){
 		}
 		else if(message.split(" ")[0]==="send"){
 			if(GameManager===null){
-				this.OnSendLocalMessage(message);
+				that.OnSendLocalMessage(message);
 			}
 		}
 	}
