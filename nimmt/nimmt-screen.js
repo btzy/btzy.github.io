@@ -32,6 +32,9 @@ function UpdateScreen(message){
             // spawn the iframe
 			var selected_index=parseInt($("#player-type").val())-2;
 			if(selected_index==-1){ // human player
+				$("#player-name").prop("disabled",true);
+				$("#player-type").prop("disabled",true);
+				$("#player-create").prop("disabled",true);
 				// create the player controller iframe
 				var iframe=$('<iframe sandbox="allow-scripts" id="player-controls" src="control.html"></iframe>');
 				/*var width=$("#control").width();

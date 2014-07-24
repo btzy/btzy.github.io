@@ -8,7 +8,7 @@ $(document).ready(function(e){
 		if(("CardsLeft" in message)&&("Points" in message)&&("Cards" in message)&&("Table" in message)){
 			$("body").html("");
 			for(var i=0;i<message.Cards.length;++i){
-				$("body").append("<div class=\"card\" id=\"c"+i+"><div>"+CreateCard(message.Cards[i])+"</div></div>");
+				$("body").append("<div class=\"card\" id=\"c"+i+"\"><div>"+CreateCard(message.Cards[i])+"</div></div>");
 			}
 			$(".card").click(function(e) {
                 var index=parseInt($(this).attr("id").substr(1));
