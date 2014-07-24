@@ -30,8 +30,22 @@ function LocalManager(screen_callback){
 		var command=messageparts.shift();
 		var remaining_message=messageparts.join(" ");
 		if(command==="send"){
-			for(var id in iframes){
-				receiver_iframe=iframes[id].contentWindow.postMessage(remaining_message,"*");
+			var message_object=JSON.parse(remaining_message);
+			if(("CardsLeft" in message_object)&&("Player" in message_object)&&("Table" in message_object)&&("Advance" in message_object)){
+				for(var id in iframes){
+					var cleaned_object={};
+					cleaned_object.CardsLeft=message_object.CardsLeft;
+					cleaned_object.Table=message_object.CardsLeft;
+					var index=null;
+					for(var i=0;i<message_object.Player.length;++i){
+						if(message_object.Player[i][0]===id){
+							cleaned_object.Points=message_object.Player[i][2];
+							cleaned_object.Cards=message_object.Player[i][4];
+							receiver_iframe=iframes[id].contentWindow.postMessage(JSON.stringify(cleaned_object),"*");
+							break;
+						}
+					}
+				}
 			}
 			screen_callback(remaining_message);
 		}
