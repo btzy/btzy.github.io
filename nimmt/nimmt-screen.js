@@ -17,13 +17,13 @@ function UpdateScreen(message){
 		$(".innerflex").addClass("hidden");
 		$("#lobby").html("<table><tr><th>ID</th><th>Name</th></tr></table>");
 		for(var i=0;i<message_object.Player.length;++i){
-			$("#lobby").children("table").append("<td>"+message_object.Player[i][0]+"</td><td>"+message_object.Player[i][1]+"</td>");
+			$("#lobby").children("table").append("<tr><td>"+message_object.Player[i][0]+"</td><td>"+message_object.Player[i][1]+"</td></tr>");
 		}
 		var select_data="<option value=\"1\">Human</option>";
 		for(var i=0;i<AI_list.length;++i){
 			select_data+="<option value=\""+(i+2)+"\">"+AI_list[i][0]+"</option>";
 		}
-		$("#lobby").children("table").append("<td colspan=\"2\">Add new player: <input type=\"text\" value=\"Player name\" id=\"player-name\" /><select id=\"player-type\">"+select_data+"</select><input type=\"button\" value=\"Add\" id=\"player-create\" /></td>");
+		$("#lobby").children("table").append("<tr><td colspan=\"2\">Add new player: <input type=\"text\" value=\"Player name\" id=\"player-name\" /><select id=\"player-type\">"+select_data+"</select><input type=\"button\" value=\"Add\" id=\"player-create\" /></td></tr>");
 		var just_focused=false;
 		$("#player-name").focus(function(e) {
 			setTimeout((function(obj){return function(){obj.setSelectionRange(0,obj.value.length);}})(this),10);

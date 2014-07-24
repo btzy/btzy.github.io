@@ -13,7 +13,7 @@ function LocalManager(screen_callback){
 			if(AwaitingIframeLoad!==null)AwaitingIframeLoad();
 		}
 		for(var id in iframes){
-			if(iframe[id].contentWindow===e.source){
+			if(iframes[id].contentWindow===e.source){
 				sender_id=id;
 				break;
 			}
