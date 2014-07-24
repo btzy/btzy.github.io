@@ -1,4 +1,8 @@
 $(document).ready(function(e){
+	$("#start").click(function(e) {
+        window.parent.postMessage("start ","*");
+		$("#start").off();
+    });
 	window.addEventListener("message",function(e){
 		var message=JSON.parse(e.data);
 		if(("CardsLeft" in message)&&("Points" in message)&&("Cards" in message)&&("Table" in message)){
