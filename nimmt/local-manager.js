@@ -9,6 +9,9 @@ function LocalManager(screen_callback){
 	}
 	window.addEventListener("message",function(e){
 		var sender_id=null;
+		if(e.origin==="null"&&e.data==="_"){
+			if(AwaitingIframeLoad!==null)AwaitingIframeLoad();
+		}
 		for(var id in iframes){
 			if(iframe[id].contentWindow===e.source){
 				sender_id=id;
@@ -17,7 +20,6 @@ function LocalManager(screen_callback){
 		}
 		if(e.origin==="null"&&sender_id!==null){
 			if(e.data==="_"){
-				if(AwaitingIframeLoad!==null)AwaitingIframeLoad();
 			}
 			else{
 				that.OnSendInternationalMessage("move "+sender_id+" "+e.data);
