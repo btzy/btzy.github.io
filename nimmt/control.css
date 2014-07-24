@@ -53,8 +53,8 @@ body>div{
 	display:block;
 }
 .card>div>svg{
-	width:100px;
-	height:140px;
+	width:100%;
+	max-width:60px;
 	display:block;
 }
 .face-value{
@@ -72,16 +72,16 @@ body>div{
 	fill:rgb(255,255,204);
 }
 .face-2>.face-background{
-	fill:rgb(255,255,153);
+	fill:rgb(255,204,153);
 }
 .face-3>.face-background{
-	fill:rgb(255,255,68);
+	fill:rgb(255,153,68);
 }
 .face-5>.face-background{
-	fill:rgb(238,238,0);
+	fill:rgb(238,0,0);
 }
 .face-8>.face-background{
-	fill:rgb(119,119,0);
+	fill:rgb(119,0,0);
 }
 .face-5>.face-value{
 	color:#FFF;
