@@ -51,6 +51,7 @@ function UpdateScreen(message){
 					code+='<div class="card" style="top:'+(j*30)+'px"><div>'+CreateCard(Game_Object.Table[i][j])+'</div></div>';
 				}
 				code+='</div>';
+				$("#playarea").append(code);
 			}
 			// repaint display.
 		}
