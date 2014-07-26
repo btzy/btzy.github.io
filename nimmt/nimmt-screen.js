@@ -2,15 +2,60 @@ var game_started=false;
 var AI_list=[];
 var sandbox_count=0;
 var AwaitingIframeLoad=null;
+var Game_Object={};
 function UpdateScreen(message){
 	var message_object=JSON.parse(message);
 	if(("CardsLeft" in message_object)&&("Player" in message_object)&&("Table" in message_object)){ // game object
 		// wait for animations to stop before using this object.
 		if(("PlayerId" in message_object)&&("PlayedCard" in message_object)){ // move object (1)
-			
+			// animate!
 		}
-		else if("Advance" in message_object){ // move object (2)
-			
+		// compare with Game_Object:
+		var isequal=true;
+		if(isequal&&(Game_Object.CardsLeft!==message_object.CardsLeft||Game_Object.Player.length!==message_object.Player.length||Game_Object.Table.length!==message_object.Table.length)){
+			isequal=false;
+		}
+		if(isequal){
+			for(var i=0;i<Game_Object.Player.length;++i){
+				if(Game_Object.Player[i][0]!==message_object.Player[i][0]||Game_Object.Player[i][1]!==message_object.Player[i][1]||Game_Object.Player[i][2]!==message_object.Player[i][2]||Game_Object.Player[i][3]!==message_object.Player[i][3]){
+					isequal=false;
+					break;
+				}
+			}
+		}
+		if(isequal){
+			for(var i=0;i<Game_Object.Table.length;++i){
+				if(Game_Object.Table[i].length!==message_object.Table[i].length){
+					isequal=false;
+					break;
+				}
+				for(var j=0;j<Game_Object.Table[i].length;++j){
+					if(Game_Object.Table[i][j]!==message_object.Table[i][j]){
+						isequal=false;
+						break;
+					}
+				}
+				if(!isequal)break;
+			}
+		}
+		if(!isequal){
+			Game_Object=message_object;
+			if($("#screencontent").hasClass("hidden")){
+				$(".innerflex").addClass("hidden");
+				$("#screencontent").removeClass("hidden");
+			}
+			$("#playarea").html("");
+			for(var i=0;i<Game_Object.Table.length;++i){
+				var code='<div class="cardcolumn">';
+				for(var j=0;j<Game_Object.Table[i].length;++j){
+					code+='<div class="card" style="top:'+(j*30)+'px"><div>'+CreateCard(Game_Object.Table[i][j])+'</div></div>';
+				}
+				code+='</div>';
+			}
+			// repaint display.
+		}
+		if(("Advance" in message_object)&&message_object.Advance===true){ // move object (2)
+			// advance!
 		}
 	}
 	else if("Player" in message_object){ // playerlist object
