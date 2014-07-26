@@ -59,6 +59,7 @@ function NimmtManager(){
 								game_object.Advance=true;
 							}
 							that.OnSendMessage("send "+JSON.stringify(game_object));
+							// TODO: Add card to table.
 						}
 					}
 				}
@@ -93,7 +94,11 @@ function NimmtManager(){
 						for(var j=0;j<10;++j){
 							player_hand.push(cards[--len]);
 						}
-						player_hand.sort();
+						player_hand.sort(function(a,b){
+							if(a<b)return -1;
+							if(a>b)return 1;
+							return 0;
+						});
 						new_object.Player.push([game_object.Player[i][0],game_object.Player[i][1],0,0,player_hand]);
 					}
 					game_object=new_object;
