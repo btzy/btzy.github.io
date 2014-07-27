@@ -78,7 +78,11 @@ function UpdateScreen(message){
 			setTimeout((function(obj){return function(){obj.setSelectionRange(0,obj.value.length);}})(this),10);
         });
 		$("#player-create").click(function(e) {
-            // spawn the iframe
+            if($("#player-name").val()==="Player name"){
+				alert("Please input a player name!");
+				return;
+			}
+			// spawn the iframe
 			var selected_index=parseInt($("#player-type").val())-2;
 			if(selected_index==-1){ // human player
 				$("#player-name").prop("disabled",true);

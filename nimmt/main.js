@@ -33,7 +33,8 @@ $(document).ready(function(e) {
 		var gameid=null;
 		do{
 			gameid=prompt("Please enter a unique game name (alphabet only, no spaces):\n(Please record the game name and pass it to all other players connecting to your game)",RandomString(10));
-		}while(gameid==null||!(/^[a-zA-Z]+$/).test(gameid));
+			if(gameid===null)return;
+		}while(!(/^[a-zA-Z]+$/).test(gameid));
 		international_manager=new InternationalManager(true,new NimmtManager(),true,"ws://sockets.mbed.org:443/ws/"+gameid+"/rw");
 		DoCommonSetUp();
     });
@@ -41,7 +42,8 @@ $(document).ready(function(e) {
 		var gameid=null;
 		do{
 			gameid=prompt("Please enter the game name:","");
-		}while(gameid==null||!(/^[a-zA-Z]+$/).test(gameid));
+			if(gameid===null)return;
+		}while(!(/^[a-zA-Z]+$/).test(gameid));
 		international_manager=new InternationalManager(true,null,false,"ws://sockets.mbed.org:443/ws/"+gameid+"/rw");
 		DoCommonSetUp();
     });
