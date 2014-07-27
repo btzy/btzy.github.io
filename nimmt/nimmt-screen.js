@@ -79,11 +79,14 @@ function UpdateScreen(message){
 			setTimeout((function(obj){return function(){obj.setSelectionRange(0,obj.value.length);}})(this),10);
         });
 		$("#player-create").click(function(e) {
-            if($("#player-name").val()==="Player name"){
+            if($("#player-type").val()===null){
+				alert("Please select a player type!\n(One human player per screen only)");
+				return;
+			}
+			if($("#player-name").val()==="Player name"){
 				alert("Please input a player name!");
 				return;
 			}
-			alert('"'+$("#player-type").val()+'"');
 			// spawn the iframe
 			var selected_index=parseInt($("#player-type").val())-2;
 			if(selected_index==-1){ // human player
