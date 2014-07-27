@@ -58,8 +58,71 @@ function NimmtManager(){
 							if(is_complete){
 								game_object.Advance=true;
 							}
+							// Add card to table:
+							if(is_complete){
+								var played_cards=[];
+								for(var i=0;i<game_object.Player.length;++i){
+									played_cards.push([game_object.Player[i][3],i]);
+									//game_object.Player[i][3]=0;
+								}
+								played_cards.sort(function(a,b){
+									if(a[0]<b[0])return -1;
+									if(a[0]>b[0])return 1;
+									return 0;
+								});
+								for(var i=0;i<played_cards.length;++i){
+									var insert_location=-1;
+									for(var j=0;j<game_object.Table.length;++j){
+										if(game_object.Table[j][game_object.Table[j].length-1]>played_cards[i][0]){
+											break;
+										}
+										else{
+											insert_location=j;
+										}
+									}
+									if(insert_location==-1){ // we will just clear the stack with lowest value. This is a modification to the original game.
+										var max_points=0;
+										var max_points_index=-1;
+										for(var j=0;j<game_object.Table.length;++j){
+											var points=0;
+											for(var k=0;k<game_object.Table[j].length;++k){
+												points+=game_object.Table[j][k];
+											}
+											if(points>max_points){
+												max_points=points;
+												max_points_index=j;
+											}
+										}
+										var points=0;
+										while(game_object.Table[max_points_index].length>0){
+											points+=GetPoints(game_object.Table[max_points_index].pop());
+										}
+										game_object.Player[played_cards[i][1]][2]+=points;
+										insert_location=max_points_index;
+									}
+									else{
+										if(game_object.Table[insert_location].length==5){
+											var points=0;
+											while(game_object.Table[insert_location].length>0){
+												points+=GetPoints(game_object.Table[insert_location].pop());
+											}
+											game_object.Player[played_cards[i][1]][2]+=points;
+										}
+									}
+									game_object.Table[insert_location].push(played_cards[i][0]);
+									game_object.Table.sort(function(a,b){
+										if(a[a.length-1]<b[b.length-1])return -1;
+										if(a[a.length-1]>b[b.length-1])return 1;
+										return 0;
+									});
+								}
+							}
 							that.OnSendMessage("send "+JSON.stringify(game_object));
-							// TODO: Add card to table.
+							if(is_complete){
+								for(var i=0;i<game_object.Player.length;++i){
+									game_object.Player[i][3]=0;
+								}
+							}
 						}
 					}
 				}

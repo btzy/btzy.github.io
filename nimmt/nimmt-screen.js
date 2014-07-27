@@ -10,6 +10,9 @@ function UpdateScreen(message){
 		if(("PlayerId" in message_object)&&("PlayedCard" in message_object)){ // move object (1)
 			// animate!
 		}
+		if(("Advance" in message_object)&&message_object.Advance===true){ // move object (2)
+			// advance! (do not delete previously played card)
+		}
 		// compare with Game_Object:
 		var isequal=true;
 		if(isequal&&(Game_Object.CardsLeft!==message_object.CardsLeft||Game_Object.Player.length!==message_object.Player.length||Game_Object.Table.length!==message_object.Table.length)){
@@ -55,8 +58,8 @@ function UpdateScreen(message){
 			}
 			// repaint display.
 		}
-		if(("Advance" in message_object)&&message_object.Advance===true){ // move object (2)
-			// advance!
+		if(("Advance" in message_object)&&message_object.Advance===true){
+			// delete the previously played card. [3]
 		}
 	}
 	else if("Player" in message_object){ // playerlist object
