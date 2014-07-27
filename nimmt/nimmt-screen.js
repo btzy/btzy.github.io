@@ -83,6 +83,7 @@ function UpdateScreen(message){
 				alert("Please input a player name!");
 				return;
 			}
+			alert('"'+$("#player-type").val()+'"');
 			// spawn the iframe
 			var selected_index=parseInt($("#player-type").val())-2;
 			if(selected_index==-1){ // human player
