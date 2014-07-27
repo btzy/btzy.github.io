@@ -9,7 +9,8 @@ function LocalManager(screen_callback){
 	}
 	window.addEventListener("message",function(e){
 		var sender_id=null;
-		if(e.origin==="null"&&e.data==="_"){
+		// Note: e.origin==="null" returns false in Internet Explorer.
+		if(/*e.origin==="null"&&*/e.data==="_"){
 			if(AwaitingIframeLoad!==null)AwaitingIframeLoad();
 		}
 		for(var id in iframes){
@@ -18,7 +19,7 @@ function LocalManager(screen_callback){
 				break;
 			}
 		}
-		if(e.origin==="null"&&sender_id!==null){
+		if(/*e.origin==="null"&&*/sender_id!==null){
 			if(e.data==="_"){
 			}
 			else{
