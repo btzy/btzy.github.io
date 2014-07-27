@@ -19,7 +19,7 @@ $(document).ready(function(e) {
 		local_manager.OnSendInternationalMessage=international_manager.MessageReceived;
 		international_manager.OnInitialised=function(){
 			// Allow user to select AIs?
-			alert("connected to mbed!");
+			//alert("connected to mbed!");
 			$("#gameselector").css("display","none");
 			// Show "downloading data..."
 		}

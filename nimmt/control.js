@@ -19,7 +19,7 @@ $(document).ready(function(e){
             });
 		}
 		else{
-			$("body").html("<div id=\"start\">Click to start game</div>");
+			$("body").html("<div id=\"start\">Click to start game (only click after all players and AIs are reflected above)</div>");
 			$("#start").click(function(e) {
                 window.parent.postMessage("start ","*");
 				$("#start").off();

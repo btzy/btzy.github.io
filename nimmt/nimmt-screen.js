@@ -3,6 +3,7 @@ var AI_list=[];
 var sandbox_count=0;
 var AwaitingIframeLoad=null;
 var Game_Object={};
+var human_player=false;
 function UpdateScreen(message){
 	var message_object=JSON.parse(message);
 	if(("CardsLeft" in message_object)&&("Player" in message_object)&&("Table" in message_object)){ // game object
@@ -68,7 +69,7 @@ function UpdateScreen(message){
 		for(var i=0;i<message_object.Player.length;++i){
 			$("#lobby").children("table").append("<tr><td>"+message_object.Player[i][0]+"</td><td>"+message_object.Player[i][1]+"</td></tr>");
 		}
-		var select_data="<option value=\"1\">Human</option>";
+		var select_data=human_player?"":"<option value=\"1\">Human</option>";
 		for(var i=0;i<AI_list.length;++i){
 			select_data+="<option value=\""+(i+2)+"\">"+AI_list[i][0]+"</option>";
 		}
@@ -97,6 +98,7 @@ function UpdateScreen(message){
 				/*$(frame_element).height(height);
 				$(frame_element).width(width);*/
 					AwaitingIframeLoad=function(){
+						human_player=true;
 						local_manager.AddPlayer(frame_element,$("#player-name").val());
 						AwaitingIframeLoad=null;
 					}
