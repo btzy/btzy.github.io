@@ -60,7 +60,7 @@ function UpdateScreen(message){
 			}
 			$("#playerhand").html("");
 			for(var i=0;i<Game_Object.Player.length;++i){
-				var code='<div class="playerpanel"><div class="playername">'+Game_Object.Player[i][1]+'</div><div class="card playedcard"><div>'+CreateCard(0)+'</div></div></div>';
+				var code='<div class="playerpanel"><div class="playername">'+Game_Object.Player[i][1]+'</div><div class="card playedcard"><div>'+CreateCard(Game_Object.Player[i][3]==0?0,-1)+'</div></div></div>';
 				$("#playerhand").append(code);
 			}
 		}
