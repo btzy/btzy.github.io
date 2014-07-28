@@ -48,6 +48,7 @@ function UpdateScreen(message){
 				$(".innerflex").addClass("hidden");
 				$("#screencontent").removeClass("hidden");
 			}
+			// repaint display.
 			$("#playarea").html("");
 			for(var i=0;i<Game_Object.Table.length;++i){
 				var code='<div class="cardcolumn">';
@@ -57,7 +58,11 @@ function UpdateScreen(message){
 				code+='</div>';
 				$("#playarea").append(code);
 			}
-			// repaint display.
+			$("#playerhand").html("");
+			for(var i=0;i<Game_Object.Player.length;++i){
+				var code='<div class="playerpanel"><div class="playername">'+Game_Object.Player[i][1]+'</div><div class="card playedcard"><div>'+CreateCard(0)+'</div></div></div>';
+				$("#playerhand").append(code);
+			}
 		}
 		if(("Advance" in message_object)&&message_object.Advance===true){
 			// delete the previously played card. [3]

@@ -132,6 +132,19 @@ body{
 	-moz-flex:1 1 auto;
 	-ms-flex:1 1 auto;
 	flex:1 1 auto;
+	display:-webkit-box;
+	display:-moz-box;
+	display:-ms-flexbox;
+	display:-webkit-flex;
+	display:flex;
+	-webkit-box-orient:vertical;
+    -moz-box-orient:vertical;
+	-webkit-flex-direction:column;
+	-moz-flex-direction:column;
+	-ms-flex-direction:column;
+    flex-direction:column;
+}
+.playerpanel{
 	display:block;
 }
 .cardcolumn{
@@ -255,6 +268,12 @@ body{
 	width:70px;
 	margin-left:-35px;
 	left:50%;
+}
+.card.playedcard{
+	position:static;
+	width:auto;
+	margin-left:0;
+	left:auto;
 }
 .card>div{
 	/*width:100%;
