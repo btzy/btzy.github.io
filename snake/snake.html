@@ -7,43 +7,23 @@
     <link href='http://fonts.googleapis.com/css?family=Gloria+Hallelujah' rel='stylesheet' type='text/css'>
     <script type="text/javascript" src="jquery-1.11.1.min.js"></script>
 	<script type="text/javascript" src="main.js"></script>
-    <script type="text/javascript" src="nimmt-manager.js"></script>
-    <script type="text/javascript" src="nimmt-screen.js"></script>
-    <script type="text/javascript" src="local-manager.js"></script>
-    <script type="text/javascript" src="international-manager.js"></script>
-    <script type="text/javascript" src="card.js"></script>
+    <script type="text/javascript" src="board-manager.js"></script>
+    <script type="text/javascript" src="button-manager.js"></script>
+    <script type="text/javascript" src="snake-manager.js"></script>
 </head>
 <body>
-    <div id="maincontent">
-    	<div id="screen">
-            <div class="hidden innerflex" id="lobby">
-            	<table>
-                	<th><td>ID</td><td>Name</td></th>
-                    <tr></tr>
-                </table>
-            </div>
-            <div class="hidden innerflex" id="screencontent">
-                <div id="playarea">
-                	<div class="cardcolumn">&nbsp;</div>
-                    <div class="cardcolumn">&nbsp;</div>
-                    <div class="cardcolumn">&nbsp;</div>
-                    <div class="cardcolumn">&nbsp;</div>
-                </div>
-                <div id="playerhand">&nbsp;</div>
-            </div>
-        </div>
-        <div id="control">
-        </div>
-    </div>
-    <div id="gameselector">
-    	<div class="translucentbackground"></div>
-        <div id="modeselectorwrapper">
-        	<div id="modeselector">
-                <div class="mode-type" id="mode-single">Start Local Game</div>
-                <div class="mode-type" id="mode-multi-host">Host New Multiplayer Game</div>
-                <div class="mode-type" id="mode-multi-join">Join Existing Multiplayer Game</div>
-            </div>
-        </div>
-    </div>
+    <svg id="mainsvg" width="1200" height="800" xmlns="http://www.w3.org/2000/svg" version="1.1">
+		<defs>
+			<pattern id="originalboard" width="1" height="1" patternContentUnits="objectBoundingBox">
+			   <line />
+			   
+			   
+			   <rect x="0" y="0" width=".25" height=".25" fill="skyblue"/>
+			   <rect x="0" y="0" width=".125" height=".125" fill="url(#Gradient2)"/>
+			   <circle cx=".125" cy=".125" r=".1" fill="url(#Gradient1)" fill-opacity="0.5"/>
+			 </pattern>
+		</defs>
+		<rect fill="url(#originalboard)" x="0" y="0" width="200" height="200"/>
+	</svg>
 </body>
 </html>

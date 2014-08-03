@@ -1,6 +1,6 @@
 function Point(x,y){
-	this.x=X;
-	this.y=Y;
+	this.X=x;
+	this.Y=y;
 }
 function SnakeManager(){ // const parameter
 	// Events:
@@ -12,6 +12,7 @@ function SnakeManager(){ // const parameter
 	// Private Variables:
 	var Grid=null;
 	var Snake=null;
+	var id_gen=0;
 	
 	// Public Methods:
 	this.Start=function(map){
@@ -23,13 +24,13 @@ function SnakeManager(){ // const parameter
 			}
 			Grid.push(linedata);
 		}
-		Snake=[]; // an array of points, from tail to head
+		Snake=[]; // an array of {Id:string,Point:Point}, from tail to head
 		for(var i=0;i<map.Snake.length;++i){
-			Snake.push(new Point(map.Snake[i].X,map.Snake[i].Y));
+			Snake.push({Id:"s"+(id_gen++),Point:new Point(map.Snake[i].X,map.Snake[i].Y)});
 		}
 		// TODO: process portal data.
 		map=null; // to release the memory
-		that.OnInitialiseBoard(/*TODO: determine the data to go here.*/);
+		that.OnInitialiseBoard(new Point(Grid[0].length,Grid.length),Grid,Snake,null);
 	}
 	this.Input=function(direction){ // this direction is relative to the snake
 		
