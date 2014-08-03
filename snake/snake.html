@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" />
+<head>
+	<link rel="stylesheet" type="text/css" href="nimmt.css">
+    <link href='http://fonts.googleapis.com/css?family=Gloria+Hallelujah' rel='stylesheet' type='text/css'>
+    <script type="text/javascript" src="jquery-1.11.1.min.js"></script>
+	<script type="text/javascript" src="main.js"></script>
+    <script type="text/javascript" src="nimmt-manager.js"></script>
+    <script type="text/javascript" src="nimmt-screen.js"></script>
+    <script type="text/javascript" src="local-manager.js"></script>
+    <script type="text/javascript" src="international-manager.js"></script>
+    <script type="text/javascript" src="card.js"></script>
+</head>
+<body>
+    <div id="maincontent">
+    	<div id="screen">
+            <div class="hidden innerflex" id="lobby">
+            	<table>
+                	<th><td>ID</td><td>Name</td></th>
+                    <tr></tr>
+                </table>
+            </div>
+            <div class="hidden innerflex" id="screencontent">
+                <div id="playarea">
+                	<div class="cardcolumn">&nbsp;</div>
+                    <div class="cardcolumn">&nbsp;</div>
+                    <div class="cardcolumn">&nbsp;</div>
+                    <div class="cardcolumn">&nbsp;</div>
+                </div>
+                <div id="playerhand">&nbsp;</div>
+            </div>
+        </div>
+        <div id="control">
+        </div>
+    </div>
+    <div id="gameselector">
+    	<div class="translucentbackground"></div>
+        <div id="modeselectorwrapper">
+        	<div id="modeselector">
+                <div class="mode-type" id="mode-single">Start Local Game</div>
+                <div class="mode-type" id="mode-multi-host">Host New Multiplayer Game</div>
+                <div class="mode-type" id="mode-multi-join">Join Existing Multiplayer Game</div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
