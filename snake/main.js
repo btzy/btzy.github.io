@@ -1,5 +1,7 @@
-$(document).ready(function(e) {
-    var board_manager=new BoardManager();
+$(document).ready(function(e){
+    $("#maindiv").width($(document.body).width());
+	$("#maindiv").height($(document.body).height());
+	var board_manager=new BoardManager();
 	var snake_manager=new SnakeManager();
 	snake_manager.OnInitialiseBoard=board_manager.InitialiseBoard;
 	board_manager.Start(document.getElementById("mainsvg"));
