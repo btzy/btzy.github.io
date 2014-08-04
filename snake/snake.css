@@ -1,0 +1,23 @@
+@charset "utf-8";
+/* CSS Document */
+html{
+	margin:0;
+	height:100%;
+	min-height:100%;
+	max-height:100%;
+	padding:0;
+	overflow:hidden;
+}
+body{
+	margin:0;
+	height:100%;
+	min-height:100%;
+	max-height:100%;
+	padding:0;
+	overflow:hidden;
+	-ms-touch-action:none;
+	touch-action:none;
+}
+#maindiv{
+	margin:0 auto;
+}

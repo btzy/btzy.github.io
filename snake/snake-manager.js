@@ -12,7 +12,14 @@ function SnakeManager(){ // const parameter
 	// Private Variables:
 	var Grid=null;
 	var Snake=null;
-	var id_gen=0;
+	var id_gen=(function(){
+		var id_last=0;
+		return function(){
+			++id_last;
+			if(id_last>=1000000)id_last-=1000000;
+			return id_last;
+		}
+	})();
 	
 	// Public Methods:
 	this.Start=function(map){
@@ -26,7 +33,7 @@ function SnakeManager(){ // const parameter
 		}
 		Snake=[]; // an array of {Id:string,Point:Point}, from tail to head
 		for(var i=0;i<map.Snake.length;++i){
-			Snake.push({Id:"s"+(id_gen++),Point:new Point(map.Snake[i].X,map.Snake[i].Y)});
+			Snake.push({Id:"s"+(id_gen()),Point:new Point(map.Snake[i].X,map.Snake[i].Y)});
 		}
 		// TODO: process portal data.
 		map=null; // to release the memory
