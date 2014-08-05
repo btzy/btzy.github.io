@@ -39,8 +39,8 @@ function SnakeManager(){ // const parameter
 		map=null; // to release the memory
 		that.OnInitialiseBoard(new Point(Grid[0].length,Grid.length),Grid,Snake,null);
 	}
-	this.Input=function(direction){ // this direction is relative to the snake
-		
+	this.Input=function(direction_keycode){ // this direction is relative to the snake
+		that.OnReportUsability(true,direction_keycode) // for testing
 	}
 }
 // Point:{X:int,Y:int}

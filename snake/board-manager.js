@@ -46,4 +46,7 @@ function BoardManager(){
 		content+='<g transform="scale(50)"><rect fill="url(#originalboard)" x="0" y="0" width="'+size.X+'" height="'+size.Y+'" /><rect fill="url(#originalboard)" x="'+size.X+'" y="'+size.Y+'" width="'+size.X+'" height="'+size.Y+'" /><rect fill="url(#originalboard)" x="'+size.X*2+'" y="'+size.Y*2+'" width="'+size.X+'" height="'+size.Y+'" /></g>';
 		SvgElement.innerHTML+=content;
 	}
+	this.UpdateBoard=function(/*params*/){
+		// TODO
+	}
 }

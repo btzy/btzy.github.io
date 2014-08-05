@@ -21,16 +21,24 @@ body{
 #maindiv{
 	margin:0 auto;
 	resize:both;
+	display:block;
 	border:2px solid #000;
-	overflow:auto;
+	overflow:hidden;
 	width:100px;
 	height:100px;
 	max-width:100%;
 	max-height:100%;
 	box-sizing:border-box;
+	min-width:100px;
+	min-height:100px;
+	padding:5px;
 }
 #tablediv{
 	display:table;
+	width:100%;
+	height:100%;
+	resize:none;
+	overflow:hidden;
 }
 #sidebar{
 	display:table-cell;
@@ -38,4 +46,47 @@ body{
 	width:100px;
 	max-width:100px;
 	min-width:100px;
+	height:100%;
+}
+#mainbar{
+	display:table-cell;
+	overflow:hidden;
+	height:100%;
+}
+#sidewrapper{
+	display:block;
+	box-sizing:border-box;
+	width:100%;
+	height:100%;
+	padding:5px;
+	position:relative;
+}
+#sidegroundedbox{
+	position:absolute;
+	left:0;
+	bottom:0;
+	width:100%;
+}
+.arrow{
+	font-family:Helvetica,Arial,sans-serif;
+	height:40px;
+	font-size:30px;
+	font-weight:bold;
+	background-color:#CCC;
+	border-radius:20px;
+	margin:2px;
+}
+.arrow-left{
+	text-align:left;
+	padding-left:10px;
+}
+.arrow-left::before{
+	content:"←";
+}
+.arrow-right{
+	text-align:right;
+	padding-right:10px;
+}
+.arrow-right::before{
+	content:"→";
 }
