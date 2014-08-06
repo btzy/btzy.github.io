@@ -52,12 +52,12 @@ function SnakeManager(){ // const parameter
 			Snake.push({Id:"s"+(id_gen()),Point:new Point(map.Snake[i].X,map.Snake[i].Y)});
 		}
 		// TODO: process portal data.
-		map=null; // to release the memory
 		that.OnInitialiseBoard(new Point(Grid[0].length,Grid.length),Grid,Snake,null);
 		for(var i=0;i<map.Snake.length;++i){
 			Grid[map.Snake[i].Y][map.Snake[i].X]=0;
 		}
 		Current_Direction=GetOrthogonalDirection(map.Snake[map.Snake.length-2],map.Snake[map.Snake.length-1]);
+		map=null; // to release the memory
 	}
 	this.Input=function(direction_keycode){ // this direction is relative to the snake
 		// verify acceptable direction:
@@ -75,7 +75,7 @@ function SnakeManager(){ // const parameter
 			else{
 				resolved_direction=(Current_Direction+1)%4;
 			}
-			var new_point=new Point(Snake[Snake.length-1].Point.X+dx[resolved_direction],Snake[Snake.length-1].Point.Y+dy[resolved_direction]);
+			var new_point=new Point((Snake[Snake.length-1].Point.X+dx[resolved_direction]+Grid[0].length)%Grid[0].length,(Snake[Snake.length-1].Point.Y+dy[resolved_direction]+Grid.length)%Grid.length);
 			if(Grid[new_point.Y][new_point.X]==0&&(new_point.X!=Snake[0].Point.X||new_point.Y!=Snake[0].Point.Y||No_Remove>0)){ // rejection condition
 				// reject the point:
 				that.OnReportUsability(false,direction_keycode);
@@ -85,7 +85,7 @@ function SnakeManager(){ // const parameter
 			Current_Direction=resolved_direction;
 		}
 		else{
-			add_segment_data={Id:id_gen(),Point:new Point(Snake[Snake.length-1].Point.X+dx[Current_Direction],Snake[Snake.length-1].Point.Y+dy[Current_Direction]),Direction:null};
+			add_segment_data={Id:id_gen(),Point:new Point((Snake[Snake.length-1].Point.X+dx[Current_Direction]+Grid[0].length)%Grid[0].length,(Snake[Snake.length-1].Point.Y+dy[Current_Direction]+Grid.length)%Grid.length),Direction:null};
 		}
 		// verify that snake isn't running into a wall or snake body:
 		if(Grid[add_segment_data.Point.Y][add_segment_data.Point.X]==0){
