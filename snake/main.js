@@ -10,7 +10,9 @@ $(document).ready(function(e){
 	// Attach event handlers:
 	input_manager.OnStep=snake_manager.Input;
 	snake_manager.OnReportUsability=input_manager.ReportUsability;
+	snake_manager.OnGameOver=input_manager.GameOver;
 	snake_manager.OnInitialiseBoard=board_manager.InitialiseBoard;
+	snake_manager.OnUpdateBoard=board_manager.UpdateBoard;
 	
 	// Start managers:
 	board_manager.Start(document.getElementById("mainsvg"));

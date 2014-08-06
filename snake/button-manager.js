@@ -67,4 +67,9 @@ function InputManager(){
 			}
 		}
 	}
+	this.GameOver=function(message){
+		clearInterval(timer);
+		timer=null;
+		// TODO: Display the message.
+	}
 }
