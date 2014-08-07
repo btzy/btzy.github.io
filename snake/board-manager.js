@@ -13,6 +13,8 @@ function BoardManager(){
 	
 	// Private Variables:
 	var SvgElement=null;
+	var tick_time=500;
+	var svg_ns="http://www.w3.org/2000/svg";
 	
 	// Public Methods:
 	this.Start=function(svg){
@@ -42,11 +44,21 @@ function BoardManager(){
 		// snake head:
 		content+='<g id="snakehead" transform="translate('+(snake[snake.length-1].Point.X+0.5)+' '+(snake[snake.length-1].Point.Y+0.5)+') rotate('+GetOrthogonalDegreeAngle(snake[snake.length-2].Point,snake[snake.length-1].Point)+')"><polyline points="0.6,0.15 0.45,0 0.35,0 0.45,0 0.6,-0.15" fill="none" stroke="firebrick" stroke-width="0.05" stroke-linecap="round" stroke-linejoin="round" /><circle cx="0" cy="0" r="0.35" fill="deepskyblue" /><circle cx="0.1" cy="-0.15" r="0.05" fill="black" /><circle cx="0.1" cy="0.15" r="0.05" fill="black" /></g>';
 		content+='</pattern></defs>';
-		// for debugging:
-		content+='<g transform="scale(50)"><rect fill="url(#originalboard)" x="0" y="0" width="'+size.X+'" height="'+size.Y+'" /><rect fill="url(#originalboard)" x="'+size.X+'" y="'+size.Y+'" width="'+size.X+'" height="'+size.Y+'" /><rect fill="url(#originalboard)" x="'+size.X*2+'" y="'+size.Y*2+'" width="'+size.X+'" height="'+size.Y+'" /></g>';
+		// print to the svg:
+		content+='<g transform="scale('+(1/Math.max(size.X,size.Y))+')"><rect fill="url(#originalboard)" x="'+size.X*(-1.5)+'" y="'+size.Y*(-1.5)+'" width="'+size.X+'" height="'+size.Y+'" /><rect fill="url(#originalboard)" x="'+size.X*(-1.5)+'" y="'+size.Y*(-0.5)+'" width="'+size.X+'" height="'+size.Y+'" /><rect fill="url(#originalboard)" x="'+size.X*(-1.5)+'" y="'+size.Y*(0.5)+'" width="'+size.X+'" height="'+size.Y+'" /><rect fill="url(#originalboard)" x="'+size.X*(-0.5)+'" y="'+size.Y*(-1.5)+'" width="'+size.X+'" height="'+size.Y+'" /><rect fill="url(#originalboard)" x="'+size.X*(-0.5)+'" y="'+size.Y*(-0.5)+'" width="'+size.X+'" height="'+size.Y+'" /><rect fill="url(#originalboard)" x="'+size.X*(-0.5)+'" y="'+size.Y*(0.5)+'" width="'+size.X+'" height="'+size.Y+'" /><rect fill="url(#originalboard)" x="'+size.X*(0.5)+'" y="'+size.Y*(-1.5)+'" width="'+size.X+'" height="'+size.Y+'" /><rect fill="url(#originalboard)" x="'+size.X*(0.5)+'" y="'+size.Y*(-0.5)+'" width="'+size.X+'" height="'+size.Y+'" /><rect fill="url(#originalboard)" x="'+size.X*(0.5)+'" y="'+size.Y*(0.5)+'" width="'+size.X+'" height="'+size.Y+'" /></g>';
 		SvgElement.innerHTML+=content;
 	}
 	this.UpdateBoard=function(new_segment_data,old_segment_id){ // new_segment_data={Id,Point,direction}, old_segment_id=string or null
+		// do the "remove" animation:
+		if(old_segment_id!==null){
+			var old_element=document.getElementById(old_segment_id);
+			$({a:0}).animate({a:1},{duration:tick_time,easing:"linear",step:function(val){
+				old_element.setAttributeNS(svg_ns,"x2",a.toString());
+			},complete:function(){
+				old_element.parentNode.removeChild(old_element);
+			}});
+		}
+		// do the "add" animation:
 		// TODO
 	}
 }
