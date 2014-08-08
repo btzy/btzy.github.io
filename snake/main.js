@@ -19,4 +19,21 @@ $(document).ready(function(e){
 	snake_manager.Start({Grid:["01110","11011","11111"],Snake:[new Point(1,2),new Point(1,1)]});
 	input_manager.Start(false);
 	//snake_manager.Start(new Point(5,3),[[0,1,1,1,0],[1,1,0,1,1],[1,1,1,1,1]]);
+	
+	// adjusting the aspect ratio of the svg:
+	var Resize=function(){
+		var height=$("#mainwrapper").height();
+		var width=$("#mainwrapper").width();
+		var max_ratio=16/9;
+		if(height>width*max_ratio){
+			height=width*max_ratio;
+		}
+		else if(width>height*max_ratio){
+			width=height*max_ratio;
+		}
+		$("#svgbox").height(height);
+		$("#svgbox").width(width);
+	}
+	$(window).resize(Resize);
+	Resize();
 });
