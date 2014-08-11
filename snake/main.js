@@ -24,15 +24,20 @@ $(document).ready(function(e){
 	var Resize=function(){
 		var height=$("#mainwrapper").height();
 		var width=$("#mainwrapper").width();
+		var left=0;
+		var top=0;
 		var max_ratio=16/9;
 		if(height>width*max_ratio){
+			top=(height-width*max_ratio)/2;
 			height=width*max_ratio;
 		}
 		else if(width>height*max_ratio){
+			left=(width-height*max_ratio)/2;
 			width=height*max_ratio;
 		}
-		$("#svgbox").height(height);
-		$("#svgbox").width(width);
+		/*$("#svgbox").height(height);
+		$("#svgbox").width(width);*/
+		$("#svgbox").css({"height":height+"px","width":width+"px","top":top+"px","left":left+"px"});
 	}
 	$(window).resize(Resize);
 	Resize();
