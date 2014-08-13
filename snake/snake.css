@@ -59,6 +59,7 @@ body{
 	display:table-cell;
 	overflow:hidden;
 	height:100%;
+	vertical-align:top;
 }
 #sidewrapper{
 	display:block;
