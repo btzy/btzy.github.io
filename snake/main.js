@@ -39,7 +39,7 @@ $(document).ready(function(e){
 		/*$("#svgbox").height(height);
 		$("#svgbox").width(width);*/
 		$("#svgbox").css({"height":height+"px","width":width+"px","top":top+"px","left":left+"px"});
-		alert($("#svgbox").height()+" "+$("#svgbox").width()+" "+$("svg").height()+" "+$("svg").width()+"\n"+$("#mainbar").offset().top+" "+$("#mainbar").offset().left);
+		alert($("#svgbox").height()+" "+$("#svgbox").width()+" "+$("svg").height()+" "+$("svg").width()+"\n"+$("#mainwrapper").offset().top+" "+$("#mainwrapper").offset().left);
 	}
 	$(window).resize(Resize);
 	Resize();
