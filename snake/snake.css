@@ -109,4 +109,5 @@ body{
 }
 #svgbox{ /* this will need to be changed */
 	position:absolute;
+	/*Debug*/background-color:#0FF;
 }
