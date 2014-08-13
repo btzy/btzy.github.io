@@ -25,8 +25,6 @@ $(document).ready(function(e){
 	var Resize=function(){
 		var height=$("#mainwrapper").height();
 		var width=$("#mainwrapper").width();
-		alert($("svg").height());
-		alert($("svg").width());
 		var left=0;
 		var top=0;
 		var max_ratio=16/9;
@@ -41,6 +39,7 @@ $(document).ready(function(e){
 		/*$("#svgbox").height(height);
 		$("#svgbox").width(width);*/
 		$("#svgbox").css({"height":height+"px","width":width+"px","top":top+"px","left":left+"px"});
+		alert($("#svgbox").height()+" "+$("#svgbox").width()+" "+$("svg").height()+" "+$("svg").width());
 	}
 	$(window).resize(Resize);
 	Resize();
