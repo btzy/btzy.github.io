@@ -20,7 +20,6 @@ function BoardManager(){
 		}
 	}
 	var SpawnSnakeSegment=function(id,point,direction){
-		alert("here");
 		var g_node=document.createElementNS(svg_ns,"g");
 		g_node.setAttribute("id",id);
 		var new_element=document.createElementNS(svg_ns,"line");
