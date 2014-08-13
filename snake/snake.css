@@ -77,7 +77,6 @@ body{
 	padding:5px;
 	position:relative;
 	/*margin-bottom:-5px;*/
-	/*Debug*/background-color:#0F0;
 }
 #sidegroundedbox{
 	position:absolute;
@@ -108,9 +107,7 @@ body{
 .arrow-right::before{
 	content:"→";
 }
-#svgbox{ /* this will need to be changed */
+#svgbox{
 	position:absolute;
-	/*Debug*/background-color:#0FF;
-	border:2px solid #F00;
 	overflow:hidden;
 }
