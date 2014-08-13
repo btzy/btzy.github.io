@@ -44,7 +44,7 @@ function BoardManager(){
 			new_element.setAttribute("stroke-linecap","round");
 			g_node.appendChild(new_element);
 		}
-		else if(direction==1&&point.Y==Size.Y-1){
+		else if(direction==90&&point.Y==Size.Y-1){
 			var new_element=document.createElementNS(svg_ns,"line");
 			new_element.setAttribute("transform","translate("+(point.X+0.5)+" "+(-0.5)+") rotate("+direction+")");
 			new_element.setAttribute("x1","1");
@@ -56,9 +56,9 @@ function BoardManager(){
 			new_element.setAttribute("stroke-linecap","round");
 			g_node.appendChild(new_element);
 		}
-		else if(direction==2&&point.X==0){
+		else if(direction==180&&point.X==0){
 			var new_element=document.createElementNS(svg_ns,"line");
-			new_element.setAttribute("transform","translate("+(Size.X-0.5)+" "+(point.Y+0.5)+") rotate("+direction+")");
+			new_element.setAttribute("transform","translate("+(Size.X+0.5)+" "+(point.Y+0.5)+") rotate("+direction+")");
 			new_element.setAttribute("x1","1");
 			new_element.setAttribute("y1","0");
 			new_element.setAttribute("x2","1");
@@ -68,9 +68,9 @@ function BoardManager(){
 			new_element.setAttribute("stroke-linecap","round");
 			g_node.appendChild(new_element);
 		}
-		else if(direction==3&&point.Y==0){
+		else if(direction==270&&point.Y==0){
 			var new_element=document.createElementNS(svg_ns,"line");
-			new_element.setAttribute("transform","translate("+(point.X+0.5)+" "+(Size.Y-0.5)+") rotate("+direction+")");
+			new_element.setAttribute("transform","translate("+(point.X+0.5)+" "+(Size.Y+0.5)+") rotate("+direction+")");
 			new_element.setAttribute("x1","1");
 			new_element.setAttribute("y1","0");
 			new_element.setAttribute("x2","1");
@@ -100,6 +100,43 @@ function BoardManager(){
 		}
 		// Create 'defs' element:
 		var defs_node=document.createElementNS(svg_ns,"defs");
+		// Create 'snakehead' pattern:
+		var snakehead_node=document.createElementNS(svg_ns,"pattern");
+		snakehead_node.setAttribute("id","snakehead-pattern");
+		snakehead_node.setAttribute("width","1");
+		snakehead_node.setAttribute("height","1");
+		
+		var snakehead_g_node=document.createElementNS(svg_ns,"g");
+		snakehead_g_node.setAttribute("transform","translate(0.5 0.5)");
+		var polyline_node=document.createElementNS(svg_ns,"polyline");
+		polyline_node.setAttribute("points","0.6,0.15 0.45,0 0.35,0 0.45,0 0.6,-0.15");
+		polyline_node.setAttribute("fill","none");
+		polyline_node.setAttribute("stroke","firebrick");
+		polyline_node.setAttribute("stroke-width","0.05");
+		polyline_node.setAttribute("stroke-linecap","round");
+		polyline_node.setAttribute("stroke-linejoin","round");
+		snakehead_g_node.appendChild(polyline_node);
+		var circle_node_head=document.createElementNS(svg_ns,"circle");
+		circle_node_head.setAttribute("cx","0");
+		circle_node_head.setAttribute("cy","0");
+		circle_node_head.setAttribute("r","0.35");
+		circle_node_head.setAttribute("fill","deepskyblue");
+		snakehead_g_node.appendChild(circle_node_head);
+		var circle_node_left=document.createElementNS(svg_ns,"circle");
+		circle_node_left.setAttribute("cx","0.1");
+		circle_node_left.setAttribute("cy","-0.15");
+		circle_node_left.setAttribute("r","0.05");
+		circle_node_left.setAttribute("fill","black");
+		snakehead_g_node.appendChild(circle_node_left);
+		var circle_node_right=document.createElementNS(svg_ns,"circle");
+		circle_node_right.setAttribute("cx","0.1");
+		circle_node_right.setAttribute("cy","0.15");
+		circle_node_right.setAttribute("r","0.05");
+		circle_node_right.setAttribute("fill","black");
+		snakehead_g_node.appendChild(circle_node_right);
+		snakehead_node.appendChild(snakehead_g_node);
+		defs_node.appendChild(snakehead_node);
+		
 		// Create 'pattern' element:
 		var pattern_node=document.createElementNS(svg_ns,"pattern");
 		SvgPatternElement=pattern_node;
@@ -162,7 +199,7 @@ function BoardManager(){
 			pattern_node.appendChild(line_node);*/
 		}
 		// Create snake head art:
-		var g_node=document.createElementNS(svg_ns,"g");
+		/*var g_node=document.createElementNS(svg_ns,"g");
 		current_direction=GetOrthogonalDegreeAngle(snake[snake.length-2].Point,snake[snake.length-1].Point);
 		g_node.setAttribute("transform","translate("+(snake[snake.length-1].Point.X+0.5)+" "+(snake[snake.length-1].Point.Y+0.5)+") rotate("+current_direction+")");
 		g_node.setAttribute("id","snakehead");
@@ -193,9 +230,22 @@ function BoardManager(){
 		circle_node_right.setAttribute("fill","black");
 		g_node.appendChild(circle_node_right);
 		pattern_node.appendChild(g_node);
+		SnakeHeadElement=g_node;*/
+		var snakehead_group=document.createElementNS(svg_ns,"g");
+		snakehead_group.setAttribute("id","snakehead-display");
+		current_direction=GetOrthogonalDegreeAngle(snake[snake.length-2].Point,snake[snake.length-1].Point);
+		var snakehead_rect=document.createElementNS(svg_ns,"rect");
+		snakehead_rect.setAttribute("x","-0.5");
+		snakehead_rect.setAttribute("y","-0.5");
+		snakehead_rect.setAttribute("width","1.2");
+		snakehead_rect.setAttribute("height","1");
+		snakehead_rect.setAttribute("fill","url(#snakehead-pattern)");
+		snakehead_rect.setAttribute("transform","translate("+(snake[snake.length-1].Point.X+0.5)+" "+(snake[snake.length-1].Point.Y+0.5)+") rotate("+current_direction+")");
+		snakehead_group.appendChild(snakehead_rect);
+		pattern_node.appendChild(snakehead_group);
+		
 		defs_node.appendChild(pattern_node);
 		SvgElement.appendChild(defs_node);
-		SnakeHeadElement=g_node;
 		
 		// print the actual figure to the svg:
 		var g_node_transformer=document.createElementNS(svg_ns,"g");
@@ -257,13 +307,35 @@ function BoardManager(){
 				g_node.appendChild(new_element);
 			}*/
 			var g_node=SpawnSnakeSegment(new_segment_data.Id,new_segment_data.Point,(current_direction+180)%360);
+			SvgPatternElement.appendChild(g_node);
+			
+			var snakehead_element=document.getElementById("snakehead-display");
+			snakehead_element.parentNode.removeChild(snakehead_element);
+			
+			snakehead_element=document.createElementNS(svg_ns,"g");
+			snakehead_element.setAttribute("id","snakehead-display");
+			var global_translate_data=[];
+			var snakehead_rect=document.createElementNS(svg_ns,"rect");
+			snakehead_rect.setAttribute("x","-0.5");
+			snakehead_rect.setAttribute("y","-0.5");
+			snakehead_rect.setAttribute("width","1.2");
+			snakehead_rect.setAttribute("height","1");
+			snakehead_rect.setAttribute("fill","url(#snakehead-pattern)");
+			global_translate_data[0]="translate("+(new_segment_data.Point.X+0.5)+" "+(new_segment_data.Point.Y+0.5)+") rotate("+current_direction+") ";
+			snakehead_rect.setAttribute("transform",global_translate_data[0]+"translate(-1 0)");
+			snakehead_element.appendChild(snakehead_rect);
+			// TODO: 2nd snakehead rect
+			SvgPatternElement.appendChild(snakehead_element);
+			
 			$({a:0}).animate({a:1},{duration:tick_time,easing:"linear",step:function(val){
 				for(var i=0;i<g_node.childNodes.length;++i){
 					g_node.childNodes[i].setAttribute("x1",(1-val).toString());
 				}
-				SnakeHeadElement.setAttribute("transform","translate("+(new_segment_data.Point.X+0.5)+" "+(new_segment_data.Point.Y+0.5)+") rotate("+current_direction+") translate("+(val-1)+" 0)");
+				for(var i=0;i<snakehead_element.childNodes.length;++i){
+					snakehead_element.childNodes[i].setAttribute("transform",global_translate_data[0]+"translate("+(val-1)+" 0)");
+				}
 			}});
-			SvgPatternElement.appendChild(g_node);
+			
 		}
 	}
 }
