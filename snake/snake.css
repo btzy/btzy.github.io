@@ -112,4 +112,5 @@ body{
 	position:absolute;
 	/*Debug*/background-color:#0FF;
 	border:2px solid #F00;
+	overflow:hidden;
 }
