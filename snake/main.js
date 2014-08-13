@@ -1,6 +1,6 @@
 $(document).ready(function(e){
-    $("#maindiv").width($(document.body).width());
-	$("#maindiv").height($(document.body).height());
+    /*$("#maindiv").width($(document.body).width());
+	$("#maindiv").height($(document.body).height());*/
 	
 	// Create the managers:
 	var board_manager=new BoardManager();
