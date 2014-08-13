@@ -76,6 +76,7 @@ body{
 	padding:5px;
 	position:relative;
 	/*margin-bottom:-5px;*/
+	/*Debug*/background-color:#0F0;
 }
 #sidegroundedbox{
 	position:absolute;
