@@ -25,8 +25,8 @@ $(document).ready(function(e){
 	var Resize=function(){
 		var height=$("#mainwrapper").height();
 		var width=$("#mainwrapper").width();
-		alert(height);
-		alert(width);
+		alert($("svg").height());
+		alert($("svg").width());
 		var left=0;
 		var top=0;
 		var max_ratio=16/9;
