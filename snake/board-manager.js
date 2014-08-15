@@ -7,6 +7,8 @@ function BoardManager(){
 	var svg_ns="http://www.w3.org/2000/svg";
 	var current_direction=null;
 	var Size=null;
+	var SvgDisplayTranslateData=null;
+	var SvgDisplayNode=null;
 	
 	// Private Functions:
 	var GetOrthogonalDegreeAngle=function(from_point,to_point){
@@ -249,9 +251,11 @@ function BoardManager(){
 		
 		// print the actual figure to the svg:
 		var g_node_transformer=document.createElementNS(svg_ns,"g");
-		g_node_transformer.setAttribute("transform","scale("+(1/Math.max(size.X,size.Y))+")");
-		for(var x=-1.5;x<1.5;++x){
-			for(var y=-1.5;y<1.5;++y){
+		SvgDisplayTranslateData="scale("+(1/Math.max(size.X,size.Y))+") ";
+		SvgDisplayNode=g_node_transformer;
+		g_node_transformer.setAttribute("transform",SvgDisplayTranslateData+"translate("+(-snake[snake.length-1].Point.X-0.5)+" "+(-snake[snake.length-1].Point.Y-0.5)+")");
+		for(var x=-1;x<2;++x){
+			for(var y=-1;y<2;++y){
 				var rect_node=document.createElementNS(svg_ns,"rect");
 				rect_node.setAttribute("x",(size.X*x).toString());
 				rect_node.setAttribute("y",(size.Y*y).toString());
@@ -262,6 +266,7 @@ function BoardManager(){
 			}
 		}
 		SvgElement.appendChild(g_node_transformer);
+		previous_direction=current_direction;
 	}
 	this.UpdateBoard=function(new_segment_data,old_segment_id){ // new_segment_data={Id,Point,Direction}, old_segment_id=string or null
 		// do the "remove" animation:
@@ -278,6 +283,7 @@ function BoardManager(){
 		}
 		// do the "add" animation:
 		if(new_segment_data!==null){
+			previous_direction=current_direction;
 			if(new_segment_data.Direction!==null){
 				current_direction=new_segment_data.Direction%4*90;
 				// TODO: rotate frame
@@ -323,8 +329,29 @@ function BoardManager(){
 			snakehead_rect.setAttribute("fill","url(#snakehead-pattern)");
 			global_translate_data[0]="translate("+(new_segment_data.Point.X+0.5)+" "+(new_segment_data.Point.Y+0.5)+") rotate("+current_direction+") ";
 			snakehead_rect.setAttribute("transform",global_translate_data[0]+"translate(-1 0)");
+			
+			// 2nd snakehead rect:
+			var snakehead_second_rect=snakehead_rect.cloneNode(true);
+			if(current_direction%180==0){
+				if(new_segment_data.Point.X+0.5<Size.X/2){
+					global_translate_data[1]="translate("+(new_segment_data.Point.X+0.5+Size.X)+" "+(new_segment_data.Point.Y+0.5)+") rotate("+current_direction+") ";
+				}
+				else{
+					global_translate_data[1]="translate("+(new_segment_data.Point.X+0.5-Size.X)+" "+(new_segment_data.Point.Y+0.5)+") rotate("+current_direction+") ";
+				}
+			}
+			else{
+				if(new_segment_data.Point.Y+0.5<Size.Y/2){
+					global_translate_data[1]="translate("+(new_segment_data.Point.X+0.5)+" "+(new_segment_data.Point.Y+0.5+Size.Y)+") rotate("+current_direction+") ";
+				}
+				else{
+					global_translate_data[1]="translate("+(new_segment_data.Point.X+0.5)+" "+(new_segment_data.Point.Y+0.5-Size.Y)+") rotate("+current_direction+") ";
+				}
+			}
+			snakehead_second_rect.setAttribute("transform",global_translate_data[1]+"translate(-1 0)");
+			
 			snakehead_element.appendChild(snakehead_rect);
-			// TODO: 2nd snakehead rect
+			snakehead_element.appendChild(snakehead_second_rect);
 			SvgPatternElement.appendChild(snakehead_element);
 			
 			$({a:0}).animate({a:1},{duration:tick_time,easing:"linear",step:function(val){
@@ -332,10 +359,11 @@ function BoardManager(){
 					g_node.childNodes[i].setAttribute("x1",(1-val).toString());
 				}
 				for(var i=0;i<snakehead_element.childNodes.length;++i){
-					snakehead_element.childNodes[i].setAttribute("transform",global_translate_data[0]+"translate("+(val-1)+" 0)");
+					snakehead_element.childNodes[i].setAttribute("transform",global_translate_data[i]+"translate("+(val-1)+" 0)");
 				}
+				var rotate=((previous_direction-current_direction+360)%360==90?90:(previous_direction-current_direction+360)%360==270?-90:0)*(val-1);
+				SvgDisplayNode.setAttribute("transform",SvgDisplayTranslateData+"rotate("+(270+rotate)+") translate("+(1-val)+" 0) rotate("+(-current_direction)+") translate("+(-new_segment_data.Point.X-0.5)+" "+(-new_segment_data.Point.Y-0.5)+")");
 			}});
-			
 		}
 	}
 }
