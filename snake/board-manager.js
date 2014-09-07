@@ -94,7 +94,7 @@ function BoardManager(){
 			SvgElement.removeChild(SvgElement.firstChild);
 		}
 	}
-	this.InitialiseBoard=function(size,grid,snake,portals){ // readonly data!
+	this.InitialiseBoard=function(size,grid,snake,portals,apple){ // readonly data!
 		Size=new Point(size.X,size.Y);
 		// Clear the SvgElement:
 		while(SvgElement.firstChild){
@@ -181,6 +181,8 @@ function BoardManager(){
 				}
 			}
 		}
+		// Create apples:
+		var g_node_apple=document.createElementNS(svg_ns,"g");
 		// Create snake segments:
 		for(var i=1;i<snake.length;++i){
 			var g_node=SpawnSnakeSegment(snake[i].Id,snake[i].Point,GetOrthogonalDegreeAngle(snake[i].Point,snake[i-1].Point));
@@ -268,7 +270,7 @@ function BoardManager(){
 		SvgElement.appendChild(g_node_transformer);
 		previous_direction=current_direction;
 	}
-	this.UpdateBoard=function(new_segment_data,old_segment_id){ // new_segment_data={Id,Point,Direction}, old_segment_id=string or null
+	this.UpdateBoard=function(new_segment_data,old_segment_id,apple){ // new_segment_data={Id,Point,Direction}, old_segment_id=string or null
 		// do the "remove" animation:
 		if(old_segment_id!==null){
 			var old_element=document.getElementById(old_segment_id);

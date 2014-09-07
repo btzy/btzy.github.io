@@ -24,6 +24,7 @@ function SnakeManager(){ // const parameter
 			return "s"+id_last;
 		}
 	})();
+	var Apple_Location=null;
 	
 	// Private Functions:
 	var GetOrthogonalDirection=function(from_point,to_point){
@@ -35,6 +36,18 @@ function SnakeManager(){ // const parameter
 		else{
 			return dy>0?1:3;
 		}
+	}
+	var GenerateApple=function(){
+		var RandArr=[];
+		for(var i=0;i<Grid.length;++i){
+			for(var j=0;j<Grid[0].length;++j){
+				if(Grid[i][j]==1){
+					RandArr.push(new Point(j,i));
+				}
+			}
+		}
+		var index=Math.random()*RandArr.length%RandArr.length;
+		return RandArr[index];
 	}
 	
 	// Public Methods:
@@ -52,7 +65,8 @@ function SnakeManager(){ // const parameter
 			Snake.push({Id:id_gen(),Point:new Point(map.Snake[i].X,map.Snake[i].Y)});
 		}
 		// TODO: process portal data.
-		that.OnInitialiseBoard(new Point(Grid[0].length,Grid.length),Grid,Snake,null);
+		Apple_Location=GenerateApple();
+		that.OnInitialiseBoard(new Point(Grid[0].length,Grid.length),Grid,Snake,null,Apple_Location);
 		for(var i=0;i<map.Snake.length;++i){
 			Grid[map.Snake[i].Y][map.Snake[i].X]=0;
 		}
@@ -103,10 +117,16 @@ function SnakeManager(){ // const parameter
 		else{
 			--No_Remove;
 		}
+		// check if we have reached a food:
+		var new_food_location=null;
+		if(Apple_Location.X==add_segment_data.Point.X&&Apple_Location.Y==add_segment_data.Point.Y){
+			// generate new food location:
+			new_food_location=Apple_Location=GenerateApple();
+		}
 		// add the segment:
 		Grid[add_segment_data.Point.Y][add_segment_data.Point.X]=0;
 		Snake.push({Id:add_segment_data.Id,Point:add_segment_data.Point});
-		that.OnUpdateBoard(add_segment_data,remove_segment_id);
+		that.OnUpdateBoard(add_segment_data,remove_segment_id,new_apple_location,new_food_location);
 		that.OnReportUsability(true,direction_keycode);
 	}
 }
