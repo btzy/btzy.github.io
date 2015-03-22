@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content="text/html; charset=windows-1252" http-equiv="content-type">
+    <title>U-Belief Tetris</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+  </head>
+  <body onkeydown="Action(event)"> <audio loop="loop" id="Background-AudioPlayer"
+      preload="auto"
+      source=""
+      src="audio/background.mp3"
+      type="audio/mp3"></audio>
+    <div id="Game-Area">
+      <div id="Button-Area">
+        <h1 id="Game-Name">U-Belief Tetris</h1>
+        <button id="Button-Game-Switch" onclick="GameSwitch()">New Game</button> 
+          <button id="Button-Game-ChangeState" onclick="GameChangeState()">Pause</button>
+          <div id="BWish"><a href="Sorry.html" target="_blank">Click me only if you obtained 800 points!</a></div>
+          <h3>Hint1</h3>
+        <p id="Hint1">Locked</p>
+        <h3>Hint2</h3>
+        <p id="Hint2">Locked</p>
+      </div>
+      <canvas id="Game-Canvas"></canvas>
+      <div id="Score-Area">
+        <h2>Score</h2>
+        <p id="Game-Score">0</p>
+        <h2>Lines</h2>
+        <p id="Total-Lines">0</p>
+        <h4>Score higher points to play a number guessing game!</h4>
+        <h3>Hint3</h3>
+        <p id="Hint3">Locked</p>
+      </div>
+    </div>
+    <script type="text/javascript" src="maint.js"></script>
+  </body>
+</html>

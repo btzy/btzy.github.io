@@ -1,0 +1,49 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Access Denied</title>
+<style>
+#outPopUp{
+     position:absolute;
+     width:600px;
+     height:600px;
+     z-index:15;
+     top:50%;
+     left:50%;
+     margin:-300px 0 0 -300px;
+     background:#9F0;
+}
+</style>
+<script src="jquery-1.10.2.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(e){
+	String.prototype.hashCode = function(){
+		var hash = 0, i, char;
+		if (this.length == 0) return hash;
+		for (i = 0, l = this.length; i < l; i++) {
+			char  = this.charCodeAt(i);
+			hash  = ((hash<<5)-hash)+char;
+			hash |= 0; // Convert to 32bit integer
+		}
+		return hash;
+	};
+	$('#entercode').keyup(reloadlink);
+	function reloadlink(){
+		var code=$('#entercode').val();
+		$('#nextlink').prop('href','http://www2.hci.edu.sg/s9609261z/shun/6_liufudubzgsbawehbvcp_'+code+'.html');
+		$('#nextlink').html('http://www2.hci.edu.sg/s9609261z/shun/6_liufudubzgsbawehbvcp_'+code+'.html');
+	}
+});
+</script>
+</head>
+
+<body bgcolor="#FFFFCC">
+<div id="outPopUp">
+<div style="padding:40px">
+<p>This question is locked.  Enter code here to unlock: <input type="text" id="entercode" value="" /></p>
+<p>Next question: <a id="nextlink" href=""></a></p>
+</div>
+</div>
+</body>
+</html>

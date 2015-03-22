@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>No comment.</title>
+<style>
+#outPopUp{
+     position:absolute;
+     width:1000px;
+     z-index:15;
+     left:50%;
+     margin:0 0 0 -500px;
+     background:#9F0;
+}
+</style>
+<script src="jquery-1.10.2.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(e){
+	$('#answer').keyup(reloadlink);
+	function reloadlink(){
+		var answer=$('#answer').val();
+		$('#nextlink').prop('href','http://www2.hci.edu.sg/s9609261z/shun/18_jqoyxyvjgorqvywjhmlc_'+answer.toLowerCase().replace(/ /g, '_')+'.html');
+		$('#nextlink').html('http://www2.hci.edu.sg/s9609261z/shun/18_jqoyxyvjgorqvywjhmlc_'+answer.toLowerCase().replace(/ /g, '_')+'.html');
+	}
+});
+</script>
+</head>
+
+<body bgcolor="#FFFFCC">
+<div id="outPopUp">
+<div style="padding:40px">
+<p>You're probably tired.  Take a break.</p>
+<p>You are to compose a short story based on this picture.  Send it to the person who set up this web page.  If the story passes, you will be given a passcode to carry on.</p>
+<p style="color:#009; text-align:center;"><img src="story.jpg" /></p>
+<p>Passcode: <input id="answer" type="text" value="" /></p>
+<p>Next question: <a id="nextlink" href=""></a></p>
+<p><a href="http://www2.hci.edu.sg/s9609261z/shun/hint.php" target="_blank">Hints</a></p>
+</div>
+</div>
+</body>
+</html>

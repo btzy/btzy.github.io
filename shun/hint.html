@@ -1,0 +1,41 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Why do I need a title?</title>
+<style>
+#outPopUp{
+     position:absolute;
+     width:600px;
+     height:600px;
+     z-index:15;
+     top:50%;
+     left:50%;
+     margin:-300px 0 0 -300px;
+     background:#9F0;
+}
+</style>
+<script src="jquery-1.10.2.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(e){
+	$('#answer').keyup(reloadlink);
+	$('#sender').change(reloadlink);
+	function reloadlink(){
+		var answer=$('#answer').val();
+		var sender=$('#sender').val();
+		$('#nextlink').prop('href','http://www2.hci.edu.sg/s9609261z/shun/2_fitrvgscuswfmhleegzb_'+sender+answer.toLowerCase().replace(/ /g, '_')+'.html');
+		$('#nextlink').html('http://www2.hci.edu.sg/s9609261z/shun/2_fitrvgscuswfmhleegzb_'+sender+answer.toLowerCase().replace(/ /g, '_')+'.html');
+	}
+});
+</script>
+</head>
+
+<body bgcolor="#FFFFCC">
+<div id="outPopUp">
+<div style="padding:40px">
+<p>This is only the first question.  We will not supply any hints for this question as it is detrimental to lack persistence.</p>
+
+</div>
+</div>
+</body>
+</html>

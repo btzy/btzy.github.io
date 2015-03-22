@@ -1,0 +1,62 @@
+<html>
+<title>Triangle City</title>
+
+<body>
+<h1>Triangle City</h1>
+
+<p>Time Limit: 1s</p>
+
+<img src="triangle.fw.png" style="float:right;width:23em;height:23em" />
+<img src="north.fw.png" style="float:right;width:2em;height:4em" />
+<h2>Problem Description</h2>
+
+<p>Animal Country had conquered new land from Badmen Country! The land was a pile of rubble but Dont Government (one of the founding fathers of Animal Country) embarked on a mega-project to enhance the name of Animal Country in the world of science and technology. A new city like no other was built from scratch! Although the government has not decided on its official name, citizens of Animal Country had given it a nickname &ndash; Triangle City!</p>
+<p>Triangle city is unique because, unlike all other cities, its roads are angled 60&deg; from each other. More specifically, the roads parallel to the equator are  avenues, the roads in the direction of 60&deg; north of east are streets, and the roads in the direction 60&deg; north of west are drives (see diagram). They are numbered from 1 to N&minus;1 with 1 being the longest road. Thus, all junctions (except those on the sides and corners of Triangle City) are six-way intersections. In addition, the border of Triangle City is one large triangle too!</p>
+<p>Each small triangle is a single development and it is bordered by roads on all three sides. To infuse greenery into the otherwise concrete jungle, all developments that are bordered by an avenue north of itself (i.e. southward-pointing triangles) are parks, and all developments that are bordered by an avenue south of itself (i.e. northward-pointing triangles) are buildings.</p>
+<p>Of the buildings in Triangle City, some are major commercial centres. Dont Government wants these commercial centres to be well-connected, so he wants every two commercial centres to have a bus service travelling between them. These bus services leave at the hour every hour, and travel directly to its destination, where it will park until it is needed again. The bus can stop to pick up/drop off passengers at any of the three intersections that are adjacent to the building. You may assume that there are enough buses at each junction so buses never run out, and that buses do not need any maintenence.</p>
+<p>Each bus needs one unit of fuel to travel from one junction to an adjacent junction. Since fuel has to be transported from the port to Triangle City for the buses to use, Dont Government needs to know in advance how much fuel is needed. Your task is to calculate how much fuel is needed at each hour.</p>
+<p>Note: If two commercial centres are share an intersection, then no bus is needed to transport people between those two centres.</p>
+<p>Another note: At the same hour when a bus travels from centre A to centre B, another bus must travel from centre B to centre A.</p>
+<h2>Input</h2>
+
+<p>The first line contains the number of test cases, and it is followed by a blank line. Each test case is as follows:</p>
+<p>The first line contains a two integers, <em>N</em>, the number of developments that shares an edge with the first avenue (which is one of the borders of Triangle City), and <em>K</em>, the number of major commercial centres in Triangle City.<br>
+  <em>K</em> lines follow. Each line contains two integers, the avenue number <em>a</em> (1 &le; <em>a</em> &le; <em>N</em> &minus; 1) and street number <em>s</em> (0 &le; <em>s</em> &le; <em>N</em> &minus; 1). (<em>a</em> + <em>s</em> &le; <em>N</em>) This means that there is a commercial centre which shares an edge with avenue <em>a</em> and street <em>s</em>.</p>
+<p>It is guaranteed that all the commercial centres are at distinct locations in Triangle City.</p>
+  <p>Multiple test cases will be separated by a blank line.</p>
+
+<h2>Output</h2>
+
+<p>For each test case, output a line containing a single integer: the amount of fuel that is needed every hour, modulo 2<sup>64</sup>.</p>
+
+<h2>Sample Input</h2>
+
+<pre>
+1
+
+6 3
+1 2
+3 1
+4 2
+</pre>
+
+<h2>Sample Output</h2>
+
+<pre>
+4
+</pre>
+
+<h2>Subtasks &amp; Constraints</h2>
+<p>For all subtasks N,K &ge; 2</p>
+<p>Subtask 1 (5 points): N &le; 200; K &le; 100</p>
+<p>Subtask 2 (20 points): N &le; 10<sup>6</sup>; K &le; 10<sup>3</sup></p>
+<p>Subtask 3 (20 points): N &le; 10<sup>6</sup>; K &le; 10<sup>6</sup></p>
+<p>Subtask 4 (55 points): N &le; 10<sup>9</sup>; K &le; 10<sup>6</sup></p>
+
+<h2>Problem Author</h2>
+
+<p>Bernard Teo Zhi Yi<br>
+Created June 2013<br>
+This problem was created for IOI 2013 practice.</p>
+</body>
+</html>

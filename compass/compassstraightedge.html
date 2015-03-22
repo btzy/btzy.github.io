@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="jquery-1.9.1.min.js"></script>
+<script type="text/javascript" src="compassstraightedge.js"></script>
+<link rel="stylesheet" type="text/css" href="compassstraightedge.css">
+<title>Untitled Document</title>
+</head>
+
+<body>
+<div id="header">
+
+</div>
+<div id="mainblock">
+<div id="sidebar">
+<div class="sidetext">
+<input type="button" class="sidebutton" id="compass" value="Compass" />
+<input type="button" class="sidebutton" id="straightedge" value="Straightedge" />
+</div>
+<hr class="hr">
+<div class="hideable">
+<div class="sidetext">
+<input type="button" class="sidebutton" id="selector" value="Selector" />
+</div>
+<hr class="hr">
+</div>
+<div class="sidetext">
+Sticky Length:
+<input type="text" id="sticky" value="10" />
+<div style="height:3px"></div>
+<input type="checkbox" id="drag" /><span style="font-size:18px;">Enable Dragging</span>
+</div>
+<hr class="hr">
+<div class="sidetext">
+<div class="gamemode" id="challenge">Challenge</div>
+<div class="gamemode" id="freeplay">Free Play</div>
+<div style="height:5px"></div>
+<div id="clearall">Reset screen</div>
+</div>
+<hr class="hr">
+<div class="sidetext">
+<div class="modifier" id="nopoints">No sticky points (Shift)</div>
+<div style="height:3px"></div>
+<div class="modifier" id="nocurves">No sticky curves (Ctrl)</div>
+</div>
+</div>
+<div id="mainbar">
+<svg id="mainsvg" xmlns="http://www.w3.org/2000/svg" version="1.1">
+</svg>
+</div>
+</div>
+</body>
+</html>

@@ -1,0 +1,137 @@
+@font-face{
+	font-family:'Just Another Hand';
+	src: url('JustAnotherHand.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+@font-face{
+	font-family:Oregano;
+	src: url('Oregano-Regular.ttf') format('truetype');
+	font-weight: normal;
+	font-style: normal;
+}
+html{
+	height:100%;
+	margin:0;
+}
+body{
+	height:100%;
+	margin:0;
+	overflow:hidden;
+}
+#header{
+	height:50px;
+	text-align:center;
+	background-color:#CCF;
+}
+#titlename{
+	font-size:32px;
+	font-family:Oregano;
+}
+#mainblock{
+	height:100%;
+}
+#sidebar{
+	float:right;
+	width:100px;
+	height:100%;
+	background-color:#FCC;
+}
+#mainbar{
+	padding-right:100px;
+	height:100%;
+}
+.sidebutton{
+	width:100%;
+	background-color:#FF0;
+	font-size:23px;
+	font-family:'Just Another Hand';
+	cursor:pointer;
+}
+#mainsvg{
+	border:1px solid #000;
+	width:100%;
+	height:100%;
+}
+.sidetext{
+	padding-left:5px;
+	padding-right:5px;
+	font-size:23px;
+	font-family:'Just Another Hand';
+}
+#sticky{
+	width:100%;
+	font-size:23px;
+	font-weight:bold;
+	font-family:'Just Another Hand';
+}
+.hr{
+	width:90%;
+	height:2px;
+	background-color:#00F;
+	border:none;
+}
+.modifier{
+	border:1px solid #666;
+	padding-left:2px;
+	padding-right:2px;
+	color:#666;
+}
+.gamemode{
+	background-color:#FF9;
+	cursor:pointer;
+	text-align:center;
+	border:2px solid;
+	border-color:transparent;
+}
+#clearall{
+	background-color:#AF9;
+	cursor:pointer;
+	text-align:center;
+}
+#levelselect{
+	position:absolute;
+	left:50%;
+	top:100px;
+	width:500px;
+	margin-left:-250px;
+	background-color:#9F9;
+	font-family:Oregano;
+	padding:10px;
+}
+#levelheader{
+	text-align:center;
+	font-size:24px;
+}
+#fileopener{
+	border:2px solid #0C0;
+	margin-top:10px;
+	padding:5px 10px;
+}
+.levelset{
+	text-align:center;
+	border:2px solid #0C0;
+	margin-top:10px;
+	padding:5px 10px;
+}
+.leveltable{
+	border-spacing:0;
+	border-collapse:collapse;
+	text-align:center;
+	table-layout:fixed;
+}
+.levelbutton{
+	width:20px;
+	height:20px;
+	background-color:#F90;
+}
+.leveltd{
+	width:10%;
+	text-align:center;
+}
+.leveltitle{
+	text-align:left;
+}
+.hideable{
+	display:none;
+}

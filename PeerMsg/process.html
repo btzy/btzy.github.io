@@ -1,0 +1,137 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!--
+Design by Free CSS Templates
+http://www.freecsstemplates.org
+Released for free under a Creative Commons Attribution 2.5 License
+
+Name       : SimpleDisplay 
+Description: A two-column, fixed-width design with dark color scheme.
+Version    : 1.0
+Released   : 20120611
+
+-->
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<title>Process</title>
+<link href="http://fonts.googleapis.com/css?family=Arvo" rel="stylesheet" type="text/css" />
+<link href="style.css" rel="stylesheet" type="text/css" media="screen" />
+<script type="text/javascript" src="jquery/jquery-1.4.2.min.js"></script>
+<script type="text/javascript" src="jquery/jquery.gallerax-0.2.js"></script>
+<style type="text/css">
+@import "gallery.css";
+</style>
+</head>
+<body>
+<div id="wrapper">
+	<div id="header">
+		<div id="logo"><h1><a href="index.html">
+<img src="images/Logo2Png.png" /></a></h1>
+		</div>
+	</div>
+	<!-- end #header -->
+	<div id="menu">
+		<ul>
+			<li><a href="index.html">Home</a></li>
+			<li><a href="introduction.html">Introduction</a></li>
+            <li class="current_page_item"><a href="process.html">Process</a></li>
+			<li><a href="product.html">Product</a></li>
+			<li><a href="future.html">Future Development</a></li>
+			<li><a href="group.html">Group Evaluation</a></li>
+			<li class="last"><a href="download.html">Download</a></li>
+		</ul>
+	</div>
+    <div id="one-column">
+    	<h2>The Process</h2>
+    </div>
+    <br />
+	<div id="one-column">
+    	<div class="image-style-empty" style="float:right">
+            <img src="images/trad.png" alt="" width="400px" />
+            <div style="color:#FF0; text-align:center">The traditional client-server model.</div>
+            <img src="images/p2p.png" alt="" width="400px" />
+            <div style="color:#FF0; text-align:center">The peer-to-peer network model.</div>
+        </div>
+        <h3>Learning About and Understanding Networking</h3>
+        <p>
+        Peer-to-peer networking is very different from client-server networking in that messages must be passed between clients and handled by the clients themselves. For a couple of months, we played around with port forwarding and UDP hole punching in order to get a better feel as to how client to client communication works. The main limiting factor is the presence of a firewall hardcoded into the router; unless the port is forwarded, a client would not receive messages from another client if he did not earlier send the other client a message. It was not long before we achieved the "Hello world!" of peer-to-peer networking: communication between two clients on different networks without port forwarding, with UDP hole punching mediated by a third party.
+        </p>
+        <div class="separator">
+            <table><tr><td class="left-separator"></td><td class="middle-separator"></td><td class="right-separator"></td></tr></table>
+        </div>
+        <br />
+        <h3>Testing the Messaging System Algorithm</h3>
+        <p>
+        The idea was originally based on a floodfill algorithm, but for a period of time, we experimented with a DHT based algorithm in an attempt to make the system more reliable. However, with further analysis, this approach was found to be less efficient and reliable due to the overhead required to alert users when a new message is sent and the strict requirements about the DHT network structure. We then reverted to the simple floodfill algorithm and improved on it to ensure that the network would not break apart. This turned out also to be more reliable due to the replication of messages sent to each node. It also allowed our application to be as lightweight and reliable as it is now.
+        </p>
+        <div class="separator">
+            <table><tr><td class="left-separator"></td><td class="middle-separator"></td><td class="right-separator"></td></tr></table>
+        </div>
+        <br />
+        <h3>Implementing the Messaging Protocol</h3>
+        <p>
+        Having abstracted away the UDP layer, we proceeded to implement the packet protocol by which our messaging system would operate. This includes the packet prefixes specifying the type of message being sent, and the format by which data for each packet would be sent. We also implemented a connection manager to deal with the command to packet translation process, and thus only had to deal with a few functions in the connection manager interface.
+        </p>
+        <!--<div style="float:right">
+            <img src="images/old-gui.png" alt="Image cannot be loaded." width="400px" class="image-style" />
+            <div class="text-caption" style="color:#FF0; text-align:center">The early stages of PeerMsg: PeerMsg mock-up</div>
+        </div>-->
+        <div class="separator">
+            <table><tr><td class="left-separator"></td><td class="middle-separator"></td><td class="right-separator"></td></tr></table>
+        </div>
+        <br />
+        <h3>Implementing the Message Board</h3>
+        <p>
+        After automating connection management, we implemented the message board manager which organised messages depending on GUI commands, dealt with packets received from the connection manager and decided what type of messages to send. Effectively, it also 
+        </p>
+        <div class="separator">
+            <table><tr><td class="left-separator"></td><td class="middle-separator"></td><td class="right-separator"></td></tr></table>
+        </div>
+        <br />
+        <div class="image-style-empty" style="float:right">
+            <img src="images/messageboard.bmp" alt="" width="400px" />
+            <div style="color:#FF0; text-align:center">The current look of PeerMsg.</div>
+        </div>
+        <h3>Designing the GUI</h3>
+        <p>
+        Interfacing with our manager modules have so far been done on a command line. That certainly would not make for an appealing message board product. Thus, using WPF, we worked to create a slick, user friendly GUI that would complement the message broadcasting experience. It took a while to configure and debug all the bindings involved, and we ended up with a beautiful, lightweight GUI featuring an automatically updating message list and a tabbed message display.
+        </p>
+        <div class="separator">
+            <table><tr><td class="left-separator"></td><td class="middle-separator"></td><td class="right-separator"></td></tr></table>
+        </div>
+        <br />
+        <h3>Implementing Archiving</h3>
+        <p>
+        Archiving mainly consisted of saving messages chosen by the user to the local machine, and was thus not difficult to test and implement. Unarchiving was implemented in the same way. Most of the work was in the GUI, where new buttons had to be added, the message list had to be configured to show different message lists according to the menu, and the archives had to be automatically updated when a user archives or unarchives a message. Since this did not involve more than one computer, it was very quickly completed.
+        </p>
+        <div class="separator">
+            <table><tr><td class="left-separator"></td><td class="middle-separator"></td><td class="right-separator"></td></tr></table>
+        </div>
+        <br />
+        <h3>Security</h3>
+        <p>
+        We implemented a login system that verifies if a user is registered and if he is an administrator. Authentication is done client-side using a doubly salted hash. Account and group data is updated throughout the system using the same floodfill algorithm used for message broadcasting, and can only be done from an administrator's account.
+        </p>
+        <div class="separator">
+            <table><tr><td class="left-separator"></td><td class="middle-separator"></td><td class="right-separator"></td></tr></table>
+        </div>
+        <br />
+        <h3>Alpha Testing and Marketing</h3>
+        <p>
+        With a product completed (except maybe for some finishing touches), we moved on to testing and marketing. Firstly, we did stress testing on our product using automated scripts, broadcasting about 10 messages a second in a small network. The results were impressive with less than 0.1% message loss. Secondly, we used the system for an extended period of time. Thirdly, we showed it around to some other people and collected their responses.
+        </p>
+        <div class="separator">
+            <table><tr><td class="left-separator"></td><td class="middle-separator"></td><td class="right-separator"></td></tr></table>
+        </div>
+    </div>
+		<!--<div id="col2">-->
+	<!-- end #menu -->
+</div>
+<div id="footer">
+	<p>Copyright &copy; 2012 PeerMsg. All rights reserved. Modified from design by <a href="http://www.freecsstemplates.org">FCT</a>.</p>
+</div>
+<!-- end #footer -->
+</body>
+</html>

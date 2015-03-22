@@ -1,0 +1,72 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Have you been doing what you have been told to do?</title>
+<style>
+#outPopUp{
+     position:absolute;
+     width:600px;
+     height:600px;
+     z-index:15;
+     top:50%;
+     left:50%;
+     margin:-300px 0 0 -300px;
+     background:#9F0;
+}
+</style>
+<script src="jquery-1.10.2.min.js"></script>
+<script type="text/javascript">
+$(document).ready(function(e){
+	$('#sender').change(reloadlink);
+	function reloadlink(){
+		var sender=$('#sender').val();
+		$('#nextlink').prop('href','http://www2.hci.edu.sg/s9609261z/shun/18_jqoyxyvjgorqvywjhmlc_'+sender+'.html');
+		$('#nextlink').html('http://www2.hci.edu.sg/s9609261z/shun/18_jqoyxyvjgorqvywjhmlc_'+sender+'.html');
+	}
+});
+</script>
+</head>
+
+<body bgcolor="#FFFFCC">
+<div id="outPopUp">
+<div style="padding:40px">
+<p>This question seems pretty hard.  Hopefully you have been recording the people who are left.  Or maybe it's in your browsing history.  Unless of course you used incognito mode.</p>
+<p style="color:#009">Who am I?</p>
+<p>Sender: 
+<select id="sender">
+<option value='0'>Choose one</option>
+<option value='1'>ALVIN TAN WEI MING</option>
+<option value='2'>BERNARD TEO ZHI YI</option>
+<option value='3'>CHIANG YAN LI</option>
+<option value='4'>CHIK CHENG YAO</option>
+<option value='5'>CHO MING EN</option>
+<option value='6'>GAO YAN</option>
+<option value='7'>GOH HUI MIN</option>
+<option value='8'>HO JIN YANG</option>
+<option value='9'>LANG YANBIN</option>
+<option value='10'>LEONG QI DONG</option>
+<option value='11'>LI XIAOXUE</option>
+<option value='12'>LIM CHIA WEI</option>
+<option value='13'>LIM SHU NING</option>
+<option value='14'>LIU RUIHAN</option>
+<option value='15'>LOO LI YANG</option>
+<option value='16'>LYNCAM EDVIANO LOO</option>
+<option value='17'>MA QIANHUI</option>
+<option value='18'>NG YI PIN</option>
+<option value='19'>OEN QI XUAN, KELLYNN</option>
+<option value='20'>RACHEL TEO</option>
+<option value='21'>RAO XIAOJIA</option>
+<option value='22'>TAN WEI YANG</option>
+<option value='23'>THENG KWANG HUI MARK</option>
+<option value='24'>WANG QIAN</option>
+<option value='25'>WANG RUONI</option>
+<option value='26'>XIA NAN</option>
+</select>
+</p>
+<p>Next question: <a id="nextlink" href=""></a></p>
+<p><a href="http://www2.hci.edu.sg/s9609261z/shun/hint.php" target="_blank">Hints</a></p>
+</div>
+</div>
+</body>
+</html>
