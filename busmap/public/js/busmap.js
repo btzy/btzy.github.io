@@ -142,11 +142,12 @@ $(document).ready(function(){
                     if(__datact==g_data.services.length){
                         ++_dataCounter;
                         if(_dataCounter==2){
-                            var handler=function(){
+                            /*var handler=function(){
                                 document.removeEventListener("click",handler,false);
                                 dataInitialized();
                             }
-                            document.addEventListener("click",handler,false);
+                            document.addEventListener("click",handler,false);*/
+                            dataInitialized();
                         }
                     }
                 });
