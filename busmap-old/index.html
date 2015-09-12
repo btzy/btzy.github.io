@@ -1,0 +1,33 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Untitled Document</title>
+<link href='http://fonts.googleapis.com/css?family=Noto+Sans:400,700' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" type="text/css" href="style.css" />
+<style type="text/css">@import "jquery.svg.css";</style> 
+<script type="text/javascript" src="jquery-2.1.0.min.js"></script>
+<script type="text/javascript" src="jquery.svg.min.js"></script>
+<script type="text/javascript" src="script.js"></script>
+</head>
+
+<body>
+<div class="fixedparts" id="svgbox">
+    <div id="svgmover"></div>
+</div>
+<div class="fixedparts" id="infobox">
+    <div class="button" id="newbutton"><img class="buttonicon" src="icons/new.png" /> <span class="buttontext">New</span></div>
+    <div class="button" id="loadbutton"><img class="buttonicon" src="icons/open.png" /> <span class="buttontext">Open</span></div>
+    <div class="button" id="savebutton"><img class="buttonicon" src="icons/save.png" /> <span class="buttontext">Save</span></div>
+</div>
+<div class="fixedparts" id="toolbox"></div>
+<div id="faderbox"></div>
+<div id="newbox">
+	<div>Map size: <input type="text" id="mapwidth" /> &times; <input type="text" id="mapheight" /> <span class="notefont">(width &times; height)</span></div>
+    <div>Angle step: 90&deg; &divide; <input type="text" id="anglestep" /> = <span></span>&deg;</div>
+    <div class="buttoncontainer">
+    	<div class="button" id="createbutton"><img class="buttonicon" src="icons/tick.png" /> <span class="buttontext">Create</span></div><div class="button" id="cancelbutton"><img class="buttonicon" src="icons/cross.png" /> <span class="buttontext">Cancel</span></div>
+    </div>
+</div>
+</body>
+</html>
