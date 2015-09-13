@@ -31,7 +31,7 @@ var getCyclicMedian=function(arr,modulo){
 };
 
 var getDistance=function(point1,point2){
-    return Math.sqrt(point1*point1+point2*point2);
+    return Math.sqrt((point1.x-point2.x)*(point1.x-point2.x)+(point1.y-point2.y)*(point1.y-point2.y));
 };
 
 var getDirection=function(point1,point2){
@@ -41,6 +41,9 @@ var getDirection=function(point1,point2){
 
 var getDirectedDirection=function(point1,point2){
     // returns the directed direction from point1 to point2 [0,2*PI)
+    if(!point1||!point2){
+        point1=point1;
+    }
     return (Math.atan2(point2.y-point1.y,point2.x-point1.x)+2*Math.PI)%(2*Math.PI);
 }
 
@@ -77,6 +80,7 @@ var getClosestDirectedDirectionFromPolyline=function(pointCoords,polylineCoordsA
             closestIndex=i;
         }
     }
+    var polylineClosestIndex=polylinePriorityIndices[closestIndex];
     // non-optimized version
     if(closestPointsArray.length==0||getDistance(closestPointsArray[closestIndex],pointCoords)>maxPriorityAllowableDistance){
         closestPointsArray=[];
@@ -89,15 +93,17 @@ var getClosestDirectedDirectionFromPolyline=function(pointCoords,polylineCoordsA
                 closestIndex=i;
             }
         }
+        polylineClosestIndex=closestIndex;
     }
     var directeddirection;
-    if(closestIndex==polylineCoordsArray.length-1||getDistance(closestPointsArray[closestIndex],pointCoords)+0.000000001<getDistance(closestPointsArray[closestIndex+1],pointCoords)){
-        // is not a corner
-        directeddirection=getDirectedDirection(polylineCoordsArray[closestIndex],polylineCoordsArray[closestIndex+1]);
+    
+    if(closestIndex==closestPointsArray.length-1||getDistance(closestPointsArray[closestIndex],pointCoords)+0.000000001<getDistance(closestPointsArray[closestIndex+1],pointCoords)){
+        // is not a corner. it could be an endpoint
+        directeddirection=getDirectedDirection(polylineCoordsArray[polylineClosestIndex],polylineCoordsArray[polylineClosestIndex+1]);
     }
     else{
         var direction=(getDirection(pointCoords,closestPointsArray[closestIndex])+Math.PI/2)%Math.PI;
-        var avgdirecteddirection=getCyclicMedian([getDirectedDirection(polylineCoordsArray[closestIndex],polylineCoordsArray[closestIndex+1]),getDirectedDirection(polylineCoordsArray[closestIndex+1],polylineCoordsArray[closestIndex+2])],2*Math.PI);
+        var avgdirecteddirection=getCyclicMedian([getDirectedDirection(polylineCoordsArray[polylineClosestIndex],polylineCoordsArray[polylineClosestIndex+1]),getDirectedDirection(polylineCoordsArray[polylineClosestIndex+1],polylineCoordsArray[polylineClosestIndex+2])],2*Math.PI);
         var distdir1=(direction-avgdirecteddirection+2*Math.PI)%(2*Math.PI);
         if(distdir1>Math.PI)distdir1=2*Math.PI-distdir1;
         var distdir2=(direction-avgdirecteddirection+3*Math.PI)%(2*Math.PI);
@@ -200,6 +206,7 @@ var calculateAverageDirection=function(busStops,busServices){
                         }
                     }
                 }
+                priority_indices.sort();
                 var closest_direction=getClosestDirectedDirectionFromPolyline(busStops[dir.stops[k]],route,priority_indices,shift);
                 busStopDirectionLists[dir.stops[k]].push(closest_direction%Math.PI);
                 dir.stopDirectedDirections[k]=closest_direction;
