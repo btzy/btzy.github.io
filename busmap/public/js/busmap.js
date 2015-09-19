@@ -6,10 +6,10 @@ $(document).ready(function(){
     var getData=function(key,callback){
         var data=(localStorage)?(localStorage.getItem(key)):null;
         if(data)setTimeout(function(){
-            callback(JSON.parse(LZString.decompress(data)));
+            callback(JSON.parse(LZString.decompressFromUTF16(data)));
         },0);
         else $.get(data_url+key,{},function(data){
-            localStorage.setItem(key,LZString.compress(JSON.stringify(data)));
+            localStorage.setItem(key,LZString.compressToUTF16(JSON.stringify(data)));
             callback(data);
         },"json");
     };
@@ -46,6 +46,10 @@ $(document).ready(function(){
     var mergedBusStopMapping={};
     
     var routeGraph;
+    
+    var junctionGroups;
+    var junctions;
+    var junctionGraph;
     // routeGraph={"<mod bus stop code>":{adjStops:[{"<next mod bus stop code>&<dirindex>":["<svc no>"]}],busList:{"<svc no>":{name:<display name>,stopDirections:[<bool, true if bus is travelling to that direction>]}}}}
     // note: stop_directions direction is the direction the bus will head to.
     
@@ -64,6 +68,15 @@ $(document).ready(function(){
         
         // Generate the route graph:
         routeGraph=generateRouteGraph(mergedBusStopData,rawBusServicesData,mergedBusStopMapping);
+        
+        // Find all junction groups:
+        junctionGroups=findJunctionGroups(routeGraph,mergedBusStopData);
+        
+        // Find all separate junctions and their locations:
+        junctions=splitJunctionGroups(junctionGroups,mergedBusStopData);
+        
+        // Generate the junction graph:
+        //junctionGraph=generateJunctionGraph(routeGraph,junctions,junctionGroups);
         
         
         
