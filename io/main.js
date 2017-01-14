@@ -27,6 +27,6 @@ window.addEventListener("load",function(){
             }
         });
     });
-    xhr.open("GET","http://localhost:8080/welcome");
+    xhr.open("GET","http://182.19.235.218:8080/welcome");
     xhr.send();
 });
