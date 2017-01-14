@@ -1,0 +1,29 @@
+html, body{
+    background-color:black;
+    color:white;
+    font-family:"CandelaBold",sans-serif;
+}
+
+#blog .title{
+    text-align:center;
+    padding:20px 0;
+    font-size:28px;
+}
+
+#blog .post{
+    width:100%;
+    max-width:800px;
+    margin:0 auto;
+    padding:20px 0;
+}
+
+#blog .post>div{
+    padding:4px 0;
+}
+
+#blog .date{
+    font-style:italic;
+    color:lightgray;
+    font-size:14px;
+    padding-left:20px;
+}
