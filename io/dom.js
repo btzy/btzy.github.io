@@ -1,9 +1,12 @@
 var DomGame=function(canvas,death_callback){
     var canvas_scale=Math.sqrt(canvas.width*canvas.height);
     var resize_handler=function(){
-        canvas.width=canvas.offsetWidth;
-        canvas.height=canvas.offsetHeight;
-        canvas_scale=Math.sqrt(canvas.width*canvas.height);
+        canvas_device_pixel_scale=window.devicePixelRatio;
+        logical_width=canvas.offsetWidth;
+        logical_height=canvas.offsetHeight;
+        canvas.width=logical_width*canvas_device_pixel_scale;
+        canvas.height=logical_height*canvas_device_pixel_scale;
+        canvas_scale=Math.sqrt(logical_width*logical_height);
         send_dimensions_to_server();
     };
     var mousemove_handler=function(e){
@@ -131,6 +134,9 @@ var DomGame=function(canvas,death_callback){
     var food_radius=100;
     var boost_animation_period=1000;
     
+    var canvas_device_pixel_scale=1;
+    var logical_width,logical_height;
+    
     var anim_request=undefined;
     
     this._start=function(remote_endpoint,display_name){
@@ -150,10 +156,10 @@ var DomGame=function(canvas,death_callback){
         var ctx=canvas.getContext("2d",{alpha:false});
         var draw_handler=function(){
             ctx.save();
-            var real_height=canvas.height;
-            var real_width=canvas.width;
+            var real_height=logical_height;
+            var real_width=logical_width;
             canvas_scale=Math.sqrt(real_height*real_width);
-            ctx.scale(canvas_scale,canvas_scale);
+            ctx.scale(canvas_scale*canvas_device_pixel_scale,canvas_scale*canvas_device_pixel_scale);
             height=real_height/canvas_scale;
             width=real_width/canvas_scale;
             draw(ctx);
@@ -649,8 +655,8 @@ var DomGame=function(canvas,death_callback){
         if(socket&&socket.readyState===1){
             var stream=new ByteWriteStream();
             stream.writeUint8(2);
-            stream.writeUint32(canvas.width);
-            stream.writeUint32(canvas.height);
+            stream.writeUint32(logical_width);
+            stream.writeUint32(logical_height);
             socket.send(stream.getBuffer());
             //socket.send("2 "+canvas.width.toString()+" "+canvas.height.toString());
         }
@@ -681,7 +687,7 @@ var DomGame=function(canvas,death_callback){
     var process_mousemove=function(pt){
         if(is_alive&&displayTime){
             var current_mouse_pos=pt;
-            var centerpoint=new Point(canvas.width/2,canvas.height/2);
+            var centerpoint=new Point(logical_width/2,logical_height/2);
             if(current_mouse_pos.distanceFrom(centerpoint)<Math.sqrt(agents.get(my_agentid,displayTime).mass)/Math.sqrt(client_area.get(displayTime))*canvas_scale){
                 current_mouse_dir=null;
             }
