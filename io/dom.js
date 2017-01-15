@@ -452,7 +452,7 @@ var DomGame=function(canvas,death_callback){
         
         var clienttime=new Date().getTime();
         message_time_storage.push(clienttime-timestamp);
-        if(message_time_storage.length>10)message_time_storage.shift();
+        if(message_time_storage.length>50)message_time_storage.shift();
         var avg_delay=message_time_storage.reduce(function(sum,el){
             return sum+el;
         },0)/message_time_storage.length;
