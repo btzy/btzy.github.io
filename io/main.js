@@ -112,7 +112,7 @@ window.addEventListener("load",function(){
     var drawing_width=600;
     var drawing_height=drawing_width/3;
     var baseline_height=150;
-    var additional_padding=200;
+    var additional_padding=200; // logical width units
     var resize_handler=function(){
         title_logical_height=Math.min(title_flexitem.offsetHeight,drawing_height);
         title_logical_width=Math.min(title_flexitem.offsetWidth,title_logical_height*drawing_width/drawing_height);
@@ -164,7 +164,7 @@ window.addEventListener("load",function(){
             
             title_ctx.clearRect(0,0,(title_logical_width+additional_padding*2)*canvas_device_pixel_scale,(title_logical_height+additional_padding*2)*canvas_device_pixel_scale);
             
-            title_ctx.translate(additional_padding,additional_padding);
+            title_ctx.translate(additional_padding*canvas_device_pixel_scale,additional_padding*canvas_device_pixel_scale);
             
             title_ctx.scale(title_logical_width/drawing_width*canvas_device_pixel_scale,title_logical_width/drawing_width*canvas_device_pixel_scale);
             
@@ -221,8 +221,11 @@ window.addEventListener("load",function(){
                 
                 // shadows only
                 title_ctx.save();
-                title_ctx.shadowOffsetX=1000;
-                title_ctx.shadowOffsetY=1000;
+                // in drawing units
+                var offset_hide=(Math.max(drawing_width,drawing_height)+(additional_padding*drawing_width/title_logical_width)*2);/*1000;*/
+                title_ctx.shadowOffsetX=offset_hide*title_logical_width/drawing_width*canvas_device_pixel_scale;
+                title_ctx.shadowOffsetY=offset_hide*title_logical_width/drawing_width*canvas_device_pixel_scale;
+                console.log(offset_hide);
                 if(local_time_offset<=0){
                     // don't do anything as this character shouldn't come out yet.
                 }
@@ -232,22 +235,22 @@ window.addEventListener("load",function(){
                     var this_color=to_canvas_color(colors[i]);
                     title_ctx.shadowBlur=20+(1000-local_time_offset)/8;
                     title_ctx.shadowColor=this_color;
-                    if(i!==6)title_ctx.fillText(text_parts[i],char_offset_left-1000,baseline_height-1000);
-                    else title_ctx.drawImage(prerender_canvas,-additional_padding-1000,-additional_padding-1000);
+                    if(i!==6)title_ctx.fillText(text_parts[i],char_offset_left-offset_hide,baseline_height-offset_hide);
+                    else title_ctx.drawImage(prerender_canvas,-additional_padding-offset_hide,-additional_padding-offset_hide);
                 }
                 else if(local_time_offset<2000){
                     var fraction=(local_time_offset-1000)/1000;
                     var this_color=to_canvas_color([colors[i][0]*(1-fraction)+255*fraction,colors[i][1]*(1-fraction)+255*fraction,colors[i][2]*(1-fraction)+255*fraction]);
                     title_ctx.shadowBlur=20;
                     title_ctx.shadowColor=this_color;
-                    if(i!==6)title_ctx.fillText(text_parts[i],char_offset_left-1000,baseline_height-1000);
-                    else title_ctx.drawImage(prerender_canvas,-additional_padding-1000,-additional_padding-1000);
+                    if(i!==6)title_ctx.fillText(text_parts[i],char_offset_left-offset_hide,baseline_height-offset_hide);
+                    else title_ctx.drawImage(prerender_canvas,-additional_padding-offset_hide,-additional_padding-offset_hide);
                 }
                 else{
                     title_ctx.shadowBlur=20;
                     title_ctx.shadowColor="white";
-                    if(i!==6)title_ctx.fillText(text_parts[i],char_offset_left-1000,baseline_height-1000);
-                    else title_ctx.drawImage(prerender_canvas,-additional_padding-1000,-additional_padding-1000);
+                    if(i!==6)title_ctx.fillText(text_parts[i],char_offset_left-offset_hide,baseline_height-offset_hide);
+                    else title_ctx.drawImage(prerender_canvas,-additional_padding-offset_hide,-additional_padding-offset_hide);
                 }
                 title_ctx.restore();
                 
@@ -260,12 +263,12 @@ window.addEventListener("load",function(){
                     // fade in
                     title_ctx.globalAlpha=local_time_offset/1000;
                     var this_color=to_canvas_color(colors[i]);
-                    title_ctx.shadowOffsetX=1000;
-                    title_ctx.shadowOffsetY=1000;
+                    title_ctx.shadowOffsetX=offset_hide*title_logical_width/drawing_width*canvas_device_pixel_scale;
+                    title_ctx.shadowOffsetY=offset_hide*title_logical_width/drawing_width*canvas_device_pixel_scale;
                     title_ctx.shadowBlur=(1000-local_time_offset)/8;
                     title_ctx.shadowColor=this_color;
-                    if(i!==6)title_ctx.fillText(text_parts[i],char_offset_left-1000,baseline_height-1000);
-                    else title_ctx.drawImage(prerender_canvas,-additional_padding-1000,-additional_padding-1000);
+                    if(i!==6)title_ctx.fillText(text_parts[i],char_offset_left-offset_hide,baseline_height-offset_hide);
+                    else title_ctx.drawImage(prerender_canvas,-additional_padding-offset_hide,-additional_padding-offset_hide);
                 }
                 else if(local_time_offset<2000){
                     var fraction=(local_time_offset-1000)/1000;
