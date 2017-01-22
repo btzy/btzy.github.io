@@ -191,6 +191,10 @@ var DomGame=function(canvas,options,death_callback){
         canvas.addEventListener("mousedown",mousedown_handler);
         canvas.addEventListener("mouseup",mouseup_handler);
         canvas.addEventListener("mouseout",mouseout_handler);
+        canvas.addEventListener("touchmove",touchmove_handler);
+        canvas.addEventListener("touchstart",touchstart_handler);
+        canvas.addEventListener("touchend",touchend_handler);
+        canvas.addEventListener("touchcancel",touchcancel_handler);
         window.addEventListener("keydown",keydown_handler);
         window.addEventListener("keyup",keyup_handler);
         // disable context menu
@@ -246,6 +250,10 @@ var DomGame=function(canvas,options,death_callback){
         window.cancelAnimationFrame(anim_request);
         window.removeEventListener("keyup",keyup_handler);
         window.removeEventListener("keydown",keydown_handler);
+        canvas.removeEventListener("touchcancel",touchcancel_handler);
+        canvas.removeEventListener("touchend",touchend_handler);
+        canvas.removeEventListener("touchstart",touchstart_handler);
+        canvas.removeEventListener("touchmove",touchmove_handler);
         canvas.removeEventListener("mouseout",mouseout_handler);
         canvas.removeEventListener("mouseup",mouseup_handler);
         canvas.removeEventListener("mousedown",mousedown_handler);
