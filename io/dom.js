@@ -182,11 +182,11 @@ var DomGame=function(canvas,death_callback){
                 console.log(e.message);
             });
             socket.addEventListener("message",function(e){
-                process_message(e.data);
-                // throttling test:
-                /*setTimeout(function(){
+                //process_message(e.data);
+                // lag test:
+                setTimeout(function(){
                     process_message(e.data);
-                },150+Math.random()*100);*/
+                },150+Math.random()*100);
             });
             socket.addEventListener("close",function(e){
                 console.log("Connection terminated. (Code: "+e.code+", reason: "+e.reason+")");
