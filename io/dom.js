@@ -1,3 +1,4 @@
+// TODO: scale name and leaderboard by sqrt of distance instead.
 var DomGame=function(canvas,death_callback){
     var canvas_scale=Math.sqrt(canvas.width*canvas.height);
     var resize_handler=function(){
@@ -81,15 +82,16 @@ var DomGame=function(canvas,death_callback){
         return new InterpolationDelayEngine(weightedAverager,cloner);
     },function(agent1,weight1,agent2,weight2){
         if(Math.abs(weight1+weight2)<0.1){
-            return new Agent(agent1.location,agent1.mass,agent1.health,agent1.is_boosting);
+            return new Agent(agent1.location,agent1.mass,agent1.health,agent2.is_boosting,agent2.has_shield);
         }
         var location=Point.weightedAverage(agent1.location,weight1,agent2.location,weight2);
         var mass=(agent1.mass*weight1+agent2.mass*weight2)/(weight1+weight2);
         var health=(agent1.health*weight1+agent2.health*weight2)/(weight1+weight2);
         var is_boosting=agent2.is_boosting;
-        return new Agent(location,mass,health,is_boosting);
+        var has_shield=agent2.has_shield;
+        return new Agent(location,mass,health,is_boosting,has_shield);
     },function(agent){
-        return new Agent(agent.location,agent.mass,agent.health,agent.is_boosting);
+        return new Agent(agent.location,agent.mass,agent.health,agent.is_boosting,agent.has_shield);
     });
 
     var agent_properties=new Map(); // contains name and other static details
@@ -107,6 +109,8 @@ var DomGame=function(canvas,death_callback){
     });
     var current_agent_boost_streams=new Map(); //each element is (updated_time,array of offset,array of point,width) describing the movement at that point.  It is updated upon game tick.  Hopefully it doesnt get too slow.  Deletion is done in the process_message handler.
     var agent_boost_streams=[]; // each element is (updated_time,array of offset,array of point,width). Shares elements with current_agent_boost_streams.  Deletion is done in the drawing handler.
+    
+    var agent_shields=new Map(); // each element is (fade_start_time(optional=undefined)).  Addition and updating fade_start_time is done in the process_message handler, Deletion is done in the drawing handler.
 
     var leaderboard=[]; // each element is {display_name,score}
 
@@ -393,6 +397,48 @@ var DomGame=function(canvas,death_callback){
             ctx.fillText(display_name,agent.location.x,agent.location.y);
         },displayTime);
         ctx.restore();
+        
+        // shields
+        ctx.save();
+        agent_shields.forEach(function(agent_shield,agentid){
+            var agent=agents.get(agentid,displayTime);
+            if(agent){
+                var agent_radius=Math.sqrt(agent.mass);
+                var shield_radius=agent_radius+Math.sqrt(agent.mass);
+                if(agent_shield.fade_start_time){
+                    if(displayTime>agent_shield.fade_start_time){
+                        if(displayTime>=agent_shield.fade_start_time+1000){
+                            agent_shields.delete(agentid);
+                            return;
+                        }
+                        else{
+                            ctx.globalAlpha=(agent_shield.fade_start_time+1000-displayTime)/1000;
+                        }
+                    }
+                    else{
+                        ctx.globalAlpha=1;
+                    }
+                }
+                else{
+                    ctx.globalAlpha=1;
+                }
+                var shield_gradient=ctx.createRadialGradient(agent.location.x,agent.location.y,shield_radius-200,agent.location.x,agent.location.y,shield_radius+20);
+                shield_gradient.addColorStop(0/11,"rgba(255,255,255,0)");
+                shield_gradient.addColorStop(4/11,"rgba(255,255,255,0.1)");
+                shield_gradient.addColorStop(7/11,"rgba(255,255,255,0.25)");
+                shield_gradient.addColorStop(10/11,"rgba(255,255,255,0.5)");
+                shield_gradient.addColorStop(11/11,"rgba(255,255,255,0)");
+                ctx.fillStyle=shield_gradient;
+                ctx.beginPath();
+                ctx.arc(agent.location.x,agent.location.y,shield_radius+15,-Math.PI,Math.PI);
+                ctx.closePath();
+                ctx.fill();
+            }
+            else{
+                agent_shields.delete(agentid);
+            }
+        });
+        ctx.restore();
 
         ctx.restore();
 
@@ -417,7 +463,7 @@ var DomGame=function(canvas,death_callback){
     };
     var message_time_storage=[];
     var last_message_curr_location=undefined;
-    var boardsize=new Point(20000,20000);
+    var boardsize=new Point(80000,80000);
     //var last_message_time=undefined;
     var process_message=function(data){
         //var this_messsage_time=new Date().getTime();
@@ -591,6 +637,21 @@ var DomGame=function(canvas,death_callback){
             }
         });
         current_agent_boost_streams=new_current_agent_boost_streams;
+        
+        // shields
+        new_agents.forEach(function(agent,agentid){
+            // for boost animation:
+            if(agent.has_shield){
+                agent_shields.set(agentid,{fade_start_time:undefined});
+            }
+            else{
+                var agent_shield=agent_shields.get(agentid);
+                if(agent_shield&&!agent_shield.fade_start_time){
+                    agent_shield.fade_start_time=calculatedtime;
+                }
+            }
+        });
+        
 
 
 

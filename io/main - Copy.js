@@ -152,14 +152,7 @@ window.addEventListener("load",function(){
         }
         colors.push(get_title_random_color());
         text_parts.push(addn_name);
-        
         var draw=function(){
-            var prerender_canvas=document.createElement("canvas");
-            prerender_canvas.width=title_canvas.width;
-            prerender_canvas.height=title_canvas.height;
-            var prerender_ctx=prerender_canvas.getContext("2d");
-            
-            
             title_ctx.save();
             title_ctx.translate(additional_padding,additional_padding);
             
@@ -180,42 +173,6 @@ window.addEventListener("load",function(){
                 // fade in 1s, then change color 1s
                 var local_time_offset=time_offset-i*100;
                 
-                // special for 'i':
-                if(i===6){
-                    prerender_ctx.save();
-                    prerender_ctx.translate(additional_padding,additional_padding);
-                      prerender_ctx.scale(title_logical_width/drawing_width*canvas_device_pixel_scale,title_logical_width/drawing_width*canvas_device_pixel_scale);
-            
-                    prerender_ctx.clearRect(-additional_padding,-additional_padding,drawing_width+2*additional_padding,drawing_height+2*additional_padding);
-                    /*prerender_ctx.fillStyle="red";
-                    prerender_ctx.fillRect(-additional_padding,-additional_padding,drawing_width+2*additional_padding,drawing_height+2*additional_padding);*/
-
-                    prerender_ctx.textAlign="left";
-                    prerender_ctx.textBaseline="alphabetic";
-                    prerender_ctx.font="168px CandelaBold,sans-serif";
-                    if(local_time_offset<=1000){
-                        prerender_ctx.fillStyle=to_canvas_color(colors[i]);
-                    }
-                    else if(local_time_offset<2000){
-                        var fraction=(local_time_offset-1000)/1000;
-                        var this_color=to_canvas_color([colors[i][0]*(1-fraction)+255*fraction,colors[i][1]*(1-fraction)+255*fraction,colors[i][2]*(1-fraction)+255*fraction]);
-                        prerender_ctx.fillStyle=this_color;
-                    }
-                    else{
-                        prerender_ctx.fillStyle="white";
-                    }
-                    prerender_ctx.fillText(text_parts[i],char_offset_left,baseline_height);
-                    prerender_ctx.globalCompositeOperation="destination-out";
-                    prerender_ctx.fillStyle="black";
-                    prerender_ctx.beginPath();
-                    prerender_ctx.arc(462,49,12,-Math.PI,Math.PI);
-                    prerender_ctx.closePath();
-                    prerender_ctx.fill();
-                    prerender_ctx.restore();
-                }
-                
-                
-                
                 // shadows only
                 title_ctx.save();
                 title_ctx.shadowOffsetX=1000;
@@ -229,22 +186,19 @@ window.addEventListener("load",function(){
                     var this_color=to_canvas_color(colors[i]);
                     title_ctx.shadowBlur=20+(1000-local_time_offset)/8;
                     title_ctx.shadowColor=this_color;
-                    if(i!==6)title_ctx.fillText(text_parts[i],char_offset_left-1000,baseline_height-1000);
-                    else title_ctx.drawImage(prerender_canvas,-additional_padding-1000,-additional_padding-1000);
+                    title_ctx.fillText(text_parts[i],char_offset_left-1000,baseline_height-1000);
                 }
                 else if(local_time_offset<2000){
                     var fraction=(local_time_offset-1000)/1000;
                     var this_color=to_canvas_color([colors[i][0]*(1-fraction)+255*fraction,colors[i][1]*(1-fraction)+255*fraction,colors[i][2]*(1-fraction)+255*fraction]);
                     title_ctx.shadowBlur=20;
                     title_ctx.shadowColor=this_color;
-                    if(i!==6)title_ctx.fillText(text_parts[i],char_offset_left-1000,baseline_height-1000);
-                    else title_ctx.drawImage(prerender_canvas,-additional_padding-1000,-additional_padding-1000);
+                    title_ctx.fillText(text_parts[i],char_offset_left-1000,baseline_height-1000);
                 }
                 else{
                     title_ctx.shadowBlur=20;
                     title_ctx.shadowColor="white";
-                    if(i!==6)title_ctx.fillText(text_parts[i],char_offset_left-1000,baseline_height-1000);
-                    else title_ctx.drawImage(prerender_canvas,-additional_padding-1000,-additional_padding-1000);
+                    title_ctx.fillText(text_parts[i],char_offset_left-1000,baseline_height-1000);
                 }
                 title_ctx.restore();
                 
@@ -261,30 +215,27 @@ window.addEventListener("load",function(){
                     title_ctx.shadowOffsetY=1000;
                     title_ctx.shadowBlur=(1000-local_time_offset)/8;
                     title_ctx.shadowColor=this_color;
-                    if(i!==6)title_ctx.fillText(text_parts[i],char_offset_left-1000,baseline_height-1000);
-                    else title_ctx.drawImage(prerender_canvas,-additional_padding-1000,-additional_padding-1000);
+                    title_ctx.fillText(text_parts[i],char_offset_left-1000,baseline_height-1000);
                 }
                 else if(local_time_offset<2000){
                     var fraction=(local_time_offset-1000)/1000;
                     var this_color=to_canvas_color([colors[i][0]*(1-fraction)+255*fraction,colors[i][1]*(1-fraction)+255*fraction,colors[i][2]*(1-fraction)+255*fraction]);
                     title_ctx.fillStyle=this_color;
-                    if(i!==6)title_ctx.fillText(text_parts[i],char_offset_left,baseline_height);
-                    else title_ctx.drawImage(prerender_canvas,-additional_padding,-additional_padding);
+                    title_ctx.fillText(text_parts[i],char_offset_left,baseline_height);
                 }
                 else{
                     title_ctx.fillStyle="white";
-                    if(i!==6)title_ctx.fillText(text_parts[i],char_offset_left,baseline_height);
-                    else title_ctx.drawImage(prerender_canvas,-additional_padding,-additional_padding);
+                    title_ctx.fillText(text_parts[i],char_offset_left,baseline_height);
                 }
                 title_ctx.restore();
             }
             
             // glowing star
-            /*title_ctx.fillStyle="red";
+            title_ctx.fillStyle="red";
             title_ctx.beginPath();
             title_ctx.arc(462,49,12,-Math.PI,Math.PI);
             title_ctx.closePath();
-            title_ctx.fill();*/
+            title_ctx.fill();
             //var star_x=
             title_ctx.restore();
             return false;

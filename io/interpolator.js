@@ -59,7 +59,8 @@ InterpolatorMap.prototype.getData=function(time){ // returns map of data
 InterpolatorMap.prototype.get=function(key,time){
     if(!time)console.log("c1");
     time=time||new Date().getTime();
-    return this.map.get(key).get(time);
+    var val=this.map.get(key);
+    return ((val!==undefined)?val.get(time):undefined);
 };
 InterpolatorMap.prototype.forEach=function(callback,time){
     if(!time)console.log("c3");

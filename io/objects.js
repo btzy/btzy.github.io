@@ -213,15 +213,16 @@ Point.prototype.translateByDirection=function(angle,distance){
 
 
 
-var Agent=function(location,mass,health,is_boosting){
+var Agent=function(location,mass,health,is_boosting,has_shield){
     this.location=location||new Point(0,0);
     this.mass=mass||0;
     this.health=health||Agent.MAX_HEALTH;
     this.is_boosting=!!is_boosting;
+    this.has_shield=!!has_shield;
 };
 Agent.fromStream=function(stream){
-    if(stream instanceof TokenStream)return new Agent(Point.fromStream(stream),parseInt(stream.read(),10),parseInt(stream.read(),10),!!parseInt(stream.read(),10));
-    if(stream instanceof ByteReadStream)return new Agent(Point.fromStream(stream),stream.readInt64(),stream.readInt32(),stream.readBool());
+    if(stream instanceof TokenStream)return new Agent(Point.fromStream(stream),parseInt(stream.read(),10),parseInt(stream.read(),10),!!parseInt(stream.read(),10),!!parseInt(stream.read(),10));
+    if(stream instanceof ByteReadStream)return new Agent(Point.fromStream(stream),stream.readInt64(),stream.readInt32(),stream.readBool(),stream.readBool());
     throw new Error("Invalid stream!");
 };
 Agent.MAX_HEALTH=10;
