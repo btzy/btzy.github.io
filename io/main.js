@@ -114,12 +114,15 @@ window.addEventListener("load",function(){
     var baseline_height=150;
     var additional_padding=200; // logical width units
     var resize_handler=function(){
+        title_flexitem.style.height="200px";
+        
         title_logical_height=Math.min(title_flexitem.offsetHeight,drawing_height);
         title_logical_width=Math.min(title_flexitem.offsetWidth,title_logical_height*drawing_width/drawing_height);
         title_logical_height=Math.ceil(title_logical_width*drawing_height/drawing_width);
         
         canvas_clipper.style.width=title_logical_width+"px";
         canvas_clipper.style.height=title_logical_height+"px";
+        title_flexitem.style.height=title_logical_height+"px";
         title_canvas.style.width=(title_logical_width+additional_padding*2)+"px";
         title_canvas.style.height=(title_logical_height+additional_padding*2)+"px";
         title_canvas.style.left=-additional_padding+"px";
@@ -224,7 +227,7 @@ window.addEventListener("load",function(){
                 // shadows only
                 title_ctx.save();
                 // in drawing units
-                var offset_hide=(Math.max(drawing_width,drawing_height)+(additional_padding*drawing_width/title_logical_width)*2);/*1000;*/
+                var offset_hide=(Math.max(drawing_width,drawing_height)+(additional_padding*drawing_width/title_logical_width));/*1000;*/
                 title_ctx.shadowOffsetX=offset_hide*title_logical_width/drawing_width*canvas_device_pixel_scale;
                 title_ctx.shadowOffsetY=offset_hide*title_logical_width/drawing_width*canvas_device_pixel_scale;
                 console.log(offset_hide);
@@ -288,6 +291,36 @@ window.addEventListener("load",function(){
             }
             
             // glowing star
+            title_ctx.save();
+            title_ctx.translate(462,49);
+            if(time_offset<=700){
+                // do nothing
+            }
+            else if(time_offset<2200){
+                var st_radius=100;
+                
+                // angle:-60 to -30:
+                var st_start=-60*Math.PI*180;
+                var st_end=-30*Math.PI*180;
+                
+                var mid_x=Math.cos(st_start)*st_radius;
+                var mid_y=Math.sin(st_start)*st_radius;
+                
+                var fraction=Math.sin((time_offset-700)/(2200-700)*Math.PI/2);
+                
+                var current_angle=st_start*(1-fraction)+st_end*fraction;
+                
+                var curr_x=mid_x-Math.cos(current_angle)*st_radius;
+                var curr_y=mid_y-Math.sin(current_angle)*st_radius;
+                
+                
+            }
+            else{
+                
+            }
+            title_ctx.restore();
+            //var star_gradient=title_ctx.createRadialGradient()
+            
             title_ctx.fillStyle="red";
             title_ctx.beginPath();
             title_ctx.arc(462,49,12,-Math.PI,Math.PI);
