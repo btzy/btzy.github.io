@@ -391,7 +391,7 @@ window.addEventListener("load",function(){
     
     // mouse or touch autodetect:
     var autodetector=function(e){
-        if(e instanceof TouchEvent){
+        if(e.type==="touchstart"){
             interactionlist.forEach.call(function(el){
                 el.classList.remove("visible");
             });
