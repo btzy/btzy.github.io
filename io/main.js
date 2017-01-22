@@ -140,7 +140,7 @@ window.addEventListener("load",function(){
         return "rgb("+Math.round(color_arr[0]).toString()+","+Math.round(color_arr[1]).toString()+","+Math.round(color_arr[2]).toString()+")";
     };
     var to_canvas_color_with_alpha=function(color_arr){
-        return "rgb("+Math.round(color_arr[0]).toString()+","+Math.round(color_arr[1]).toString()+","+Math.round(color_arr[2]).toString()+","+color_arr[3].toString()+")";
+        return "rgba("+Math.round(color_arr[0]).toString()+","+Math.round(color_arr[1]).toString()+","+Math.round(color_arr[2]).toString()+","+color_arr[3].toString()+")";
     };
     var restart_title_animation=function(){
         if(title_animrequest_id)window.cancelAnimationFrame(title_animrequest_id);
@@ -230,7 +230,6 @@ window.addEventListener("load",function(){
                 var offset_hide=(Math.max(drawing_width,drawing_height)+(additional_padding*drawing_width/title_logical_width));/*1000;*/
                 title_ctx.shadowOffsetX=offset_hide*title_logical_width/drawing_width*canvas_device_pixel_scale;
                 title_ctx.shadowOffsetY=offset_hide*title_logical_width/drawing_width*canvas_device_pixel_scale;
-                console.log(offset_hide);
                 if(local_time_offset<=0){
                     // don't do anything as this character shouldn't come out yet.
                 }
@@ -293,6 +292,7 @@ window.addEventListener("load",function(){
             // glowing star
             title_ctx.save();
             title_ctx.translate(462,49);
+            var star_color=[255,255,128];
             if(time_offset<=700){
                 // do nothing
             }
@@ -300,32 +300,54 @@ window.addEventListener("load",function(){
                 var st_radius=100;
                 
                 // angle:-60 to -30:
-                var st_start=-60*Math.PI*180;
-                var st_end=-30*Math.PI*180;
+                var st_start=-60*Math.PI/180;
+                var st_end=-30*Math.PI/180;
                 
-                var mid_x=Math.cos(st_start)*st_radius;
-                var mid_y=Math.sin(st_start)*st_radius;
+                var mid_x=-Math.cos(st_end)*st_radius;
+                var mid_y=-Math.sin(st_end)*st_radius;
                 
                 var fraction=Math.sin((time_offset-700)/(2200-700)*Math.PI/2);
                 
                 var current_angle=st_start*(1-fraction)+st_end*fraction;
                 
-                var curr_x=mid_x-Math.cos(current_angle)*st_radius;
-                var curr_y=mid_y-Math.sin(current_angle)*st_radius;
+                var curr_x=mid_x+Math.cos(current_angle)*st_radius;
+                var curr_y=mid_y+Math.sin(current_angle)*st_radius;
                 
+                var fraction_linear=(time_offset-700)/(2200-700);
                 
+                var st_gradient=title_ctx.createRadialGradient(curr_x,curr_y,0,curr_x,curr_y,fraction_linear*50);
+                st_gradient.addColorStop(0,to_canvas_color_with_alpha([star_color[0],star_color[1],star_color[2],Math.min(fraction_linear*2,1)]));
+                st_gradient.addColorStop(0.1,to_canvas_color_with_alpha([star_color[0],star_color[1],star_color[2],Math.min(fraction_linear*2,1)]));
+                st_gradient.addColorStop(0.4,to_canvas_color_with_alpha([star_color[0],star_color[1],star_color[2],Math.min(fraction_linear*2,1)*0.7]));
+                st_gradient.addColorStop(0.7,to_canvas_color_with_alpha([star_color[0],star_color[1],star_color[2],Math.min(fraction_linear*2,1)*0.3]));
+                st_gradient.addColorStop(1,to_canvas_color_with_alpha([star_color[0],star_color[1],star_color[2],0]));
+                title_ctx.fillStyle=st_gradient;
+                title_ctx.beginPath();
+                title_ctx.arc(curr_x,curr_y,fraction_linear*50,-Math.PI,Math.PI);
+                title_ctx.closePath();
+                title_ctx.fill();
             }
             else{
-                
+                var st_gradient=title_ctx.createRadialGradient(0,0,0,0,0,50);
+                st_gradient.addColorStop(0,to_canvas_color_with_alpha([star_color[0],star_color[1],star_color[2],1]));
+                st_gradient.addColorStop(0.1,to_canvas_color_with_alpha([star_color[0],star_color[1],star_color[2],1]));
+                st_gradient.addColorStop(0.4,to_canvas_color_with_alpha([star_color[0],star_color[1],star_color[2],0.7]));
+                st_gradient.addColorStop(0.7,to_canvas_color_with_alpha([star_color[0],star_color[1],star_color[2],0.3]));
+                st_gradient.addColorStop(1,to_canvas_color_with_alpha([star_color[0],star_color[1],star_color[2],0]));
+                title_ctx.fillStyle=st_gradient;
+                title_ctx.beginPath();
+                title_ctx.arc(0,0,50,-Math.PI,Math.PI);
+                title_ctx.closePath();
+                title_ctx.fill();
             }
             title_ctx.restore();
             //var star_gradient=title_ctx.createRadialGradient()
             
-            title_ctx.fillStyle="red";
+            /*title_ctx.fillStyle="red";
             title_ctx.beginPath();
             title_ctx.arc(462,49,12,-Math.PI,Math.PI);
             title_ctx.closePath();
-            title_ctx.fill();
+            title_ctx.fill();*/
             //var star_x=
             title_ctx.restore();
             return false;
