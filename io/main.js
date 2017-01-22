@@ -371,7 +371,7 @@ window.addEventListener("load",function(){
     // interaction mode options
     var interactionmode_el=document.getElementById("interactionmode");
     var interactionlist=[];
-    Array.prototype.findIndex.call(interactionmode_el.childNodes,function(el){
+    Array.prototype.forEach.call(interactionmode_el.childNodes,function(el){
         if(el.nodeType===1&&el.tagName==="SPAN"&&el.classList.contains("interactionoption")){
             interactionlist.push(el);
         }
