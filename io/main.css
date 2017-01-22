@@ -9,6 +9,7 @@ html{
     /*position:relative;*/
     overflow:hidden;
     position:fixed;
+    touch-action:none;
 }
 body{
     height:100%;
@@ -19,6 +20,7 @@ body{
     position:relative;
     overflow:hidden;
     position:fixed;
+    touch-action:none;
 }
 .full-screen-panel{
     display:block;
