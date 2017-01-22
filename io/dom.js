@@ -2,7 +2,7 @@
 var DomGame=function(canvas,death_callback){
     var canvas_scale=Math.sqrt(canvas.width*canvas.height);
     var resize_handler=function(){
-        canvas_device_pixel_scale=window.devicePixelRatio;
+        canvas_device_pixel_scale=window.devicePixelRatio||1;
         logical_width=canvas.offsetWidth;
         logical_height=canvas.offsetHeight;
         canvas.width=logical_width*canvas_device_pixel_scale;

@@ -106,7 +106,7 @@ window.addEventListener("load",function(){
     var canvas_clipper=document.getElementById("canvas-clipper");
     var title_canvas=document.getElementById("title-canvas");
     var title_ctx=title_canvas.getContext("2d");
-    var canvas_device_pixel_scale=window.devicePixelRatio;
+    var canvas_device_pixel_scale=window.devicePixelRatio||1;
     var title_logical_width;
     var title_logical_height;
     var drawing_width=600;
@@ -180,7 +180,7 @@ window.addEventListener("load",function(){
                 // fade in 1s, then change color 1s
                 var local_time_offset=time_offset-i*100;
                 
-                // special for 'i':
+                // special for 'i' to remove the dot:
                 if(i===6){
                     prerender_ctx.save();
                     prerender_ctx.translate(additional_padding,additional_padding);
@@ -280,11 +280,11 @@ window.addEventListener("load",function(){
             }
             
             // glowing star
-            /*title_ctx.fillStyle="red";
+            title_ctx.fillStyle="red";
             title_ctx.beginPath();
             title_ctx.arc(462,49,12,-Math.PI,Math.PI);
             title_ctx.closePath();
-            title_ctx.fill();*/
+            title_ctx.fill();
             //var star_x=
             title_ctx.restore();
             return false;
