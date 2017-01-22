@@ -1,5 +1,6 @@
 // TODO: scale name and leaderboard by sqrt of distance instead.
-var DomGame=function(canvas,death_callback){
+// options: {showtouchcontrols:bool, touchcontrolsonright:bool}
+var DomGame=function(canvas,options,death_callback){
     var canvas_scale=Math.sqrt(canvas.width*canvas.height);
     var resize_handler=function(){
         canvas_device_pixel_scale=window.devicePixelRatio||1;
@@ -14,45 +15,6 @@ var DomGame=function(canvas,death_callback){
         process_movement_dir_update(new Point(e.clientX,e.clientY));
     };
     var override_actions=false;
-    /*var mouseDown=false;
-    var spaceDown=false;
-    var mousedown_handler=function(e){
-        if(!override_actions){
-            if(!mouseDown&&e.button===0)process_firing_update(new Point(e.clientX,e.clientY),mouseDown=true);
-            if(!spaceDown&&e.button===2)process_boosting_update(spaceDown=true);
-        }
-    };
-    var mouseup_handler=function(e){
-        if(!override_actions){
-            if(mouseDown&&e.button===0)process_firing_update(new Point(e.clientX,e.clientY),mouseDown=false);
-            if(spaceDown&&e.button===2)process_boosting_update(spaceDown=false);
-        }
-        else{
-            if(death_callback){
-                death_callback();
-                death_callback=undefined;
-            }
-            setTimeout(function(){
-                socket.close();
-            },1000);
-        }
-    };
-    var keydown_handler=function(e){
-        switch(e.key){
-            case " ":
-            case "Spacebar":
-                if(!spaceDown)process_boosting_update(spaceDown=true);
-                break;
-        }
-    };
-    var keyup_handler=function(e){
-        switch(e.key){
-            case " ":
-            case "Spacebar": // some older browsers return "Spacebar" instead of " ".
-                if(spaceDown)process_boosting_update(spaceDown=false);
-                break;
-        }
-    };*/
     var mousedown_handler=function(e){
         if(!override_actions){
             if(e.button===0)process_firing_update(new Point(e.clientX,e.clientY),true);
@@ -74,20 +36,62 @@ var DomGame=function(canvas,death_callback){
             },1000);
         }
     };
+    var mouseout_handler=function(e){
+        if(!override_actions){
+            process_firing_update(new Point(e.clientX,e.clientY),false);
+            process_boosting_update(false);
+        }
+    };
+    var ongoingMovementDirTouchID,ongoingFiringTouchID,ongoingBoostingTouchID;
+    var touchstart_handler=function(e){
+        var movementTouch=Array.prototype.find.call(e.touches,function(touch){
+            return true; // TODO: ignore areas for firing and boosting.
+        });
+        if(movementTouch)ongoingMovementDirTouchID=movementTouch.identifier;
+        e.preventDefault();
+    };
+    var touchend_handler=function(e){
+        if(ongoingMovementDirTouchID){
+            var movementTouch=Array.prototype.find.call(e.touches,function(touch){
+                return touch.identifier===ongoingMovementDirTouchID;
+            });
+            if(!movementTouch)ongoingMovementDirTouchID=undefined;
+        }
+        e.preventDefault();
+    };
+    var touchcancel_handler=function(e){
+        touchend_handler(e); // react as if it is a touchend.
+        e.preventDefault();
+    };
+    var touchmove_handler=function(e){
+        if(ongoingMovementDirTouchID){
+            var movementTouch=Array.prototype.find.call(e.touches,function(touch){
+                return touch.identifier===ongoingMovementDirTouchID;
+            });
+            if(movementTouch){
+                process_movement_dir_update(new Point(movementTouch.clientX,movementTouch.clientY));
+            }
+        }
+        e.preventDefault();
+    };
     var keydown_handler=function(e){
-        switch(e.key){
-            case " ":
-            case "Spacebar":
-                process_boosting_update(true);
-                break;
+        if(!override_actions){
+            switch(e.key){
+                case " ":
+                case "Spacebar":
+                    process_boosting_update(true);
+                    break;
+            }
         }
     };
     var keyup_handler=function(e){
-        switch(e.key){
-            case " ":
-            case "Spacebar": // some older browsers return "Spacebar" instead of " ".
-                process_boosting_update(false);
-                break;
+        if(!override_actions){
+            switch(e.key){
+                case " ":
+                case "Spacebar": // some older browsers return "Spacebar" instead of " ".
+                    process_boosting_update(false);
+                    break;
+            }
         }
     };
     var client_area=new ChangeLimitedDelayEngine(function(prev_area,target_area,time_diff){
@@ -186,6 +190,7 @@ var DomGame=function(canvas,death_callback){
         canvas.addEventListener("mousemove",mousemove_handler);
         canvas.addEventListener("mousedown",mousedown_handler);
         canvas.addEventListener("mouseup",mouseup_handler);
+        canvas.addEventListener("mouseout",mouseout_handler);
         window.addEventListener("keydown",keydown_handler);
         window.addEventListener("keyup",keyup_handler);
         // disable context menu
@@ -241,6 +246,7 @@ var DomGame=function(canvas,death_callback){
         window.cancelAnimationFrame(anim_request);
         window.removeEventListener("keyup",keyup_handler);
         window.removeEventListener("keydown",keydown_handler);
+        canvas.removeEventListener("mouseout",mouseout_handler);
         canvas.removeEventListener("mouseup",mouseup_handler);
         canvas.removeEventListener("mousedown",mousedown_handler);
         window.removeEventListener("resize",resize_handler);
@@ -790,14 +796,18 @@ var DomGame=function(canvas,death_callback){
         }
     };
 
-    var process_firing_update=function(pt,is_held){
-        current_firing=is_held;
-        send_update_to_server();
+    var process_firing_update=function(pt,state){
+        if(current_firing!==state){
+            current_firing=state;
+            send_update_to_server();
+        }
     };
 
-    var process_boosting_update=function(is_held){
-        current_boosting=is_held;
-        send_update_to_server();
+    var process_boosting_update=function(state){
+        if(current_boosting!==state){
+            current_boosting=state;
+            send_update_to_server();
+        }
     };
 };
 DomGame.prototype.start=function(remote_endpoint,display_name){

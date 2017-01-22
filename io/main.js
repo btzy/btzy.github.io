@@ -367,6 +367,43 @@ window.addEventListener("load",function(){
         fontsloadedcallbacks.push(restart_title_animation);
     }
     
+    
+    // interaction mode options
+    var interactionmode_el=document.getElementById("interactionmode");
+    var interactionlist=[];
+    Array.prototype.findIndex.call(interactionmode_el.childNodes,function(el){
+        if(el.nodeType===1&&el.tagName==="SPAN"&&el.classList.contains("interactionoption")){
+            interactionlist.push(el);
+        }
+    });
+    interactionmode_el.addEventListener("click",function(e){
+        var visibleindex=interactionlist.findIndex(function(el){
+            return el.classList.contains("visible");
+        });
+        interactionlist.forEach(function(el){
+            el.classList.remove("visible");
+        });
+        if(visibleindex!==-1){
+            interactionlist[(visibleindex+1)%interactionlist.length].classList.add("visible");
+        }
+    });
+    
+    
+    // mouse or touch autodetect:
+    var autodetector=function(e){
+        if(e instanceof TouchEvent){
+            interactionlist.forEach.call(function(el){
+                el.classList.remove("visible");
+            });
+            document.getElementById("touchdefault").classList.add("visible");
+        }
+        window.removeEventListener("mousedown",autodetector);
+        window.removeEventListener("touchstart",autodetector);
+    };
+    window.addEventListener("mousedown",autodetector);
+    window.addEventListener("touchstart",autodetector);
+    
+    
     // font loader:
     var fontLoader=new FontLoader(["CandelaBold:n7"],{
         "complete": function(error){

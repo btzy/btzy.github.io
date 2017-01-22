@@ -148,9 +148,9 @@ body{
 #interactionmode{
     cursor:pointer;
 }
-#interactionmode>span{
+#interactionmode>span.interactionoption{
     color:rgb(255,255,128);
 }
-#interactionmode>span:not(.visible){
+#interactionmode>span.interactionoption:not(.visible){
     display:none;
 }
