@@ -11,21 +11,21 @@ var DomGame=function(canvas,death_callback){
         send_dimensions_to_server();
     };
     var mousemove_handler=function(e){
-        process_mousemove(new Point(e.clientX,e.clientY));
+        process_movement_dir_update(new Point(e.clientX,e.clientY));
     };
-    var override_mousedown=false;
-    var mouseDown=false;
+    var override_actions=false;
+    /*var mouseDown=false;
     var spaceDown=false;
     var mousedown_handler=function(e){
-        if(!override_mousedown){
-            if(!mouseDown&&e.button===0)process_mouseheld(new Point(e.clientX,e.clientY),mouseDown=true);
-            if(!spaceDown&&e.button===2)process_spaceheld(spaceDown=true);
+        if(!override_actions){
+            if(!mouseDown&&e.button===0)process_firing_update(new Point(e.clientX,e.clientY),mouseDown=true);
+            if(!spaceDown&&e.button===2)process_boosting_update(spaceDown=true);
         }
     };
     var mouseup_handler=function(e){
-        if(!override_mousedown){
-            if(mouseDown&&e.button===0)process_mouseheld(new Point(e.clientX,e.clientY),mouseDown=false);
-            if(spaceDown&&e.button===2)process_spaceheld(spaceDown=false);
+        if(!override_actions){
+            if(mouseDown&&e.button===0)process_firing_update(new Point(e.clientX,e.clientY),mouseDown=false);
+            if(spaceDown&&e.button===2)process_boosting_update(spaceDown=false);
         }
         else{
             if(death_callback){
@@ -41,7 +41,7 @@ var DomGame=function(canvas,death_callback){
         switch(e.key){
             case " ":
             case "Spacebar":
-                if(!spaceDown)process_spaceheld(spaceDown=true);
+                if(!spaceDown)process_boosting_update(spaceDown=true);
                 break;
         }
     };
@@ -49,7 +49,44 @@ var DomGame=function(canvas,death_callback){
         switch(e.key){
             case " ":
             case "Spacebar": // some older browsers return "Spacebar" instead of " ".
-                if(spaceDown)process_spaceheld(spaceDown=false);
+                if(spaceDown)process_boosting_update(spaceDown=false);
+                break;
+        }
+    };*/
+    var mousedown_handler=function(e){
+        if(!override_actions){
+            if(e.button===0)process_firing_update(new Point(e.clientX,e.clientY),true);
+            if(e.button===2)process_boosting_update(true);
+        }
+    };
+    var mouseup_handler=function(e){
+        if(!override_actions){
+            if(e.button===0)process_firing_update(new Point(e.clientX,e.clientY),false);
+            if(e.button===2)process_boosting_update(false);
+        }
+        else{
+            if(death_callback){
+                death_callback();
+                death_callback=undefined;
+            }
+            setTimeout(function(){
+                socket.close();
+            },1000);
+        }
+    };
+    var keydown_handler=function(e){
+        switch(e.key){
+            case " ":
+            case "Spacebar":
+                process_boosting_update(true);
+                break;
+        }
+    };
+    var keyup_handler=function(e){
+        switch(e.key){
+            case " ":
+            case "Spacebar": // some older browsers return "Spacebar" instead of " ".
+                process_boosting_update(false);
                 break;
         }
     };
@@ -128,9 +165,9 @@ var DomGame=function(canvas,death_callback){
     
     var my_agentid=undefined;
     //var current_mouse_pos=new Point(0,0);
-    var current_mouse_dir=null;
-    var current_mouse_held=false;
-    var current_space_held=false;
+    var current_movement_dir=null;
+    var current_firing=false;
+    var current_boosting=false;
     var message_period=100; // 100 ms per update from server
     var displayTime=undefined; // last rendered time
     var socket;
@@ -182,11 +219,11 @@ var DomGame=function(canvas,death_callback){
                 console.log(e.message);
             });
             socket.addEventListener("message",function(e){
-                //process_message(e.data);
+                process_message(e.data);
                 // lag test:
-                setTimeout(function(){
+                /*setTimeout(function(){
                     process_message(e.data);
-                },150+Math.random()*100);
+                },150+Math.random()*100);*/
             });
             socket.addEventListener("close",function(e){
                 console.log("Connection terminated. (Code: "+e.code+", reason: "+e.reason+")");
@@ -674,7 +711,7 @@ var DomGame=function(canvas,death_callback){
     var process_death=function(stream){
         is_alive=false;
         my_agentid=undefined;
-        override_mousedown=true;
+        override_actions=true;
         
         setTimeout(function(){
             if(death_callback){
@@ -729,43 +766,37 @@ var DomGame=function(canvas,death_callback){
             // the first '1' in the message denotes 'action'
             var stream=new ByteWriteStream();
             stream.writeUint8(1);
-            stream.writeBool(current_mouse_dir!==null);
-            stream.writeBool(current_mouse_held);
-            if(current_mouse_dir!==null){
-                stream.writeBool(current_space_held);
-                stream.writeInt16(Math.round(current_mouse_dir*((360*60)/(2*Math.PI))));
+            stream.writeBool(current_movement_dir!==null);
+            stream.writeBool(current_firing);
+            if(current_movement_dir!==null){
+                stream.writeBool(current_boosting);
+                stream.writeInt16(Math.round(current_movement_dir*((360*60)/(2*Math.PI))));
             }
             socket.send(stream.getBuffer());
-            /*if(current_mouse_dir===null&&current_mouse_held===false){
-                socket.send("1 0 0");
-            }
-            else{
-                socket.send("1 "+((current_mouse_dir!==null)?"1":"0")+" "+(current_mouse_held?"1":"0")+((current_mouse_dir!==null)?(" "+(current_space_held?"1":"0")+" "+current_mouse_dir.toString()):""));
-            }*/
         }
     };
 
-    var process_mousemove=function(pt){
+    var process_movement_dir_update=function(pt){
         if(is_alive&&displayTime){
             var current_mouse_pos=pt;
             var centerpoint=new Point(logical_width/2,logical_height/2);
             if(current_mouse_pos.distanceFrom(centerpoint)<Math.sqrt(agents.get(my_agentid,displayTime).mass)/Math.sqrt(client_area.get(displayTime))*canvas_scale){
-                current_mouse_dir=null;
+                current_movement_dir=null;
             }
             else{
-                current_mouse_dir=current_mouse_pos.angleFrom(centerpoint);
+                current_movement_dir=current_mouse_pos.angleFrom(centerpoint);
             }
             send_update_to_server();
         }
     };
 
-    var process_mouseheld=function(pt,is_held){
-        current_mouse_held=is_held;
+    var process_firing_update=function(pt,is_held){
+        current_firing=is_held;
         send_update_to_server();
     };
 
-    var process_spaceheld=function(is_held){
-        current_space_held=is_held;
+    var process_boosting_update=function(is_held){
+        current_boosting=is_held;
         send_update_to_server();
     };
 };

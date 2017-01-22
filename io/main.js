@@ -1,7 +1,9 @@
 // browser support required: WebSockets (binary data), ArrayBuffer, requestAnimationFrame, canvas, KeyboardEvent, classList, flexbox
 // supported browsers: IE 11, Edge latest, Firefox latest, Chrome latest, Safari latest, Opera latest, iOS Safari latest, Chrome android latest, Firefox android latest, IE Mobile 11
 // TODO: need a fallback for globalCompositionOperation='difference', which is not supported in IE11
-// TODO: add front page and help
+// TODO: add help
+// TODO: blur for title
+// TODO: simple mobile support
 
 var fontsloaded=false;
 var fontsloadedcallbacks=[];
