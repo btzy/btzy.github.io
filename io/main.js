@@ -161,11 +161,14 @@ window.addEventListener("load",function(){
             
             
             title_ctx.save();
+            
+            title_ctx.clearRect(0,0,(title_logical_width+additional_padding*2)*canvas_device_pixel_scale,(title_logical_height+additional_padding*2)*canvas_device_pixel_scale);
+            
             title_ctx.translate(additional_padding,additional_padding);
             
             title_ctx.scale(title_logical_width/drawing_width*canvas_device_pixel_scale,title_logical_width/drawing_width*canvas_device_pixel_scale);
             
-            title_ctx.clearRect(-additional_padding,-additional_padding,drawing_width+2*additional_padding,drawing_height+2*additional_padding);
+            
             
             title_ctx.textAlign="left";
             title_ctx.textBaseline="alphabetic";
