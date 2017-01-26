@@ -47,7 +47,10 @@ var DomGame=function(canvas,options,death_callback){
         var movementTouch=Array.prototype.find.call(e.touches,function(touch){
             return true; // TODO: ignore areas for firing and boosting.
         });
-        if(movementTouch)ongoingMovementDirTouchID=movementTouch.identifier;
+        if(movementTouch){
+            ongoingMovementDirTouchID=movementTouch.identifier;
+            process_movement_dir_update(new Point(movementTouch.clientX,movementTouch.clientY));
+        }
         e.preventDefault();
     };
     var touchend_handler=function(e){
