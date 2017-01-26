@@ -51,7 +51,7 @@ var DomGame=function(canvas,options,death_callback){
         e.preventDefault();
     };
     var touchend_handler=function(e){
-        if(ongoingMovementDirTouchID){
+        if(ongoingMovementDirTouchID!==undefined){
             var movementTouch=Array.prototype.find.call(e.touches,function(touch){
                 return touch.identifier===ongoingMovementDirTouchID;
             });
@@ -64,7 +64,7 @@ var DomGame=function(canvas,options,death_callback){
         e.preventDefault();
     };
     var touchmove_handler=function(e){
-        if(ongoingMovementDirTouchID){
+        if(ongoingMovementDirTouchID!==undefined){
             var movementTouch=Array.prototype.find.call(e.touches,function(touch){
                 return touch.identifier===ongoingMovementDirTouchID;
             });
