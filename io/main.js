@@ -393,7 +393,7 @@ window.addEventListener("load",function(){
     var autodetector=function(e){
         alert(e.type);
         if(e.type==="touchstart"){
-            interactionlist.forEach.call(function(el){
+            interactionlist.forEach(function(el){
                 el.classList.remove("visible");
             });
             document.getElementById("touchdefault").classList.add("visible");
