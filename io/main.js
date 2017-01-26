@@ -391,6 +391,7 @@ window.addEventListener("load",function(){
     
     // mouse or touch autodetect:
     var autodetector=function(e){
+        alert(e.type);
         if(e.type==="touchstart"){
             interactionlist.forEach.call(function(el){
                 el.classList.remove("visible");
@@ -400,8 +401,8 @@ window.addEventListener("load",function(){
         window.removeEventListener("mousedown",autodetector);
         window.removeEventListener("touchstart",autodetector);
     };
-    window.addEventListener("mousedown",autodetector);
     window.addEventListener("touchstart",autodetector);
+    window.addEventListener("mousedown",autodetector);
     
     
     // font loader:
