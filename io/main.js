@@ -78,7 +78,8 @@ window.addEventListener("load",function(){
                         name_textbox.blur();
                         if(dom_game)dom_game.stop();
                         var do_start=function(){
-                            dom_game=new DomGame(canvas,death_callback);
+                            var options={touch:document.getElementsByClassName("visible")[0].classList.contains("touch"),opposite:document.getElementsByClassName("visible")[0].classList.contains("opposite")};
+                            dom_game=new DomGame(canvas,options,death_callback);
                             dom_game.start(chosen_endpoint,name_textbox.value);
                             document.getElementById("welcome-panel").classList.add("hidden");
                         }
@@ -391,7 +392,6 @@ window.addEventListener("load",function(){
     
     // mouse or touch autodetect:
     var autodetector=function(e){
-        alert(e.type);
         if(e.type==="touchstart"){
             interactionlist.forEach(function(el){
                 el.classList.remove("visible");
