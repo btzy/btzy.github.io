@@ -9,6 +9,9 @@ var fontsloaded=false;
 var fontsloadedcallbacks=[];
 
 
+var hasGlobalCompositeOperationDifference=true;
+
+
 window.addEventListener("load",function(){
     var canvas=document.getElementById("main-canvas");
     var death_callback=function(){
@@ -78,7 +81,7 @@ window.addEventListener("load",function(){
                         name_textbox.blur();
                         if(dom_game)dom_game.stop();
                         var do_start=function(){
-                            var options={touch:document.getElementsByClassName("visible")[0].classList.contains("touch"),opposite:document.getElementsByClassName("visible")[0].classList.contains("opposite")};
+                            var options={touch:document.getElementsByClassName("visible")[0].classList.contains("touch"),opposite:document.getElementsByClassName("visible")[0].classList.contains("opposite"),compositeDifference:hasGlobalCompositeOperationDifference};
                             dom_game=new DomGame(canvas,options,death_callback);
                             dom_game.start(chosen_endpoint,name_textbox.value);
                             document.getElementById("welcome-panel").classList.add("hidden");

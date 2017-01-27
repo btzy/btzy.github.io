@@ -51,7 +51,7 @@ var DomGame=function(canvas,options,death_callback){
             ongoingMovementDirTouchID=movementTouch.identifier;
             process_movement_dir_update(new Point(movementTouch.clientX,movementTouch.clientY));
         }
-        e.preventDefault();
+        //e.preventDefault();
     };
     var touchend_handler=function(e){
         if(ongoingMovementDirTouchID!==undefined){
@@ -60,11 +60,11 @@ var DomGame=function(canvas,options,death_callback){
             });
             if(!movementTouch)ongoingMovementDirTouchID=undefined;
         }
-        e.preventDefault();
+        //e.preventDefault();
     };
     var touchcancel_handler=function(e){
         touchend_handler(e); // react as if it is a touchend.
-        e.preventDefault();
+        //e.preventDefault();
     };
     var touchmove_handler=function(e){
         if(ongoingMovementDirTouchID!==undefined){
@@ -75,7 +75,7 @@ var DomGame=function(canvas,options,death_callback){
                 process_movement_dir_update(new Point(movementTouch.clientX,movementTouch.clientY));
             }
         }
-        e.preventDefault();
+        //e.preventDefault();
     };
     var keydown_handler=function(e){
         if(!override_actions){
