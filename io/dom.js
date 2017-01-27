@@ -246,6 +246,10 @@ var DomGame=function(canvas,options,death_callback){
             socket.addEventListener("close",function(e){
                 console.log("Connection terminated. (Code: "+e.code+", reason: "+e.reason+")");
             });
+            ctx.mozImageSmoothingEnabled=false;
+            ctx.webkitImageSmoothingEnabled=false;
+            ctx.msImageSmoothingEnabled=false;
+            ctx.imageSmoothingEnabled=false;
             ctx.fillStyle="black";
             ctx.fillRect(0,0,width,height);
         }
