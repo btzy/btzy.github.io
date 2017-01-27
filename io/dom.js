@@ -2,7 +2,7 @@
 // options: {showtouchcontrols:bool, touchcontrolsonright:bool}
 var DomGame=function(canvas,options,death_callback){
     var canvas_scale=Math.sqrt(canvas.width*canvas.height);
-    var prerendered_boost_button_canvas;
+    
     var resize_handler=function(){
         canvas_device_pixel_scale=window.devicePixelRatio||1;
         logical_width=canvas.offsetWidth;
@@ -12,6 +12,7 @@ var DomGame=function(canvas,options,death_callback){
         canvas_scale=Math.sqrt(logical_width*logical_height);
         send_dimensions_to_server();
         prerendered_boost_button_canvas=undefined;
+        prerendered_fire_button_canvas=undefined;
     };
     var mousemove_handler=function(e){
         process_movement_dir_update(new Point(e.clientX,e.clientY));
@@ -293,6 +294,9 @@ var DomGame=function(canvas,options,death_callback){
         }
         return best;
     };
+    
+    var prerendered_boost_button_canvas;
+    var prerendered_fire_button_canvas;
 
     var draw=function(ctx){
         if(!centre_loc.currTime)return; // don't draw anything if no data has been received from server yet.
@@ -535,15 +539,24 @@ var DomGame=function(canvas,options,death_callback){
         
         // boost button
         ctx.save();
-        ctx.translate(24,logical_height-96-24);
-        
+        ctx.translate(12,logical_height-96-12);
         if(!prerendered_boost_button_canvas){
             prerendered_boost_button_canvas=document.createElement("canvas");
-            prerendered_boost_button_canvas.width=96*canvas_device_pixel_scale;
-            prerendered_boost_button_canvas.height=96*canvas_device_pixel_scale;
+            prerendered_boost_button_canvas.width=(96+24)*canvas_device_pixel_scale;
+            prerendered_boost_button_canvas.height=(96+24)*canvas_device_pixel_scale;
             var prerender_ctx=prerendered_boost_button_canvas.getContext("2d");
             prerender_ctx.scale(canvas_device_pixel_scale,canvas_device_pixel_scale);
-            prerender_ctx.translate(48,48);
+            prerender_ctx.translate(48+12,48+12);
+            
+            // black background
+            var button_background_gradient=prerender_ctx.createRadialGradient(0,0,48,0,0,48+12);
+            button_background_gradient.addColorStop(0,"rgba(0,0,0,0.5)");
+            button_background_gradient.addColorStop(1,"rgba(0,0,0,0)");
+            prerender_ctx.fillStyle=button_background_gradient;
+            prerender_ctx.beginPath();
+            prerender_ctx.arc(0,0,48+12,-Math.PI,Math.PI);
+            prerender_ctx.closePath();
+            prerender_ctx.fill();
             
             var boost_angle=-30*Math.PI/180;
         
@@ -592,7 +605,7 @@ var DomGame=function(canvas,options,death_callback){
                         var ay=(arr[index-1].y+pt.y)/2;
                         var bx=(arr[index+1].x+pt.x)/2;
                         var by=(arr[index+1].y+pt.y)/2;
-                        var boost_linearGradient=ctx.createLinearGradient(ax,ay,bx,by);
+                        var boost_linearGradient=prerender_ctx.createLinearGradient(ax,ay,bx,by);
                         boost_linearGradient.addColorStop(0,"rgba(255,255,255,"+((1-(index-0.5)/16)/2)+")");
                         boost_linearGradient.addColorStop(1,"rgba(255,255,255,"+((1-(index+0.5)/16)/2)+")");
                         prerender_ctx.strokeStyle=boost_linearGradient;
@@ -605,7 +618,7 @@ var DomGame=function(canvas,options,death_callback){
             });
 
             // button agent
-            var button_agent_hole_gradient=ctx.createRadialGradient(0,0,12,0,0,18);
+            var button_agent_hole_gradient=prerender_ctx.createRadialGradient(0,0,12,0,0,18);
             button_agent_hole_gradient.addColorStop(0,"rgba(255,255,255,1)");
             button_agent_hole_gradient.addColorStop(0.33,"rgba(255,255,255,0.7)");
             button_agent_hole_gradient.addColorStop(0.67,"rgba(255,255,255,0.3)");
@@ -616,7 +629,7 @@ var DomGame=function(canvas,options,death_callback){
             prerender_ctx.arc(0,0,18,-Math.PI,Math.PI);
             prerender_ctx.closePath();
             prerender_ctx.fill();
-            var button_agent_gradient=ctx.createRadialGradient(0,0,12,0,0,18);
+            var button_agent_gradient=prerender_ctx.createRadialGradient(0,0,12,0,0,18);
             button_agent_gradient.addColorStop(0,"rgba(255,255,255,0.5)");
             button_agent_gradient.addColorStop(0.33,"rgba(255,255,255,0.35)");
             button_agent_gradient.addColorStop(0.67,"rgba(255,255,255,0.15)");
@@ -628,11 +641,119 @@ var DomGame=function(canvas,options,death_callback){
             prerender_ctx.closePath();
             prerender_ctx.fill();
         }
+        ctx.drawImage(prerendered_boost_button_canvas,0,0,96+24,96+24);
+        ctx.restore();
         
-        ctx.drawImage(prerendered_boost_button_canvas,0,0,96,96);
+        // fire button
+        ctx.save();
+        ctx.translate(12,logical_height-96*2-24-12);
+        if(!prerendered_fire_button_canvas){
+            prerendered_fire_button_canvas=document.createElement("canvas");
+            prerendered_fire_button_canvas.width=(96+24)*canvas_device_pixel_scale;
+            prerendered_fire_button_canvas.height=(96+24)*canvas_device_pixel_scale;
+            var prerender_ctx=prerendered_fire_button_canvas.getContext("2d");
+            prerender_ctx.scale(canvas_device_pixel_scale,canvas_device_pixel_scale);
+            prerender_ctx.translate(48+12,48+12);
+            
+            // black background
+            var button_background_gradient=prerender_ctx.createRadialGradient(0,0,48,0,0,48+12);
+            button_background_gradient.addColorStop(0,"rgba(0,0,0,0.5)");
+            button_background_gradient.addColorStop(1,"rgba(0,0,0,0)");
+            prerender_ctx.fillStyle=button_background_gradient;
+            prerender_ctx.beginPath();
+            prerender_ctx.arc(0,0,48+12,-Math.PI,Math.PI);
+            prerender_ctx.closePath();
+            prerender_ctx.fill();
+            
+            var boost_angle=-30*Math.PI/180;
         
-        
-        
+            // button border
+            var button_border_gradient=prerender_ctx.createRadialGradient(0,0,36,0,0,48);
+            button_border_gradient.addColorStop(0,"rgba(255,255,255,0)");
+            button_border_gradient.addColorStop(0.4,"rgba(255,255,255,0.1)");
+            button_border_gradient.addColorStop(0.7,"rgba(255,255,255,0.25)");
+            button_border_gradient.addColorStop(1,"rgba(255,255,255,0.5)");
+            prerender_ctx.fillStyle=button_border_gradient;
+            prerender_ctx.beginPath();
+            prerender_ctx.arc(0,0,48,-Math.PI,Math.PI);
+            prerender_ctx.closePath();
+            prerender_ctx.fill();
+
+
+            prerender_ctx.translate(-24*Math.cos(boost_angle),-24*Math.sin(boost_angle));
+
+            // button agent
+            var button_agent_gradient=prerender_ctx.createRadialGradient(0,0,12,0,0,18);
+            button_agent_gradient.addColorStop(0,"rgba(255,255,255,0.5)");
+            button_agent_gradient.addColorStop(0.33,"rgba(255,255,255,0.35)");
+            button_agent_gradient.addColorStop(0.67,"rgba(255,255,255,0.15)");
+            button_agent_gradient.addColorStop(1,"rgba(255,255,255,0)");
+            prerender_ctx.fillStyle=button_agent_gradient;
+            prerender_ctx.beginPath();
+            prerender_ctx.arc(0,0,18,-Math.PI,Math.PI);
+            prerender_ctx.closePath();
+            prerender_ctx.fill();
+            
+            // button projectile
+            prerender_ctx.rotate(boost_angle);
+            
+            var button_projectile_gradient=prerender_ctx.createRadialGradient(48,0,6,48,0,9);
+            button_projectile_gradient.addColorStop(0,"rgba(255,255,255,0.5)");
+            button_projectile_gradient.addColorStop(0.33,"rgba(255,255,255,0.35)");
+            button_projectile_gradient.addColorStop(0.67,"rgba(255,255,255,0.15)");
+            button_projectile_gradient.addColorStop(1,"rgba(255,255,255,0)");
+            prerender_ctx.fillStyle=button_projectile_gradient;
+            prerender_ctx.beginPath();
+            prerender_ctx.arc(48,0,9,-Math.PI,Math.PI);
+            prerender_ctx.closePath();
+            prerender_ctx.fill();
+            
+            // lines
+            prerender_ctx.lineWidth=2;
+            prerender_ctx.lineCap="round";
+            var stroke_gradient;
+            stroke_gradient=prerender_ctx.createLinearGradient(20,0,37,0);
+            stroke_gradient.addColorStop(0,"rgba(255,255,255,0.2)");
+            stroke_gradient.addColorStop(1,"rgba(255,255,255,0.5)");
+            prerender_ctx.strokeStyle=stroke_gradient;
+            prerender_ctx.beginPath();
+            prerender_ctx.moveTo(20,0);
+            prerender_ctx.lineTo(37,0);
+            prerender_ctx.stroke();
+            stroke_gradient=prerender_ctx.createLinearGradient(28,4.5,38.5,4.5);
+            stroke_gradient.addColorStop(0,"rgba(255,255,255,0.2)");
+            stroke_gradient.addColorStop(1,"rgba(255,255,255,0.5)");
+            prerender_ctx.strokeStyle=stroke_gradient;
+            prerender_ctx.beginPath();
+            prerender_ctx.moveTo(28,4.5);
+            prerender_ctx.lineTo(38.5,4.5);
+            prerender_ctx.stroke();
+            stroke_gradient=prerender_ctx.createLinearGradient(28,-4.5,38.5,-4.5);
+            stroke_gradient.addColorStop(0,"rgba(255,255,255,0.2)");
+            stroke_gradient.addColorStop(1,"rgba(255,255,255,0.5)");
+            prerender_ctx.strokeStyle=stroke_gradient;
+            prerender_ctx.beginPath();
+            prerender_ctx.moveTo(28,-4.5);
+            prerender_ctx.lineTo(38.5,-4.5);
+            prerender_ctx.stroke();
+            stroke_gradient=prerender_ctx.createLinearGradient(12,1,24,8);
+            stroke_gradient.addColorStop(0,"rgba(255,255,255,0)");
+            stroke_gradient.addColorStop(1,"rgba(255,255,255,0.5)");
+            prerender_ctx.strokeStyle=stroke_gradient;
+            prerender_ctx.beginPath();
+            prerender_ctx.moveTo(12,1);
+            prerender_ctx.lineTo(24,8);
+            prerender_ctx.stroke();
+            stroke_gradient=prerender_ctx.createLinearGradient(12,-1,24,-8);
+            stroke_gradient.addColorStop(0,"rgba(255,255,255,0)");
+            stroke_gradient.addColorStop(1,"rgba(255,255,255,0.5)");
+            prerender_ctx.strokeStyle=stroke_gradient;
+            prerender_ctx.beginPath();
+            prerender_ctx.moveTo(12,-1);
+            prerender_ctx.lineTo(24,-8);
+            prerender_ctx.stroke();
+        }
+        ctx.drawImage(prerendered_fire_button_canvas,0,0,96+24,96+24);
         ctx.restore();
         // TODO.
         ctx.restore();
