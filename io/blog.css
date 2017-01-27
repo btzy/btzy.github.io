@@ -1,13 +1,22 @@
+@font-face{
+    font-family:"CandelaBook";
+    src:url("fonts/candela-book.otf"),url("fonts/candela-book.woff");
+}
+@font-face{
+    font-family:"CandelaItalic";
+    src:url("fonts/candela-italic.otf"),url("fonts/candela-italic.woff");
+}
 html, body{
     background-color:black;
     color:white;
-    font-family:"CandelaBold",sans-serif;
+    font-family:"CandelaBook",sans-serif;
 }
 
 #blog .title, #about .title{
     text-align:center;
     padding:20px 0;
     font-size:28px;
+    font-family:"CandelaBold",sans-serif;
 }
 
 #blog .post{
@@ -22,7 +31,7 @@ html, body{
 }
 
 #blog .date{
-    font-style:italic;
+    font-family:"CandelaItalic",sans-serif;
     color:lightgray;
     font-size:14px;
     padding-left:20px;
@@ -32,6 +41,18 @@ html, body{
     width:100%;
     max-width:600px;
     margin:0 auto;
+}
+
+#about h3{
+    font-family:"CandelaBold",sans-serif;
+}
+
+#about .nobullet{
+    list-style-type:none;
+}
+
+#about .controlhighlight{
+    color:rgb(255,170,128);
 }
 
 #about a{
