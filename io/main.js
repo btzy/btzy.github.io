@@ -116,6 +116,7 @@ window.addEventListener("load",function(){
     var drawing_height=drawing_width/3;
     var baseline_height=150;
     var additional_padding=200; // logical width units
+    var prerender_canvas_done=false;
     var resize_handler=function(){
         title_flexitem.style.height="200px";
         
@@ -132,6 +133,7 @@ window.addEventListener("load",function(){
         title_canvas.style.top=-additional_padding+"px";
         title_canvas.width=(title_logical_width+additional_padding*2)*canvas_device_pixel_scale;
         title_canvas.height=(title_logical_height+additional_padding*2)*canvas_device_pixel_scale;
+        prerender_canvas_done=false;
     }
     window.addEventListener("resize",resize_handler);
     resize_handler();
@@ -159,11 +161,12 @@ window.addEventListener("load",function(){
         colors.push(get_title_random_color());
         text_parts.push(addn_name);
         
+        var prerender_canvas=document.createElement("canvas");
+        
         var draw=function(){
-            var prerender_canvas=document.createElement("canvas");
-            prerender_canvas.width=title_canvas.width;
-            prerender_canvas.height=title_canvas.height;
-            var prerender_ctx=prerender_canvas.getContext("2d");
+            if(!prerender_canvas_done){
+                
+            }
             
             
             title_ctx.save();
@@ -190,7 +193,11 @@ window.addEventListener("load",function(){
                 var local_time_offset=time_offset-i*100;
                 
                 // special for 'i' to remove the dot:
-                if(i===6){
+                if(i===6 && !prerender_canvas_done){
+                    prerender_canvas.width=title_canvas.width;
+                    prerender_canvas.height=title_canvas.height;
+                    var prerender_ctx=prerender_canvas.getContext("2d");
+                    
                     prerender_ctx.save();
                     
                     prerender_ctx.clearRect(0,0,(title_logical_width+additional_padding*2)*canvas_device_pixel_scale,(title_logical_height+additional_padding*2)*canvas_device_pixel_scale);
@@ -223,6 +230,8 @@ window.addEventListener("load",function(){
                     prerender_ctx.closePath();
                     prerender_ctx.fill();
                     prerender_ctx.restore();
+                    
+                    prerender_canvas_done=true;
                 }
                 
                 
