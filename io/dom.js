@@ -1,5 +1,4 @@
-// TODO: scale name and leaderboard by sqrt of distance instead.
-// options: {showtouchcontrols:bool, touchcontrolsonright:bool}
+// options: {touch:bool, opposite:bool, hasGlobalCompositeOperationDifference:bool}
 var DomGame=function(canvas,options,death_callback){
     var canvas_scale=Math.sqrt(canvas.width*canvas.height);
     
@@ -11,8 +10,7 @@ var DomGame=function(canvas,options,death_callback){
         canvas.height=logical_height*canvas_device_pixel_scale;
         canvas_scale=Math.sqrt(logical_width*logical_height);
         send_dimensions_to_server();
-        prerendered_boost_button_canvas=undefined;
-        prerendered_fire_button_canvas=undefined;
+        
     };
     var mousemove_handler=function(e){
         process_movement_dir_update(new Point(e.clientX,e.clientY));
@@ -45,14 +43,45 @@ var DomGame=function(canvas,options,death_callback){
             process_boosting_update(false);
         }
     };
+    
+    var touchbuttonradius=48;
+    var is_boost_button=function(pt){
+        var boost_centre=new Point((options.opposite)?(logical_width-touchbuttonradius-24):(24+touchbuttonradius),logical_height-touchbuttonradius-24);
+        return boost_centre.distanceTo(pt)<=touchbuttonradius;
+    };
+    var is_fire_button=function(pt){
+        var fire_centre=new Point((options.opposite)?(logical_width-touchbuttonradius-24):(24+touchbuttonradius),logical_height-touchbuttonradius*3-24*2);
+        return fire_centre.distanceTo(pt)<=touchbuttonradius;
+    };
+    
     var ongoingMovementDirTouchID,ongoingFiringTouchID,ongoingBoostingTouchID;
+    var movement_pt=new Point(logical_width/2,logical_height/2);
+    
     var touchstart_handler=function(e){
         var movementTouch=Array.prototype.find.call(e.changedTouches,function(touch){
-            return true; // TODO: ignore areas for firing and boosting.
+            var pt=new Point(touch.clientX,touch.clientY);
+            return (!is_boost_button(pt)&&!is_fire_button(pt));
         });
         if(movementTouch){
             ongoingMovementDirTouchID=movementTouch.identifier;
-            process_movement_dir_update(new Point(movementTouch.clientX,movementTouch.clientY));
+            movement_pt=new Point(movementTouch.clientX,movementTouch.clientY);
+            process_movement_dir_update(movement_pt);
+        }
+        var boostingTouch=Array.prototype.find.call(e.changedTouches,function(touch){
+            var pt=new Point(touch.clientX,touch.clientY);
+            return is_boost_button(pt);
+        });
+        if(boostingTouch){
+            ongoingBoostingTouchID=boostingTouch.identifier;
+            process_boosting_update(true);
+        }
+        var firingTouch=Array.prototype.find.call(e.changedTouches,function(touch){
+            var pt=new Point(touch.clientX,touch.clientY);
+            return is_fire_button(pt);
+        });
+        if(firingTouch){
+            ongoingFiringTouchID=firingTouch.identifier;
+            process_firing_update(movement_pt,true);
         }
         //e.preventDefault();
     };
@@ -62,6 +91,24 @@ var DomGame=function(canvas,options,death_callback){
                 return touch.identifier===ongoingMovementDirTouchID;
             });
             if(movementTouch)ongoingMovementDirTouchID=undefined;
+        }
+        if(ongoingBoostingTouchID!==undefined){
+            var boostingTouch=Array.prototype.find.call(e.changedTouches,function(touch){
+                return touch.identifier===ongoingBoostingTouchID;
+            });
+            if(boostingTouch){
+                ongoingBoostingTouchID=undefined;
+                process_boosting_update(false);
+            }
+        }
+        if(ongoingFiringTouchID!==undefined){
+            var firingTouch=Array.prototype.find.call(e.changedTouches,function(touch){
+                return touch.identifier===ongoingFiringTouchID;
+            });
+            if(firingTouch){
+                ongoingFiringTouchID=undefined;
+                process_firing_update(movement_pt,false);
+            }
         }
         //e.preventDefault();
     };
@@ -75,7 +122,8 @@ var DomGame=function(canvas,options,death_callback){
                 return touch.identifier===ongoingMovementDirTouchID;
             });
             if(movementTouch){
-                process_movement_dir_update(new Point(movementTouch.clientX,movementTouch.clientY));
+                movement_pt=new Point(movementTouch.clientX,movementTouch.clientY);
+                process_movement_dir_update(movement_pt);
             }
         }
         //e.preventDefault();
@@ -458,10 +506,15 @@ var DomGame=function(canvas,options,death_callback){
         },displayTime);
 
         ctx.save();
-        ctx.globalCompositeOperation="difference";
         ctx.textAlign="center";
         ctx.textBaseline="middle";
-        ctx.fillStyle="white";
+        if(hasGlobalCompositeOperationDifference){
+            ctx.globalCompositeOperation="difference";
+            ctx.fillStyle="white";
+        }
+        else{
+            ctx.fillStyle="grey";
+        }
         agents.forEach(function(agent,agentid){
             var font_size=Math.pow(agent.mass,1/4)*8; // fractional font sizes display different indifferent browsers, but we are not really concerned about that.
             ctx.font=font_size+"px CandelaBold,sans-serif";//"1000px Baloo"
@@ -517,7 +570,7 @@ var DomGame=function(canvas,options,death_callback){
         // draw leaderboard to screen (with screen normalised coordinates (width, height))
         ctx.save();
         ctx.translate(width,0);
-        ctx.scale(1/1024,1/1024);
+        ctx.scale(1/(32*Math.sqrt(canvas_scale)),1/(32*Math.sqrt(canvas_scale)));
         ctx.translate(-8,8);
         ctx.globalCompositeOperation="difference";
         ctx.font="14px CandelaBold,sans-serif";
@@ -533,230 +586,242 @@ var DomGame=function(canvas,options,death_callback){
         }
         ctx.restore();
         
-        // draw touch buttons with logical screen coordinates - 96 * 96 px per button
-        ctx.save();
-        ctx.scale(1/canvas_scale,1/canvas_scale);
-        
-        // boost button
-        ctx.save();
-        ctx.translate(12,logical_height-96-12);
-        if(!prerendered_boost_button_canvas){
-            prerendered_boost_button_canvas=document.createElement("canvas");
-            prerendered_boost_button_canvas.width=(96+24)*canvas_device_pixel_scale;
-            prerendered_boost_button_canvas.height=(96+24)*canvas_device_pixel_scale;
-            var prerender_ctx=prerendered_boost_button_canvas.getContext("2d");
-            prerender_ctx.scale(canvas_device_pixel_scale,canvas_device_pixel_scale);
-            prerender_ctx.translate(48+12,48+12);
-            
-            // black background
-            var button_background_gradient=prerender_ctx.createRadialGradient(0,0,48,0,0,48+12);
-            button_background_gradient.addColorStop(0,"rgba(0,0,0,0.5)");
-            button_background_gradient.addColorStop(1,"rgba(0,0,0,0)");
-            prerender_ctx.fillStyle=button_background_gradient;
-            prerender_ctx.beginPath();
-            prerender_ctx.arc(0,0,48+12,-Math.PI,Math.PI);
-            prerender_ctx.closePath();
-            prerender_ctx.fill();
-            
-            var boost_angle=-30*Math.PI/180;
-        
-            // button border
-            var button_border_gradient=prerender_ctx.createRadialGradient(0,0,36,0,0,48);
-            button_border_gradient.addColorStop(0,"rgba(255,255,255,0)");
-            button_border_gradient.addColorStop(0.4,"rgba(255,255,255,0.1)");
-            button_border_gradient.addColorStop(0.7,"rgba(255,255,255,0.25)");
-            button_border_gradient.addColorStop(1,"rgba(255,255,255,0.5)");
-            prerender_ctx.fillStyle=button_border_gradient;
-            prerender_ctx.beginPath();
-            prerender_ctx.arc(0,0,48,-Math.PI,Math.PI);
-            prerender_ctx.closePath();
-            prerender_ctx.fill();
+        if(options.touch){
+            // draw touch buttons with logical screen coordinates - 96 * 96 px per button
+            ctx.save();
+            ctx.scale(1/canvas_scale,1/canvas_scale);
 
-
-            prerender_ctx.translate(24*Math.cos(boost_angle),24*Math.sin(boost_angle));
-
-            // button boost streams
-            var button_boost_locpoints=[];
-            for(var index=0;index<=16;++index){
-                var translate_dist=index*4;
-                var pt_x=-Math.cos(boost_angle)*translate_dist;
-                var pt_y=-Math.sin(boost_angle)*translate_dist;
-                button_boost_locpoints.push(new Point(pt_x,pt_y));
+            // boost button
+            ctx.save();
+            if(!options.opposite){
+                ctx.translate(12,logical_height-96-24-12);
             }
-            var button_boost_keypoints=[];
-            var button_num_boost_streams=3;
-            var boost_offset_angle=boost_angle+Math.PI/2;
-            for(var i=0;i<button_num_boost_streams;++i){
-                var this_boost_keypoints=[];
-                button_boost_locpoints.forEach(function(pt,index){
-                    var disp=(1-Math.pow(index/16,4))*12*Math.sin(index+Math.PI*2/button_num_boost_streams*i);
-                    var pt_x=pt.x+Math.cos(boost_offset_angle)*disp;
-                    var pt_y=pt.y+Math.sin(boost_offset_angle)*disp;
-                    this_boost_keypoints.push(new Point(pt_x,pt_y));
-                });
-                button_boost_keypoints.push(this_boost_keypoints);
+            else{
+                ctx.translate(logical_width-96-24-12,logical_height-96-24-12);
             }
-            button_boost_keypoints.forEach(function(keystream){
-                keystream.forEach(function(pt,index,arr){
-                    if(index>=1 && index<arr.length-1){
-                        prerender_ctx.lineCap="butt";
-                        prerender_ctx.lineWidth=2;
-                        var ax=(arr[index-1].x+pt.x)/2;
-                        var ay=(arr[index-1].y+pt.y)/2;
-                        var bx=(arr[index+1].x+pt.x)/2;
-                        var by=(arr[index+1].y+pt.y)/2;
-                        var boost_linearGradient=prerender_ctx.createLinearGradient(ax,ay,bx,by);
-                        boost_linearGradient.addColorStop(0,"rgba(255,255,255,"+((1-(index-0.5)/16)/2)+")");
-                        boost_linearGradient.addColorStop(1,"rgba(255,255,255,"+((1-(index+0.5)/16)/2)+")");
-                        prerender_ctx.strokeStyle=boost_linearGradient;
-                        prerender_ctx.beginPath();
-                        prerender_ctx.moveTo(ax,ay);
-                        prerender_ctx.quadraticCurveTo(pt.x,pt.y,bx,by);
-                        prerender_ctx.stroke();
-                    }
+            if(!prerendered_boost_button_canvas){
+                prerendered_boost_button_canvas=document.createElement("canvas");
+                prerendered_boost_button_canvas.width=(96+24)*canvas_device_pixel_scale;
+                prerendered_boost_button_canvas.height=(96+24)*canvas_device_pixel_scale;
+                var prerender_ctx=prerendered_boost_button_canvas.getContext("2d");
+                prerender_ctx.scale(canvas_device_pixel_scale,canvas_device_pixel_scale);
+                prerender_ctx.translate(48+12,48+12);
+
+                // black background
+                var button_background_gradient=prerender_ctx.createRadialGradient(0,0,48,0,0,48+12);
+                button_background_gradient.addColorStop(0,"rgba(0,0,0,0.5)");
+                button_background_gradient.addColorStop(1,"rgba(0,0,0,0)");
+                prerender_ctx.fillStyle=button_background_gradient;
+                prerender_ctx.beginPath();
+                prerender_ctx.arc(0,0,48+12,-Math.PI,Math.PI);
+                prerender_ctx.closePath();
+                prerender_ctx.fill();
+
+                var boost_angle=-30*Math.PI/180;
+
+                // button border
+                var button_border_gradient=prerender_ctx.createRadialGradient(0,0,36,0,0,48);
+                button_border_gradient.addColorStop(0,"rgba(255,255,255,0)");
+                button_border_gradient.addColorStop(0.4,"rgba(255,255,255,0.1)");
+                button_border_gradient.addColorStop(0.7,"rgba(255,255,255,0.25)");
+                button_border_gradient.addColorStop(1,"rgba(255,255,255,0.5)");
+                prerender_ctx.fillStyle=button_border_gradient;
+                prerender_ctx.beginPath();
+                prerender_ctx.arc(0,0,48,-Math.PI,Math.PI);
+                prerender_ctx.closePath();
+                prerender_ctx.fill();
+
+
+                prerender_ctx.translate(24*Math.cos(boost_angle),24*Math.sin(boost_angle));
+
+                // button boost streams
+                var button_boost_locpoints=[];
+                for(var index=0;index<=16;++index){
+                    var translate_dist=index*4;
+                    var pt_x=-Math.cos(boost_angle)*translate_dist;
+                    var pt_y=-Math.sin(boost_angle)*translate_dist;
+                    button_boost_locpoints.push(new Point(pt_x,pt_y));
+                }
+                var button_boost_keypoints=[];
+                var button_num_boost_streams=3;
+                var boost_offset_angle=boost_angle+Math.PI/2;
+                for(var i=0;i<button_num_boost_streams;++i){
+                    var this_boost_keypoints=[];
+                    button_boost_locpoints.forEach(function(pt,index){
+                        var disp=(1-Math.pow(index/16,4))*12*Math.sin(index+Math.PI*2/button_num_boost_streams*i);
+                        var pt_x=pt.x+Math.cos(boost_offset_angle)*disp;
+                        var pt_y=pt.y+Math.sin(boost_offset_angle)*disp;
+                        this_boost_keypoints.push(new Point(pt_x,pt_y));
+                    });
+                    button_boost_keypoints.push(this_boost_keypoints);
+                }
+                button_boost_keypoints.forEach(function(keystream){
+                    keystream.forEach(function(pt,index,arr){
+                        if(index>=1 && index<arr.length-1){
+                            prerender_ctx.lineCap="butt";
+                            prerender_ctx.lineWidth=2;
+                            var ax=(arr[index-1].x+pt.x)/2;
+                            var ay=(arr[index-1].y+pt.y)/2;
+                            var bx=(arr[index+1].x+pt.x)/2;
+                            var by=(arr[index+1].y+pt.y)/2;
+                            var boost_linearGradient=prerender_ctx.createLinearGradient(ax,ay,bx,by);
+                            boost_linearGradient.addColorStop(0,"rgba(255,255,255,"+((1-(index-0.5)/16)/2)+")");
+                            boost_linearGradient.addColorStop(1,"rgba(255,255,255,"+((1-(index+0.5)/16)/2)+")");
+                            prerender_ctx.strokeStyle=boost_linearGradient;
+                            prerender_ctx.beginPath();
+                            prerender_ctx.moveTo(ax,ay);
+                            prerender_ctx.quadraticCurveTo(pt.x,pt.y,bx,by);
+                            prerender_ctx.stroke();
+                        }
+                    });
                 });
-            });
 
-            // button agent
-            var button_agent_hole_gradient=prerender_ctx.createRadialGradient(0,0,12,0,0,18);
-            button_agent_hole_gradient.addColorStop(0,"rgba(255,255,255,1)");
-            button_agent_hole_gradient.addColorStop(0.33,"rgba(255,255,255,0.7)");
-            button_agent_hole_gradient.addColorStop(0.67,"rgba(255,255,255,0.3)");
-            button_agent_hole_gradient.addColorStop(1,"rgba(255,255,255,0)");
-            prerender_ctx.fillStyle=button_agent_hole_gradient;
-            prerender_ctx.globalCompositeOperation="destination-out";
-            prerender_ctx.beginPath();
-            prerender_ctx.arc(0,0,18,-Math.PI,Math.PI);
-            prerender_ctx.closePath();
-            prerender_ctx.fill();
-            var button_agent_gradient=prerender_ctx.createRadialGradient(0,0,12,0,0,18);
-            button_agent_gradient.addColorStop(0,"rgba(255,255,255,0.5)");
-            button_agent_gradient.addColorStop(0.33,"rgba(255,255,255,0.35)");
-            button_agent_gradient.addColorStop(0.67,"rgba(255,255,255,0.15)");
-            button_agent_gradient.addColorStop(1,"rgba(255,255,255,0)");
-            prerender_ctx.fillStyle=button_agent_gradient;
-            prerender_ctx.globalCompositeOperation="source-over";
-            prerender_ctx.beginPath();
-            prerender_ctx.arc(0,0,18,-Math.PI,Math.PI);
-            prerender_ctx.closePath();
-            prerender_ctx.fill();
+                // button agent
+                var button_agent_hole_gradient=prerender_ctx.createRadialGradient(0,0,12,0,0,18);
+                button_agent_hole_gradient.addColorStop(0,"rgba(255,255,255,1)");
+                button_agent_hole_gradient.addColorStop(0.33,"rgba(255,255,255,0.7)");
+                button_agent_hole_gradient.addColorStop(0.67,"rgba(255,255,255,0.3)");
+                button_agent_hole_gradient.addColorStop(1,"rgba(255,255,255,0)");
+                prerender_ctx.fillStyle=button_agent_hole_gradient;
+                prerender_ctx.globalCompositeOperation="destination-out";
+                prerender_ctx.beginPath();
+                prerender_ctx.arc(0,0,18,-Math.PI,Math.PI);
+                prerender_ctx.closePath();
+                prerender_ctx.fill();
+                var button_agent_gradient=prerender_ctx.createRadialGradient(0,0,12,0,0,18);
+                button_agent_gradient.addColorStop(0,"rgba(255,255,255,0.5)");
+                button_agent_gradient.addColorStop(0.33,"rgba(255,255,255,0.35)");
+                button_agent_gradient.addColorStop(0.67,"rgba(255,255,255,0.15)");
+                button_agent_gradient.addColorStop(1,"rgba(255,255,255,0)");
+                prerender_ctx.fillStyle=button_agent_gradient;
+                prerender_ctx.globalCompositeOperation="source-over";
+                prerender_ctx.beginPath();
+                prerender_ctx.arc(0,0,18,-Math.PI,Math.PI);
+                prerender_ctx.closePath();
+                prerender_ctx.fill();
+            }
+            ctx.drawImage(prerendered_boost_button_canvas,0,0,96+24,96+24);
+            ctx.restore();
+
+            // fire button
+            ctx.save();
+            if(!options.opposite){
+                ctx.translate(12,logical_height-96*2-24*2-12);
+            }
+            else{
+                ctx.translate(logical_width-96-24-12,logical_height-96*2-24*2-12);
+            }
+            if(!prerendered_fire_button_canvas){
+                prerendered_fire_button_canvas=document.createElement("canvas");
+                prerendered_fire_button_canvas.width=(96+24)*canvas_device_pixel_scale;
+                prerendered_fire_button_canvas.height=(96+24)*canvas_device_pixel_scale;
+                var prerender_ctx=prerendered_fire_button_canvas.getContext("2d");
+                prerender_ctx.scale(canvas_device_pixel_scale,canvas_device_pixel_scale);
+                prerender_ctx.translate(48+12,48+12);
+
+                // black background
+                var button_background_gradient=prerender_ctx.createRadialGradient(0,0,48,0,0,48+12);
+                button_background_gradient.addColorStop(0,"rgba(0,0,0,0.5)");
+                button_background_gradient.addColorStop(1,"rgba(0,0,0,0)");
+                prerender_ctx.fillStyle=button_background_gradient;
+                prerender_ctx.beginPath();
+                prerender_ctx.arc(0,0,48+12,-Math.PI,Math.PI);
+                prerender_ctx.closePath();
+                prerender_ctx.fill();
+
+                var boost_angle=-30*Math.PI/180;
+
+                // button border
+                var button_border_gradient=prerender_ctx.createRadialGradient(0,0,36,0,0,48);
+                button_border_gradient.addColorStop(0,"rgba(255,255,255,0)");
+                button_border_gradient.addColorStop(0.4,"rgba(255,255,255,0.1)");
+                button_border_gradient.addColorStop(0.7,"rgba(255,255,255,0.25)");
+                button_border_gradient.addColorStop(1,"rgba(255,255,255,0.5)");
+                prerender_ctx.fillStyle=button_border_gradient;
+                prerender_ctx.beginPath();
+                prerender_ctx.arc(0,0,48,-Math.PI,Math.PI);
+                prerender_ctx.closePath();
+                prerender_ctx.fill();
+
+
+                prerender_ctx.translate(-24*Math.cos(boost_angle),-24*Math.sin(boost_angle));
+
+                // button agent
+                var button_agent_gradient=prerender_ctx.createRadialGradient(0,0,12,0,0,18);
+                button_agent_gradient.addColorStop(0,"rgba(255,255,255,0.5)");
+                button_agent_gradient.addColorStop(0.33,"rgba(255,255,255,0.35)");
+                button_agent_gradient.addColorStop(0.67,"rgba(255,255,255,0.15)");
+                button_agent_gradient.addColorStop(1,"rgba(255,255,255,0)");
+                prerender_ctx.fillStyle=button_agent_gradient;
+                prerender_ctx.beginPath();
+                prerender_ctx.arc(0,0,18,-Math.PI,Math.PI);
+                prerender_ctx.closePath();
+                prerender_ctx.fill();
+
+                // button projectile
+                prerender_ctx.rotate(boost_angle);
+
+                var button_projectile_gradient=prerender_ctx.createRadialGradient(48,0,6,48,0,9);
+                button_projectile_gradient.addColorStop(0,"rgba(255,255,255,0.5)");
+                button_projectile_gradient.addColorStop(0.33,"rgba(255,255,255,0.35)");
+                button_projectile_gradient.addColorStop(0.67,"rgba(255,255,255,0.15)");
+                button_projectile_gradient.addColorStop(1,"rgba(255,255,255,0)");
+                prerender_ctx.fillStyle=button_projectile_gradient;
+                prerender_ctx.beginPath();
+                prerender_ctx.arc(48,0,9,-Math.PI,Math.PI);
+                prerender_ctx.closePath();
+                prerender_ctx.fill();
+
+                // lines
+                prerender_ctx.lineWidth=2;
+                prerender_ctx.lineCap="round";
+                var stroke_gradient;
+                stroke_gradient=prerender_ctx.createLinearGradient(20,0,37,0);
+                stroke_gradient.addColorStop(0,"rgba(255,255,255,0.2)");
+                stroke_gradient.addColorStop(1,"rgba(255,255,255,0.5)");
+                prerender_ctx.strokeStyle=stroke_gradient;
+                prerender_ctx.beginPath();
+                prerender_ctx.moveTo(20,0);
+                prerender_ctx.lineTo(37,0);
+                prerender_ctx.stroke();
+                stroke_gradient=prerender_ctx.createLinearGradient(28,4.5,38.5,4.5);
+                stroke_gradient.addColorStop(0,"rgba(255,255,255,0.2)");
+                stroke_gradient.addColorStop(1,"rgba(255,255,255,0.5)");
+                prerender_ctx.strokeStyle=stroke_gradient;
+                prerender_ctx.beginPath();
+                prerender_ctx.moveTo(28,4.5);
+                prerender_ctx.lineTo(38.5,4.5);
+                prerender_ctx.stroke();
+                stroke_gradient=prerender_ctx.createLinearGradient(28,-4.5,38.5,-4.5);
+                stroke_gradient.addColorStop(0,"rgba(255,255,255,0.2)");
+                stroke_gradient.addColorStop(1,"rgba(255,255,255,0.5)");
+                prerender_ctx.strokeStyle=stroke_gradient;
+                prerender_ctx.beginPath();
+                prerender_ctx.moveTo(28,-4.5);
+                prerender_ctx.lineTo(38.5,-4.5);
+                prerender_ctx.stroke();
+                stroke_gradient=prerender_ctx.createLinearGradient(12,1,24,8);
+                stroke_gradient.addColorStop(0,"rgba(255,255,255,0)");
+                stroke_gradient.addColorStop(1,"rgba(255,255,255,0.5)");
+                prerender_ctx.strokeStyle=stroke_gradient;
+                prerender_ctx.beginPath();
+                prerender_ctx.moveTo(12,1);
+                prerender_ctx.lineTo(24,8);
+                prerender_ctx.stroke();
+                stroke_gradient=prerender_ctx.createLinearGradient(12,-1,24,-8);
+                stroke_gradient.addColorStop(0,"rgba(255,255,255,0)");
+                stroke_gradient.addColorStop(1,"rgba(255,255,255,0.5)");
+                prerender_ctx.strokeStyle=stroke_gradient;
+                prerender_ctx.beginPath();
+                prerender_ctx.moveTo(12,-1);
+                prerender_ctx.lineTo(24,-8);
+                prerender_ctx.stroke();
+            }
+            ctx.drawImage(prerendered_fire_button_canvas,0,0,96+24,96+24);
+            ctx.restore();
+            
+            ctx.restore();
         }
-        ctx.drawImage(prerendered_boost_button_canvas,0,0,96+24,96+24);
-        ctx.restore();
-        
-        // fire button
-        ctx.save();
-        ctx.translate(12,logical_height-96*2-24-12);
-        if(!prerendered_fire_button_canvas){
-            prerendered_fire_button_canvas=document.createElement("canvas");
-            prerendered_fire_button_canvas.width=(96+24)*canvas_device_pixel_scale;
-            prerendered_fire_button_canvas.height=(96+24)*canvas_device_pixel_scale;
-            var prerender_ctx=prerendered_fire_button_canvas.getContext("2d");
-            prerender_ctx.scale(canvas_device_pixel_scale,canvas_device_pixel_scale);
-            prerender_ctx.translate(48+12,48+12);
-            
-            // black background
-            var button_background_gradient=prerender_ctx.createRadialGradient(0,0,48,0,0,48+12);
-            button_background_gradient.addColorStop(0,"rgba(0,0,0,0.5)");
-            button_background_gradient.addColorStop(1,"rgba(0,0,0,0)");
-            prerender_ctx.fillStyle=button_background_gradient;
-            prerender_ctx.beginPath();
-            prerender_ctx.arc(0,0,48+12,-Math.PI,Math.PI);
-            prerender_ctx.closePath();
-            prerender_ctx.fill();
-            
-            var boost_angle=-30*Math.PI/180;
-        
-            // button border
-            var button_border_gradient=prerender_ctx.createRadialGradient(0,0,36,0,0,48);
-            button_border_gradient.addColorStop(0,"rgba(255,255,255,0)");
-            button_border_gradient.addColorStop(0.4,"rgba(255,255,255,0.1)");
-            button_border_gradient.addColorStop(0.7,"rgba(255,255,255,0.25)");
-            button_border_gradient.addColorStop(1,"rgba(255,255,255,0.5)");
-            prerender_ctx.fillStyle=button_border_gradient;
-            prerender_ctx.beginPath();
-            prerender_ctx.arc(0,0,48,-Math.PI,Math.PI);
-            prerender_ctx.closePath();
-            prerender_ctx.fill();
-
-
-            prerender_ctx.translate(-24*Math.cos(boost_angle),-24*Math.sin(boost_angle));
-
-            // button agent
-            var button_agent_gradient=prerender_ctx.createRadialGradient(0,0,12,0,0,18);
-            button_agent_gradient.addColorStop(0,"rgba(255,255,255,0.5)");
-            button_agent_gradient.addColorStop(0.33,"rgba(255,255,255,0.35)");
-            button_agent_gradient.addColorStop(0.67,"rgba(255,255,255,0.15)");
-            button_agent_gradient.addColorStop(1,"rgba(255,255,255,0)");
-            prerender_ctx.fillStyle=button_agent_gradient;
-            prerender_ctx.beginPath();
-            prerender_ctx.arc(0,0,18,-Math.PI,Math.PI);
-            prerender_ctx.closePath();
-            prerender_ctx.fill();
-            
-            // button projectile
-            prerender_ctx.rotate(boost_angle);
-            
-            var button_projectile_gradient=prerender_ctx.createRadialGradient(48,0,6,48,0,9);
-            button_projectile_gradient.addColorStop(0,"rgba(255,255,255,0.5)");
-            button_projectile_gradient.addColorStop(0.33,"rgba(255,255,255,0.35)");
-            button_projectile_gradient.addColorStop(0.67,"rgba(255,255,255,0.15)");
-            button_projectile_gradient.addColorStop(1,"rgba(255,255,255,0)");
-            prerender_ctx.fillStyle=button_projectile_gradient;
-            prerender_ctx.beginPath();
-            prerender_ctx.arc(48,0,9,-Math.PI,Math.PI);
-            prerender_ctx.closePath();
-            prerender_ctx.fill();
-            
-            // lines
-            prerender_ctx.lineWidth=2;
-            prerender_ctx.lineCap="round";
-            var stroke_gradient;
-            stroke_gradient=prerender_ctx.createLinearGradient(20,0,37,0);
-            stroke_gradient.addColorStop(0,"rgba(255,255,255,0.2)");
-            stroke_gradient.addColorStop(1,"rgba(255,255,255,0.5)");
-            prerender_ctx.strokeStyle=stroke_gradient;
-            prerender_ctx.beginPath();
-            prerender_ctx.moveTo(20,0);
-            prerender_ctx.lineTo(37,0);
-            prerender_ctx.stroke();
-            stroke_gradient=prerender_ctx.createLinearGradient(28,4.5,38.5,4.5);
-            stroke_gradient.addColorStop(0,"rgba(255,255,255,0.2)");
-            stroke_gradient.addColorStop(1,"rgba(255,255,255,0.5)");
-            prerender_ctx.strokeStyle=stroke_gradient;
-            prerender_ctx.beginPath();
-            prerender_ctx.moveTo(28,4.5);
-            prerender_ctx.lineTo(38.5,4.5);
-            prerender_ctx.stroke();
-            stroke_gradient=prerender_ctx.createLinearGradient(28,-4.5,38.5,-4.5);
-            stroke_gradient.addColorStop(0,"rgba(255,255,255,0.2)");
-            stroke_gradient.addColorStop(1,"rgba(255,255,255,0.5)");
-            prerender_ctx.strokeStyle=stroke_gradient;
-            prerender_ctx.beginPath();
-            prerender_ctx.moveTo(28,-4.5);
-            prerender_ctx.lineTo(38.5,-4.5);
-            prerender_ctx.stroke();
-            stroke_gradient=prerender_ctx.createLinearGradient(12,1,24,8);
-            stroke_gradient.addColorStop(0,"rgba(255,255,255,0)");
-            stroke_gradient.addColorStop(1,"rgba(255,255,255,0.5)");
-            prerender_ctx.strokeStyle=stroke_gradient;
-            prerender_ctx.beginPath();
-            prerender_ctx.moveTo(12,1);
-            prerender_ctx.lineTo(24,8);
-            prerender_ctx.stroke();
-            stroke_gradient=prerender_ctx.createLinearGradient(12,-1,24,-8);
-            stroke_gradient.addColorStop(0,"rgba(255,255,255,0)");
-            stroke_gradient.addColorStop(1,"rgba(255,255,255,0.5)");
-            prerender_ctx.strokeStyle=stroke_gradient;
-            prerender_ctx.beginPath();
-            prerender_ctx.moveTo(12,-1);
-            prerender_ctx.lineTo(24,-8);
-            prerender_ctx.stroke();
-        }
-        ctx.drawImage(prerendered_fire_button_canvas,0,0,96+24,96+24);
-        ctx.restore();
-        // TODO.
-        ctx.restore();
     };
     var message_time_storage=[];
     var last_message_curr_location=undefined;

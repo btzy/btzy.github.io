@@ -81,7 +81,7 @@ window.addEventListener("load",function(){
                         name_textbox.blur();
                         if(dom_game)dom_game.stop();
                         var do_start=function(){
-                            var options={touch:document.getElementsByClassName("visible")[0].classList.contains("touch"),opposite:document.getElementsByClassName("visible")[0].classList.contains("opposite"),compositeDifference:hasGlobalCompositeOperationDifference};
+                            var options={touch:document.getElementsByClassName("visible")[0].classList.contains("touch"),opposite:document.getElementsByClassName("visible")[0].classList.contains("opposite"),hasGlobalCompositeOperationDifference:hasGlobalCompositeOperationDifference};
                             dom_game=new DomGame(canvas,options,death_callback);
                             dom_game.start(chosen_endpoint,name_textbox.value);
                             document.getElementById("welcome-panel").classList.add("hidden");
@@ -381,14 +381,13 @@ window.addEventListener("load",function(){
     // interaction mode options
     var interactionmode_el=document.getElementById("interactionmode");
     var interactionlist=[];
-    var suppress_autodetect=false;
+    
     Array.prototype.forEach.call(interactionmode_el.childNodes,function(el){
         if(el.nodeType===1&&el.tagName==="SPAN"&&el.classList.contains("interactionoption")){
             interactionlist.push(el);
         }
     });
     interactionmode_el.addEventListener("click",function(e){
-        suppress_autodetect=true;
         var visibleindex=interactionlist.findIndex(function(el){
             return el.classList.contains("visible");
         });
@@ -402,18 +401,55 @@ window.addEventListener("load",function(){
     
     
     // mouse or touch autodetect:
-    var autodetector=function(e){
-        if(!suppress_autodetect && e.type==="touchstart"){
-            interactionlist.forEach(function(el){
-                el.classList.remove("visible");
-            });
-            document.getElementById("touchdefault").classList.add("visible");
+    var suppress_autodetect=false;
+    var suppress_autodetector=function(e){
+        if(!suppress_autodetect){
+            interactionmode_el.removeEventListener("mousedown",suppress_autodetector);
+            interactionmode_el.removeEventListener("touchstart",suppress_autodetector);
+            window.removeEventListener("mousedown",autodetector);
+            window.removeEventListener("touchstart",autodetector);
+            suppress_autodetect=true;
         }
-        window.removeEventListener("mousedown",autodetector);
-        window.removeEventListener("touchstart",autodetector);
+    }
+    var autodetector=function(e){
+        if(!suppress_autodetect){
+            if(e.type==="touchstart"){
+                interactionlist.forEach(function(el){
+                    el.classList.remove("visible");
+                });
+                document.getElementById("touchdefault").classList.add("visible");
+            }
+            interactionmode_el.removeEventListener("mousedown",suppress_autodetector);
+            interactionmode_el.removeEventListener("touchstart",suppress_autodetector);
+            window.removeEventListener("mousedown",autodetector);
+            window.removeEventListener("touchstart",autodetector);
+            suppress_autodetect=true;
+        }
     };
     window.addEventListener("touchstart",autodetector);
     window.addEventListener("mousedown",autodetector);
+    interactionmode_el.addEventListener("touchstart",suppress_autodetector);
+    interactionmode_el.addEventListener("mousedown",suppress_autodetector);
+    
+    
+    // hasGlobalCompositeOperationDifference
+    var globalCompositeTestCanvas=document.createElement("canvas");
+    globalCompositeTestCanvas.width=1;
+    globalCompositeTestCanvas.height=1;
+    var text_ctx=globalCompositeTestCanvas.getContext("2d");
+    text_ctx.fillStyle="white";
+    text_ctx.fillRect(0,0,1,1);
+    text_ctx.globalCompositeOperation="difference";
+    text_ctx.fillRect(0,0,1,1);
+    var img_data=text_ctx.getImageData(0,0,1,1);
+    var data_arr=img_data.data;
+    if(data_arr[0]>128){
+        hasGlobalCompositeOperationDifference=false;
+    }
+    data_arr=undefined;
+    img_data=undefined;
+    text_ctx=undefined;
+    globalCompositeTestCanvas=undefined;
     
     
     // font loader:
