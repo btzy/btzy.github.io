@@ -572,9 +572,14 @@ var DomGame=function(canvas,options,death_callback){
         ctx.translate(width,0);
         ctx.scale(1/(32*Math.sqrt(canvas_scale)),1/(32*Math.sqrt(canvas_scale)));
         ctx.translate(-8,8);
-        ctx.globalCompositeOperation="difference";
         ctx.font="14px CandelaBold,sans-serif";
-        ctx.fillStyle="white";
+        if(hasGlobalCompositeOperationDifference){
+            ctx.globalCompositeOperation="difference";
+            ctx.fillStyle="white";
+        }
+        else{
+            ctx.fillStyle="grey";
+        }
         ctx.textBaseline="top";
         for(var i=0;i<leaderboard.length;++i){
             var score_width=ctx.measureText(leaderboard[i].score.toString()).width;
