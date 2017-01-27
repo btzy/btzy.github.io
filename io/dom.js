@@ -44,9 +44,10 @@ var DomGame=function(canvas,options,death_callback){
     };
     var ongoingMovementDirTouchID,ongoingFiringTouchID,ongoingBoostingTouchID;
     var touchstart_handler=function(e){
-        var movementTouch=Array.prototype.find.call(e.touches,function(touch){
+        var movementTouch=Array.prototype.find.call(e.changedTouches,function(touch){
             return true; // TODO: ignore areas for firing and boosting.
         });
+        alert(movementTouch.clientX+" "+movementTouch.clientY);
         if(movementTouch){
             ongoingMovementDirTouchID=movementTouch.identifier;
             process_movement_dir_update(new Point(movementTouch.clientX,movementTouch.clientY));
@@ -55,10 +56,10 @@ var DomGame=function(canvas,options,death_callback){
     };
     var touchend_handler=function(e){
         if(ongoingMovementDirTouchID!==undefined){
-            var movementTouch=Array.prototype.find.call(e.touches,function(touch){
+            var movementTouch=Array.prototype.find.call(e.changedTouches,function(touch){
                 return touch.identifier===ongoingMovementDirTouchID;
             });
-            if(!movementTouch)ongoingMovementDirTouchID=undefined;
+            if(movementTouch)ongoingMovementDirTouchID=undefined;
         }
         //e.preventDefault();
     };
@@ -68,7 +69,7 @@ var DomGame=function(canvas,options,death_callback){
     };
     var touchmove_handler=function(e){
         if(ongoingMovementDirTouchID!==undefined){
-            var movementTouch=Array.prototype.find.call(e.touches,function(touch){
+            var movementTouch=Array.prototype.find.call(e.changedTouches,function(touch){
                 return touch.identifier===ongoingMovementDirTouchID;
             });
             if(movementTouch){
