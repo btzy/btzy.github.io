@@ -441,13 +441,9 @@ window.addEventListener("load",function(){
     text_ctx.fillRect(0,0,1,1);
     text_ctx.globalCompositeOperation="difference";
     text_ctx.fillRect(0,0,1,1);
-    var img_data=text_ctx.getImageData(0,0,1,1);
-    var data_arr=img_data.data;
-    if(data_arr[0]>128){
+    if(text_ctx.getImageData(0,0,1,1).data[0]>128){
         hasGlobalCompositeOperationDifference=false;
     }
-    data_arr=undefined;
-    img_data=undefined;
     text_ctx=undefined;
     globalCompositeTestCanvas=undefined;
     
