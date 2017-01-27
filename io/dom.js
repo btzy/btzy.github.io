@@ -530,8 +530,9 @@ var DomGame=function(canvas,options,death_callback){
         ctx.save();
         ctx.translate(24+96/2,logical_height-96/2-24);
         
-        //ctx.fillStyle="red";
-        //ctx.fillRect(-48,-48,96,96);
+        var boost_angle=-30*Math.PI/180;
+        
+        // button border
         var button_border_gradient=ctx.createRadialGradient(0,0,36,0,0,48);
         button_border_gradient.addColorStop(0,"rgba(255,255,255,0)");
         button_border_gradient.addColorStop(0.4,"rgba(255,255,255,0.1)");
@@ -542,6 +543,20 @@ var DomGame=function(canvas,options,death_callback){
         ctx.arc(0,0,48,-Math.PI,Math.PI);
         ctx.closePath();
         ctx.fill();
+        
+        // button agent
+        ctx.translate(24*Math.cos(boost_angle),24*Math.sin(boost_angle));
+        var button_agent_gradient=ctx.createRadialGradient(0,0,12,0,0,15);
+        button_agent_gradient.addColorStop(0,"rgba(255,255,255,0.5)");
+        button_agent_gradient.addColorStop(0.33,"rgba(255,255,255,0.35)");
+        button_agent_gradient.addColorStop(0.67,"rgba(255,255,255,0.15)");
+        button_agent_gradient.addColorStop(1,"rgba(255,255,255,0)");
+        ctx.fillStyle=button_agent_gradient;
+        ctx.beginPath();
+        ctx.arc(0,0,15,-Math.PI,Math.PI);
+        ctx.closePath();
+        ctx.fill();
+        
         
         ctx.restore();
         // TODO.
