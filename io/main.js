@@ -193,7 +193,7 @@ window.addEventListener("load",function(){
                 var local_time_offset=time_offset-i*100;
                 
                 // special for 'i' to remove the dot:
-                if(i===6 && !prerender_canvas_done){
+                if(i===6 && (!prerender_canvas_done || local_time_offset>1000)){
                     prerender_canvas.width=title_canvas.width;
                     prerender_canvas.height=title_canvas.height;
                     var prerender_ctx=prerender_canvas.getContext("2d");
