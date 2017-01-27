@@ -384,12 +384,14 @@ window.addEventListener("load",function(){
     // interaction mode options
     var interactionmode_el=document.getElementById("interactionmode");
     var interactionlist=[];
+    var suppress_autodetect=false;
     Array.prototype.forEach.call(interactionmode_el.childNodes,function(el){
         if(el.nodeType===1&&el.tagName==="SPAN"&&el.classList.contains("interactionoption")){
             interactionlist.push(el);
         }
     });
     interactionmode_el.addEventListener("click",function(e){
+        suppress_autodetect=true;
         var visibleindex=interactionlist.findIndex(function(el){
             return el.classList.contains("visible");
         });
@@ -404,7 +406,7 @@ window.addEventListener("load",function(){
     
     // mouse or touch autodetect:
     var autodetector=function(e){
-        if(e.type==="touchstart"){
+        if(!suppress_autodetect && e.type==="touchstart"){
             interactionlist.forEach(function(el){
                 el.classList.remove("visible");
             });
