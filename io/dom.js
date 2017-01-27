@@ -44,16 +44,16 @@ var DomGame=function(canvas,options,death_callback){
     };
     var ongoingMovementDirTouchID,ongoingFiringTouchID,ongoingBoostingTouchID;
     var touchstart_handler=function(e){
-        alert("touchstart");
-        try{
+        //alert("touchstart");
+        //try{
         var movementTouch=Array.prototype.find.call(e.changedTouches,function(touch){
             return true; // TODO: ignore areas for firing and boosting.
         });
-        }
-        catch(e){
-            alert(e.message);
-        }
-        alert(movementTouch.clientX+" "+movementTouch.clientY);
+        //}
+        //catch(e){
+        //    alert(e.message);
+        //}
+        //alert(movementTouch.clientX+" "+movementTouch.clientY);
         if(movementTouch){
             ongoingMovementDirTouchID=movementTouch.identifier;
             process_movement_dir_update(new Point(movementTouch.clientX,movementTouch.clientY));
