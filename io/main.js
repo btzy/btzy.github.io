@@ -167,9 +167,6 @@ window.addEventListener("load",function(){
         var prerender_canvas=document.createElement("canvas");
         
         var draw=function(){
-            if(!prerender_canvas_done){
-                
-            }
             
             
             title_ctx.save();
