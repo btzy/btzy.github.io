@@ -522,6 +522,30 @@ var DomGame=function(canvas,options,death_callback){
             ctx.fillText(leaderboard[i].score.toString(),0,i*20);
         }
         ctx.restore();
+        
+        // draw touch buttons with logical screen coordinates - 96 * 96 px per button
+        ctx.save();
+        ctx.scale(1/canvas_scale,1/canvas_scale);
+        // boost button
+        ctx.save();
+        ctx.translate(24+96/2,logical_height-96/2-24);
+        
+        //ctx.fillStyle="red";
+        //ctx.fillRect(-48,-48,96,96);
+        var button_border_gradient=ctx.createRadialGradient(0,0,36,0,0,48);
+        button_border_gradient.addColorStop(0,"rgba(255,255,255,0)");
+        button_border_gradient.addColorStop(0.4,"rgba(255,255,255,0.1)");
+        button_border_gradient.addColorStop(0.7,"rgba(255,255,255,0.25)");
+        button_border_gradient.addColorStop(1,"rgba(255,255,255,0.5)");
+        ctx.fillStyle=button_border_gradient;
+        ctx.beginPath();
+        ctx.arc(0,0,48,-Math.PI,Math.PI);
+        ctx.closePath();
+        ctx.fill();
+        
+        ctx.restore();
+        // TODO.
+        ctx.restore();
     };
     var message_time_storage=[];
     var last_message_curr_location=undefined;
