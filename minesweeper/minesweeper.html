@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Minesweeper</title>
+<link href='http://fonts.googleapis.com/css?family=Sofadi+One' rel='stylesheet' type='text/css'>
+<link rel="stylesheet" href="minesweeper.css" />
+<script type="text/javascript" src="jquery-1.11.0.min.js"></script>
+<script type="text/javascript" src="minepainter.js"></script>
+<script type="text/javascript" src="minemech.js"></script>
+<script type="text/javascript" src="minesweeper.js"></script>
+</head>
+
+<body>
+    <div id="bodywrapper">
+        <div id="content">
+            <div class="frame" id="mainframe">
+                <h1>Minesweeper</h1>
+                <table id="typeselect"><tr><td><div class="typebutton" id="easy">Easy</div></td><td><div class="typebutton" id="medium">Medium</div></td><td><div class="typebutton" id="hard">Hard</div></td><td><div class="typebutton" id="custom">Custom</div></td></tr></table>
+                <div id="inputs">Height: <input class="typeinput" id="typeheight" type="text" value="9" />&emsp;Width: <input class="typeinput" id="typewidth" type="text" value="9" />&emsp;Mines: <input class="typeinput" id="typemines" type="text" value="10" /></div>
+                <div id="start">Start &raquo;</div>
+                <div id="startqueuer"></div>
+                <div id="copyright"></div>
+            </div>
+            <div class="frame" id="mineframe">
+                <div id="infobar">
+                	Time:
+                    <input type="text" readonly="readonly" />
+                    Mines:
+                    <input type="text" readonly="readonly" />
+                </div>
+                <div id="mineflex">
+                	<div id="minecontainer">
+                    <table>
+                    	<tr><td id="cell_1_1"></td></tr>
+                    </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
