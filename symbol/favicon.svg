@@ -29,7 +29,7 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.49497475"
-     inkscape:cx="142.02686"
+     inkscape:cx="-186.27271"
      inkscape:cy="480.18811"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
@@ -48,7 +48,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -57,24 +57,26 @@
      inkscape:groupmode="layer"
      id="layer1"
      transform="translate(0,-26.06665)">
-    <text
-       xml:space="preserve"
+    <g
+       aria-label="f(x)"
        style="font-style:normal;font-weight:normal;font-size:10.58333302px;line-height:1.25;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:0.26458332"
-       x="4.2225881"
-       y="199.87123"
-       id="text817"><tspan
-         sodipodi:role="line"
-         id="tspan815"
-         x="4.2225881"
-         y="199.87123"
-         style="font-style:italic;font-variant:normal;font-weight:normal;font-stretch:normal;font-size:158.04444885px;font-family:'CMU Serif';-inkscape-font-specification:'CMU Serif Italic';letter-spacing:0px;stroke-width:0.26458332"><tspan
-           style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:158.04444885px;font-family:'CMU Serif';-inkscape-font-specification:'CMU Serif Bold Italic';letter-spacing:7.9375px"
-           id="tspan841">f</tspan><tspan
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:158.04444885px;font-family:'CMU Serif';-inkscape-font-specification:'CMU Serif Bold';letter-spacing:-16.93333244px"
-           id="tspan831">(</tspan><tspan
-           style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:158.04444885px;font-family:'CMU Serif';-inkscape-font-specification:'CMU Serif Bold Italic';letter-spacing:-3.17499995px"
-           id="tspan853">x</tspan><tspan
-           style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:158.04444885px;font-family:'CMU Serif';-inkscape-font-specification:'CMU Serif Bold';letter-spacing:0px"
-           id="tspan833">)</tspan></tspan></text>
+       id="text817">
+      <path
+         d="m 1.2197435,219.3107 c 0,9.16658 9.4826665,13.11769 17.0688005,13.11769 1.896533,0 6.637867,-0.15805 12.959645,-5.05742 8.850489,-7.11201 12.169422,-16.75272 14.856178,-27.02561 3.635022,-13.90791 12.169423,-63.05973 12.169423,-63.21778 h 17.859022 c 0,0 0.158045,0.15805 0.316089,0.15805 1.4224,0 4.741334,-0.31609 4.741334,-4.42525 0,-1.4224 -0.948267,-3.16088 -4.425245,-3.16088 h -17.0688 c 0.158044,-0.47414 5.057422,-28.44801 6.321778,-31.292805 0.790222,-1.738489 2.528711,-4.109156 6.005689,-4.109156 1.264355,0 3.002844,0.316089 4.899378,1.4224 -5.689601,2.8448 -6.795912,7.586131 -6.795912,10.114841 0,4.42525 3.318934,7.27005 7.744178,7.27005 6.795912,0 11.221156,-5.84765 11.221156,-11.69529 0,-7.902223 -7.586133,-13.11769 -17.700978,-13.11769 -7.270045,0 -15.014223,3.318934 -19.439467,9.640712 -2.528712,3.476978 -5.689601,9.166578 -9.008534,31.608888 l -0.158044,0.15805 H 27.771211 c -1.580445,0 -4.741334,0.31608 -4.741334,4.2672 0,3.16088 2.528712,3.16088 4.583289,3.16088 h 13.907912 l -7.586134,41.24961 c -7.744178,41.88177 -9.324622,48.20355 -15.6464,48.20355 -1.738489,0 -3.476978,-0.79022 -4.899378,-1.4224 5.6896,-2.8448 6.953956,-7.74418 6.953956,-10.27289 0,-4.42524 -3.318934,-7.27004 -7.744178,-7.27004 -6.1637337,0 -11.3792005,5.37351 -11.3792005,11.69529 z"
+         style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:158.04444885px;font-family:'CMU Serif';-inkscape-font-specification:'CMU Serif Bold Italic';letter-spacing:7.9375px"
+         id="path818" />
+      <path
+         d="m 92.508399,160.20207 c 0,19.75556 5.215467,37.14045 12.643551,50.25814 10.43094,18.17511 24.81298,28.76409 27.81583,28.76409 1.26435,0 2.8448,-0.47413 2.8448,-2.21262 0,-0.79023 -0.47414,-1.4224 -0.47414,-1.58045 -4.58328,-4.2672 -14.85617,-13.90791 -21.49404,-34.1376 -4.10916,-12.48551 -6.00569,-27.0256 -6.00569,-40.93351 0,-31.13476 8.06027,-55.94774 25.44516,-73.49067 2.37066,-2.370667 2.52871,-2.528711 2.52871,-3.318933 0,-1.738489 -1.58045,-2.212623 -2.8448,-2.212623 -2.68676,0 -9.32462,5.847645 -12.16942,8.534401 C 96.143421,114.36918 92.508399,143.44936 92.508399,160.20207 Z"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:158.04444885px;font-family:'CMU Serif';-inkscape-font-specification:'CMU Serif Bold';letter-spacing:-16.93333244px"
+         id="path820" />
+      <path
+         d="m 139.62506,187.54376 c 0,9.48267 9.00853,14.06596 17.0688,14.06596 6.47982,0 12.01138,-3.31893 16.12053,-8.5344 h 0.15805 c 4.2672,6.00569 11.3792,8.5344 19.75555,8.5344 19.59751,0 30.02845,-19.9136 30.02845,-24.97102 0,-1.4224 -0.94827,-2.37067 -4.10916,-2.37067 h -0.94827 c -3.63502,0 -3.47697,1.89653 -4.42524,4.42524 -3.79307,9.95681 -11.85333,17.06881 -19.75556,17.06881 -3.47697,0 -8.06026,-1.4224 -8.06026,-7.74418 0,-3.63502 1.26435,-8.06027 8.69244,-38.08871 3.79307,-15.01423 10.27289,-16.27858 12.8016,-16.27858 2.05458,0 4.10916,0.79022 6.47982,2.52871 -6.32177,2.52871 -8.06026,7.42809 -8.06026,10.58898 0,4.42524 3.31893,7.42809 7.74418,7.42809 6.47982,0 11.3792,-5.53156 11.3792,-12.16943 0,-9.48266 -9.00854,-14.224 -17.22685,-14.224 -7.90222,0 -12.8016,4.89938 -16.27858,8.5344 -1.89653,-2.52871 -6.95395,-8.37635 -19.43946,-8.37635 -20.54578,0 -30.18649,20.70382 -30.18649,24.81298 0,1.58044 0.94826,2.52871 4.10915,2.52871 h 0.79022 c 3.47698,-0.15805 3.47698,-1.4224 4.58329,-4.42525 3.16089,-9.00853 11.06311,-17.22684 19.75556,-17.22684 3.31893,0 7.90222,1.58044 7.90222,7.74418 0,2.21262 -0.31609,4.58328 -1.89653,11.22115 -6.47982,25.76125 -8.69245,43.30418 -19.59751,43.30418 -2.05458,0 -4.2672,-0.94827 -6.32178,-2.68676 6.32178,-2.37066 8.06026,-7.58613 8.06026,-10.58897 0,-4.42525 -3.47697,-7.27005 -7.74417,-7.27005 -6.63787,0 -11.3792,5.53156 -11.3792,12.16942 z"
+         style="font-style:italic;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:158.04444885px;font-family:'CMU Serif';-inkscape-font-specification:'CMU Serif Bold Italic';letter-spacing:-3.17499995px"
+         id="path822" />
+      <path
+         d="m 224.7253,237.01168 c 0,1.73849 1.58044,2.21262 2.8448,2.21262 2.68675,0 9.32462,-5.84765 12.16942,-8.5344 24.65493,-24.49689 28.28995,-53.57707 28.28995,-70.32978 0,-19.75556 -5.21546,-37.14045 -12.64355,-50.25814 -10.43093,-18.175107 -24.81298,-28.764086 -27.81582,-28.764086 -1.26436,0 -2.8448,0.474134 -2.8448,2.212623 0,0.790222 0,1.106311 2.68675,3.635022 19.9136,20.229691 25.28711,48.203561 25.28711,73.016531 0,31.13476 -8.06026,55.94774 -25.44515,73.49067 -2.37067,2.37067 -2.52871,2.52871 -2.52871,3.31894 z"
+         style="font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-size:158.04444885px;font-family:'CMU Serif';-inkscape-font-specification:'CMU Serif Bold';letter-spacing:0px"
+         id="path824" />
+    </g>
   </g>
 </svg>
