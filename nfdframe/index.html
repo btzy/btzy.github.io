@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+<style>
+body {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+}
+.centered {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-top: -320px;
+  margin-left: -480px;
+  height: 560px;
+  width: 880px;
+  box-sizing: content-box;
+  border: 40px solid black;
+}
+.incenter {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-top: -240px;
+  margin-left: -400px;
+  height: 480px;
+  width: 800px;
+}
+.red {
+  background-color: red;
+}
+@media (prefers-color-scheme: dark) {
+  body {
+    background-color: black;
+  }
+  .centered {
+      border-color: white;
+    }
+}
+</style>
+<script>
+window.addEventListener("load", () => {
+  const incenter = document.getElementById("incenter");
+  document.body.addEventListener("click", () => {
+    incenter.classList.toggle("red");
+  });
+});
+</script>
+</head>
+<body>
+<div class="centered"><div id="incenter" class="incenter"></div></div>
+</body>
+</html>
